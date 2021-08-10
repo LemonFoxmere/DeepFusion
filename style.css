@@ -1,0 +1,71 @@
+body{
+    background-color: #1d2021;
+    overflow: hidden;
+    color:white;
+    font-family:Poppins; 
+}
+
+button, .buttonlike{
+    border: solid 1px white;
+    border-radius: 100vh;
+    color:white;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    background-color: transparent;
+
+    font-size: clamp(0.2rem, min(1.5vh, 1.5vw), 1.5rem);
+
+    transition: all 230ms cubic-bezier(0.260, 0.050, 0.250, 1.000); /* custom */
+}
+
+p{
+    cursor: default;
+    font-weight: 100;
+    font-size: clamp(0.1rem, min(2vh, 2vw), 2rem);
+    margin:0
+}
+
+h1{
+    cursor: default;
+    font-weight: 300;
+    font-size: clamp(0.5rem, min(7vh, 7vw), 7rem);
+    letter-spacing: 5px;
+    margin:0
+}
+
+h2{
+    cursor: default;
+    font-weight: 300;
+    font-size: clamp(0.5rem, min(4vh, 4vw), 4rem);
+    letter-spacing: 5px;
+    margin:0
+}
+
+button, .buttonlike:hover{
+    padding-left: 2rem;
+    padding-right: 2rem;
+}
+
+.notransition {
+    -webkit-transition: none !important;
+    -moz-transition: none !important;
+    -o-transition: none !important;
+    transition: none !important;
+}
+
+.unselectable {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.nolinkunderline{
+    text-decoration: none;
+}
