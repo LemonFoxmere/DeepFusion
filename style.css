@@ -16,17 +16,47 @@ button, .buttonlike{
     margin-left: 0.5rem;
     margin-right: 0.5rem;
     background-color: transparent;
+    z-index: 2;
 
     font-size: clamp(0.2rem, min(1.5vh, 1.5vw), 1.5rem);
 
     transition: all 230ms cubic-bezier(0.260, 0.050, 0.250, 1.000); /* custom */
 }
 
+.subtle-txt{
+    font-family: 'Montserrat';
+    margin:0;
+    padding:0;
+    text-align:center;
+}
+
+.subtle-btn{
+    border:none;
+    margin:0;
+    background-color: rgba(0,0,0,0.2);
+    padding:0;
+    border-radius: calc(clamp(0.5rem, min(4.5vh, 4.5vw), 5rem) / 2);
+    width: clamp(0.5rem, min(4.5vh, 4.5vw), 5rem);
+    height: clamp(0.5rem, min(4.5vh, 4.5vw), 5rem);
+    color:rgb(180, 180, 180);
+    transition: all 230ms cubic-bezier(0.260, 0.050, 0.250, 1.000); /* custom */
+}
+
+.subtle-btn:hover{
+    background-color: rgba(0,0,0,0.4);
+    width: clamp(0.5rem, min(4.5vh, 4.5vw), 5rem);
+    height: clamp(0.5rem, min(4.5vh, 4.5vw), 5rem);
+    padding:0;
+    border-radius: calc(clamp(0.5rem, min(4.5vh, 4.5vw), 5rem) / 6);
+    color:rgb(255, 255, 255)
+}
+
 p{
     cursor: default;
-    font-weight: 100;
+    font-weight: 300;
     font-size: clamp(0.1rem, min(2vh, 2vw), 2rem);
-    margin:0
+    margin:0;
+    z-index: 2;
 }
 
 h1{
@@ -34,7 +64,8 @@ h1{
     font-weight: 300;
     font-size: clamp(0.5rem, min(7vh, 7vw), 7rem);
     letter-spacing: 5px;
-    margin:0
+    margin:0;
+    z-index: 2;
 }
 
 h2{
@@ -42,10 +73,19 @@ h2{
     font-weight: 300;
     font-size: clamp(0.5rem, min(4vh, 4vw), 4rem);
     letter-spacing: 5px;
-    margin:0
+    margin:0;
+    z-index: 2;
 }
 
-button, .buttonlike:hover{
+h3{
+    font-size: clamp(0.3rem, min(2.5vh, 2.5vw), 3rem);
+    font-weight: 400;
+    margin:0;
+    z-index: 2;
+}
+
+
+button:hover, .buttonlike:hover{
     padding-left: 2rem;
     padding-right: 2rem;
 }
@@ -68,4 +108,81 @@ button, .buttonlike:hover{
 
 .nolinkunderline{
     text-decoration: none;
+}
+
+.copyrightmsg{
+    font-size: clamp(0.075rem, min(1.5vh, 1.5vw), 1.5rem);
+}
+
+.menu-container{
+    background-color: rgb(24, 26, 27);
+    position:absolute;
+    transition: background-color 150ms cubic-bezier(0.260, 0.050, 0.250, 1.000); /* custom */
+    z-index: 2;
+}
+
+.menu-container:hover{
+    background-color: rgb(21, 23, 24);
+}
+
+.node{
+    position:absolute;
+    z-index: 1;
+    text-align: center;
+    border: 2px solid;
+    border-color: transparent;
+    transition: border-color 150ms cubic-bezier(0.260, 0.050, 0.250, 1.000); /* custom */
+    display:flex; align-items: center; justify-content: center; flex-direction: column;
+}
+
+.crosshair{
+    position:absolute;
+    background-color: transparent;
+    padding: 0px;
+    margin: 0px;
+    color:red;
+    z-index: 1;
+}
+
+.node-drag{
+    cursor: move;
+    background-color: #2e2e2e;
+    border-radius: 15px;
+    padding:10px;
+    box-shadow: -5px 5px 20px -10px black, 0px 0px 20px -10px black;
+}
+
+.node-out{
+    cursor: grab;
+    background-color: rgb(255, 208, 0);
+    width:8px;
+    height:8px;
+    margin-top:5px;
+}
+
+.node-in{
+    cursor: normal;
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 8px solid rgb(19, 224, 0);
+    margin-bottom:5px;
+}
+
+.node-title{
+    font-size: clamp(0.2rem, min(2vh, 2vw), 2rem);
+    font-weight: 500;
+    margin:0;
+    z-index: 2;
+    font-family: 'Montserrat'
+}
+
+.node-text{
+    color:lightgray;
+    font-size: clamp(0.1rem, min(1.5vh, 1.5vw), 1.5rem);
+    font-weight: 400;
+    margin:0;
+    z-index: 2;
+    font-family: 'Montserrat'
 }
