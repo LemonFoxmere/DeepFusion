@@ -22,32 +22,31 @@
         width:calc(100vw - clamp(1rem, 15vw, 17rem) * 2); padding-bottom: 4.5vh; height:clamp(1rem, 10vh, 6rem); bottom:0; right:clamp(1rem, 15vw, 17rem);
         display:flex; align-items: center; justify-content: flex-start;'>
             <h4 style='margin-left:2vw; margin-right:1vw'>Add Nodes:</h4>
-            <button class='buttonlike node-selection'>
+            <button class='buttonlike node-selection' id='input_node_add'>
                 <p style='cursor:pointer'>
                     Input
                 </p>
             </button>
-            <button class='buttonlike node-selection'>
+            <button class='buttonlike node-selection' id='output_node_add'>
+                <p style='cursor:pointer'>
+                    Output
+                </p>
+            </button>
+            <button class='buttonlike node-selection' id='dense_node_add'>
                 <p style='cursor:pointer'>
                     Dense
                 </p>
             </button>
-            <button class='buttonlike node-selection'>
+            <button class='buttonlike node-selection' id='act_node_add'>
                 <p style='cursor:pointer'>
                     Actiavtion
                 </p>
             </button>
-            <button class='buttonlike node-selection'>
+            <button class='buttonlike node-selection' id='drop_node_add'>
                 <p style='cursor:pointer'>
                     Dropout
                 </p>
             </button>
-
-            <a href='https://github.com/LemonOrangeWasTaken/DeepFusion' style='color:rgb(255, 40, 40); border-color:rgb(255, 52, 52)' class='buttonlike node-selection'>
-                <p style='cursor:pointer'>
-                    <strong>More Coming Soon!</strong>
-                </p>
-            </a>
     </div>
 
     <!-- right top menu -->
@@ -66,7 +65,7 @@
     <div class='
         menu-container' style='width:clamp(1rem, 15vw, 17rem); height:calc(100vh - clamp(1rem, 7vh, 4rem) - 50vh); top:clamp(1rem, 7vh, 4rem); left:0;
         display:flex; align-items: center; justify-content: flex-start; padding-top:1vh; flex-direction: column;'>
-        <h3 class='unselectable'>
+        <h3 class='unselectable section-text'>
             Data Control
         </h3>
 
@@ -74,13 +73,13 @@
 
 
         <button id='input-upload'>
-            <h5>
+            <h5 class='unselectable section-text'>
                 Upload Training Input
             </h5>
         </button>
         
         <button id='label-upload' >
-            <h5>
+            <h5 class='unselectable section-text'>
                 Upload Training Label
             </h5>
         </button>
@@ -88,7 +87,7 @@
         <hr style='width: 30%; opacity: 0.3; color:white'>
 
         <section class='slider-parent-container'>
-            <p class='unselectable'>Validation Part (%):</p>
+            <p class='unselectable section-text'>Validation Part (%):</p>
             <section class='slider-container'>
                 <input type="range" min="0" max="10" value="5" class="slider" id="val-part-slider">
                 <input type="number" class="number-box" id="val-part"> </input>
@@ -96,7 +95,7 @@
         </section>
 
         <section class='slider-parent-container'>
-            <p class='unselectable'>Testing Part (%):</p>
+            <p class='unselectable section-text'>Testing Part (%):</p>
             <section class='slider-container'>
                 <input type="range" min="0" max="5" value="2" class="slider" id="test-part-slider">
                 <input type="number" class="number-box" id="test-part"> </input>
@@ -176,26 +175,27 @@
                 width:calc(100vw - clamp(1rem, 15vw, 17rem) * 2);
                 height:calc(100vh - clamp(1rem, 10vh, 6rem)); 
                 transition: transform 240ms cubic-bezier(0.260, 0.050, 0.250, 1.000);'>
-            <!-- an output node -->
-            <div class='node' id='destnode'>
-                <div class='node-in'></div>
-                <div class='node-drag' id='destnodeheader'>
-                    <h3 class='unselectable node-title' style='cursor:move'>
-                        Output
-                    </h3>
-                    <hr>
-                    <p class='unselectable node-text' style='cursor:move'>
-                        Click To Add/Modify
-                    </p>
-                    <p class='unselectable node-text' style='cursor:move'>
-                        Training Label
-                    </p>
-                    <hr>
-                    <p class='unselectable node-text' style='cursor:move'>
-                        No File Added
-                    </p>
-                </div>
-                <div class='node-out'></div>
+            
+            <div class='crosshair' style='pointer-events: none; transition: all 500ms cubic-bezier(0.355, 0.010, 0.200, 1.010);'>
+                <svg
+                width="auto"
+                height="auto"
+                style='opacity: 0.2; height: clamp(0.5rem, min(15vw, 15vh), 15rem); margin-right: 2vw; padding-top: 2vh'
+                viewBox="0 0 135.46666 135.46667"
+                version="1.1"
+                id="svg5"
+                xmlns="http://www.w3.org/2000/svg"
+                xmlns:svg="http://www.w3.org/2000/svg">
+                    <defs
+                        id="defs2" />
+                    <g
+                        id="layer1">
+                        <path
+                        id="rect2498"
+                        style="fill:none;stroke:#ffffff;stroke-width:6.52224367;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;fill-opacity:1;stroke-opacity:1"
+                        d="m 52.12033,3.2610981 c -10.827205,0 -19.543691,8.7164869 -19.543691,19.5436919 0,10.827205 8.716486,19.543691 19.543691,19.543691 H 23.472797 c -0.393816,-0.01334 -0.788094,-0.02031 -1.183332,-0.0096 -0.16546,0.0044 -0.330587,0.02918 -0.496213,0.03823 -0.140087,0.0075 -0.279913,0.02086 -0.419896,0.02862 -0.169208,0.01212 -0.337813,0.02179 -0.505742,0.03823 -0.251527,0.02585 -0.502761,0.05964 -0.753897,0.09547 -0.285289,0.03897 -0.568185,0.08254 -0.84932,0.133697 -0.02835,0.0051 -0.05759,0.0042 -0.08589,0.0096 -0.03811,0.0073 -0.07647,0.01158 -0.114474,0.01902 -7.746924,1.489377 -13.8405977,7.52305 -15.4116662,15.239876 -0.091952,0.45145 -0.1495583,0.911709 -0.209948,1.374165 -0.00894,0.06684 -0.017541,0.133881 -0.028631,0.200361 -0.027801,0.231163 -0.056628,0.463047 -0.076367,0.69663 -0.00347,0.04118 -0.0062,0.08273 -0.00953,0.124094 -0.024677,0.31584 -0.038113,0.633912 -0.047689,0.954088 -0.0062,0.200664 -0.019104,0.400157 -0.019104,0.601212 0,0.47819 0.023843,0.95252 0.057263,1.421901 0.010846,0.146994 0.014414,0.291937 0.028631,0.438949 -0.00787,-0.08467 -0.00273,-0.172666 -0.00957,-0.257681 0.2564621,3.186012 1.2609591,6.15641 2.8533302,8.722154 2.2330133,3.696055 29.000641,50.223863 29.000641,50.223863 5.413601,9.37663 17.324162,12.56117 26.700786,7.14758 9.376624,-5.41361 12.570698,-17.31464 7.157095,-26.69126 L 56.662725,81.435865 h 24.773143 c 10.827204,0 19.543692,-8.716487 19.543692,-19.543692 0,-10.827205 -8.716488,-19.543692 -19.543692,-19.543692 H 110.7514 c 10.82721,0 19.54369,-8.716486 19.54369,-19.543691 0,-10.827205 -8.71648,-19.5436919 -19.54369,-19.5436919 z" />
+                    </g>
+                </svg>
             </div>
             
             <!-- <div class='node' id='00x1'>

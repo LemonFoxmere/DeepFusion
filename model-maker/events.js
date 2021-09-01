@@ -52,6 +52,10 @@ function dragCanvas(canvas, elmnts) {
             elmnt.classList.add('notransition')
         });
 
+        document.querySelectorAll(".crosshair").forEach(elmnt => {
+            elmnt.classList.add('notransition')
+        });
+
         document.onmouseup = closeDragElement;
         // call a function whenever the cursor moves:
         document.onmousemove = elementDrag;
@@ -70,6 +74,7 @@ function dragCanvas(canvas, elmnts) {
             elmnt.style.left = (elmnt.offsetLeft - pos1/zoom) + "px";
         });
 
+        
         document.querySelector('.crosshair').style.top = (document.querySelector('.crosshair').offsetTop - pos2) + "px";
         document.querySelector('.crosshair').style.left = (document.querySelector('.crosshair').offsetLeft - pos1) + "px";
         
@@ -77,6 +82,7 @@ function dragCanvas(canvas, elmnts) {
         canvas_position_y -= pos2/zoom; //it's the opposite way around
         // get string and apply
         document.querySelector('#position_debug').innerHTML = Math.floor(canvas_position_x) + "," + Math.floor(canvas_position_y)
+        
     }
 
     function closeDragElement() {
@@ -88,30 +94,27 @@ function dragCanvas(canvas, elmnts) {
         document.querySelectorAll(elmnts).forEach(elmnt => {
             elmnt.classList.remove('notransition')
         });
+        document.querySelectorAll(".crosshair").forEach(elmnt => {
+            elmnt.classList.remove('notransition')
+        });
     }
 }
-
-// add selection highlight
-document.querySelectorAll('.node-drag').forEach((elm) => {
-    elm.addEventListener('mousedown', (e) => {
-        if(elm.classList.contains('selected-node')){
-            elm.classList.remove('selected-node')
-            return
-        }
-        document.querySelectorAll('.node-drag').forEach((elm2) => {
-            elm2.classList.remove('selected-node')
-        })
-        elm.classList.add('selected-node')
-    })
-})
 
 // reset canvas position
 document.getElementById('reset-canvas').addEventListener('click', async (e) => {
     document.querySelectorAll('.node').forEach((e) => {
         e.classList.remove('notransition')
     })
+    document.querySelectorAll('.crosshair').forEach((e) => {
+        e.classList.remove('notransition')
+    })
 
     document.querySelectorAll('.node').forEach((e) => {
+        e.style.top = (e.offsetTop - canvas_position_y) + "px";
+        e.style.left = (e.offsetLeft - canvas_position_x) + "px";
+    })
+
+    document.querySelectorAll('.crosshair').forEach((e) => {
         e.style.top = (e.offsetTop - canvas_position_y) + "px";
         e.style.left = (e.offsetLeft - canvas_position_x) + "px";
     })

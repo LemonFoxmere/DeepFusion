@@ -160,6 +160,32 @@ button:hover{
     background-color: #161819;
 }
 
+h3.section-text{
+    font-size: clamp(0.3rem, min(2.5vh, 1.5vw), 3rem);
+}
+
+h5.section-text{
+    font-size: clamp(0.2rem, min(1.5vh, 1vw), 2.75rem);
+}
+
+p.section-text{
+    font-size: clamp(0.15rem, min(1.7vh, 0.6vw), 2.5rem);
+}
+
+.hr{
+    position: absolute;
+    width:100vw;
+    height:2px;
+    background-color: rgba(255, 255, 255, 0.062);
+}
+
+.vr{
+    position: absolute;
+    width:2px;
+    height:100vh;
+    background-color: rgba(255, 255, 255, 0.062);
+}
+
 .node{
     position:absolute;
     z-index: 1;
