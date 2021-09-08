@@ -28,8 +28,13 @@ function dragCanvas(canvas, elmnts) {
             let box = elmnt.getBoundingClientRect()
             if(pos3 > box.x && pos3 < box.x + box.width &&
                 pos4 > box.y && pos4 < box.y + box.height){
-                x = true;
+                    if(elmnt.classList.contains('edge')){
+                        x += false;
+                    } else {
+                        x += true;
+                    }
             }
+            
         });
 
         if(x) return
@@ -75,8 +80,8 @@ function dragCanvas(canvas, elmnts) {
         });
 
         
-        document.querySelector('.crosshair').style.top = (document.querySelector('.crosshair').offsetTop - pos2) + "px";
-        document.querySelector('.crosshair').style.left = (document.querySelector('.crosshair').offsetLeft - pos1) + "px";
+        document.querySelector('.crosshair').style.top = (document.querySelector('.crosshair').offsetTop - pos2/zoom) + "px";
+        document.querySelector('.crosshair').style.left = (document.querySelector('.crosshair').offsetLeft - pos1/zoom) + "px";
         
         canvas_position_x -= pos1/zoom; //it's the opposite way around
         canvas_position_y -= pos2/zoom; //it's the opposite way around

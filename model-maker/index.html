@@ -8,45 +8,50 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;700&display=swap" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet"> 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet"> 
 
     <link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
 </head>
 
-<body style="display:flex; align-items: center; justify-content: center; height:100vh; flex-direction: column">
+<body id='base-canvas' style="display:flex; align-items: center; justify-content: center; height:100vh; flex-direction: column">
 
     <!-- bottom menu -->
     <div class='menu-container' style='
         width:calc(100vw - clamp(1rem, 15vw, 17rem) * 2); padding-bottom: 4.5vh; height:clamp(1rem, 10vh, 6rem); bottom:0; right:clamp(1rem, 15vw, 17rem);
-        display:flex; align-items: center; justify-content: flex-start;'>
-            <h4 style='margin-left:2vw; margin-right:1vw'>Add Nodes:</h4>
-            <button class='buttonlike node-selection' id='input_node_add'>
-                <p style='cursor:pointer'>
-                    Input
-                </p>
-            </button>
-            <button class='buttonlike node-selection' id='output_node_add'>
-                <p style='cursor:pointer'>
-                    Output
-                </p>
-            </button>
-            <button class='buttonlike node-selection' id='dense_node_add'>
-                <p style='cursor:pointer'>
-                    Dense
-                </p>
-            </button>
-            <button class='buttonlike node-selection' id='act_node_add'>
-                <p style='cursor:pointer'>
-                    Actiavtion
-                </p>
-            </button>
-            <button class='buttonlike node-selection' id='drop_node_add'>
-                <p style='cursor:pointer'>
-                    Dropout
-                </p>
-            </button>
+        display:flex; align-items: center; justify-content: center; flex-direction: column;'>
+            <section style='margin-top:1.2%'>
+                <h4 style='margin-left:2vw; margin-right:1vw'>Add Nodes:</h4>
+            </section>
+
+            <section style='margin-top:0.5%'>
+                <button class='absolute-btn node-selection' id='input_node_add'>
+                    <p>
+                        Input
+                    </p>
+                </button>
+                <button class='absolute-btn node-selection' id='output_node_add'>
+                    <p>
+                        Output
+                    </p>
+                </button>
+                <button class='absolute-btn node-selection' id='dense_node_add'>
+                    <p>
+                        Dense
+                    </p>
+                </button>
+                <button class='absolute-btn node-selection' id='act_node_add'>
+                    <p>
+                        Actiavtion
+                    </p>
+                </button>
+                <button class='absolute-btn node-selection' id='drop_node_add'>
+                    <p>
+                        Dropout
+                    </p>
+                </button>
+            </section>
     </div>
 
     <!-- right top menu -->
@@ -72,16 +77,16 @@
         <hr style='width: 80%; opacity: 0.4; color:white'>
 
 
-        <button id='input-upload'>
-            <h5 class='unselectable section-text'>
+        <button class='absolute-btn' id='input-upload'>
+            <p class='unselectable section-text'>
                 Upload Training Input
-            </h5>
+            </p>
         </button>
         
-        <button id='label-upload' >
-            <h5 class='unselectable section-text'>
+        <button class='absolute-btn' id='label-upload' >
+            <p class='unselectable section-text'>
                 Upload Training Label
-            </h5>
+            </p>
         </button>
 
         <hr style='width: 30%; opacity: 0.3; color:white'>
@@ -224,9 +229,11 @@
         </section>
     </section>
 
-    <p class='copyrightmsg unselectable' style='position: absolute; bottom:1vh; color:gray'>
-        Copyright &copy; 2021 LemonOrange
+    <p class='copyrightmsg unselectable' style='position: absolute; bottom:0.5%; color:rgba(255, 255, 255, 0.178); z-index:100'>
+        Copyright &copy; 2021 LemonOrange | To learn more, visit this project's
+        <a style='text-decoration:none; color:rgba(255, 255, 255, 0.363); font-weight: 600;' href='google.com'>GitHub</a>
     </p>
+
     <script src="../anime.min.js"></script>
     <script src="../json2html.min.js"></script>
     <script src="events.js"></script>
