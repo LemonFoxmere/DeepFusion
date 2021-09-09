@@ -14,9 +14,8 @@ document.body.addEventListener('mouseup', (e) => {
 })
 
 // define node jsons
-function create_node_data(id, dest, is_edge, is_start, data, type){
+function create_node_data(dest, is_edge, is_start, data, type){
     return {
-        "id" : id,
         "dest" : dest,
         "is_edge" : is_edge,
         "is_start" : is_start,
@@ -25,18 +24,34 @@ function create_node_data(id, dest, is_edge, is_start, data, type){
     }
 }
 
+function create_edge_data(input, dest){
+    return {
+        "input" : input,
+        "dest" : dest
+    }
+}
+
 /*
+node type standard
 in = input
 ou = output
 de = dense
 ac = activation
 do = dropout
+
+element type standard
+00 = node
+01 = edge
+02 = some stuff
+...
+FF = ?
 */
 
 const INPUT_UUID = "6e9328d7-7b71-4af8-8b70-1b4c8cd2a708"
 const OUTPUT_UUID = "dde3a704-50f9-4b74-a641-57720cbb5c0e"
 
 let hovering_uuid = null
+let selected_uuid = null
 
 const INPUT_NODE = [
     {
@@ -276,7 +291,7 @@ let edge_start_node_sq = null
 document.getElementById('input_node_add').addEventListener('click', (e) => {
     if(localStorage.getItem(INPUT_UUID)) return
 
-    let uuid = INPUT_UUID // THIS WILL ALWAYS BE THE STARTING UUID
+    let uuid = '00'+INPUT_UUID // THIS WILL ALWAYS BE THE STARTING UUID
     let html = create_node(INPUT_NODE, uuid)
     main_canvas.appendChild(html)
     dragElement(document.getElementById(uuid)); // add element drag
@@ -293,8 +308,13 @@ document.getElementById('input_node_add').addEventListener('click', (e) => {
         document.getElementById(`${uuid}header`).classList.add('selected-node')
     })
 
+    // EDGE CREATION START
     document.getElementById(uuid).addEventListener('mouseover', (e) => {
         hovering_uuid = uuid
+    })
+
+    document.getElementById(uuid).addEventListener('mouseout', (e) => {
+        hovering_uuid = null
     })
 
     // add node out drag function
@@ -304,7 +324,6 @@ document.getElementById('input_node_add').addEventListener('click', (e) => {
 
         let outnode = document.getElementById(`${uuid}`)
         let outnodesq = document.getElementById(`${uuid}out`)
-        console.log(outnode.offsetLeft)
 
         main_canvas.appendChild(createLine(
             outnode.offsetLeft + (outnode.getBoundingClientRect().width/2)/zoom,
@@ -315,10 +334,14 @@ document.getElementById('input_node_add').addEventListener('click', (e) => {
 
         edge_start_node = outnode
         edge_start_node_sq = outnodesq
+
+        // set draggin UUID to outnode's uuid
+        selected_uuid = uuid
     })
+    // EDGE CREATION END
 
     // create matching node data
-    let input_node_dat = create_node_data(uuid, null, true, true, null, "in")
+    let input_node_dat = create_node_data(null, true, true, null, "in")
 
     // create a node value in local storage
     localStorage.setItem(uuid,JSON.stringify(input_node_dat))
@@ -331,11 +354,19 @@ document.getElementById('input_node_add').addEventListener('click', (e) => {
 document.getElementById('output_node_add').addEventListener('click', (e) => {
     if(localStorage.getItem(OUTPUT_UUID)) return
 
-    let uuid = OUTPUT_UUID // THIS WILL ALWAYS BE THE OUTPUT UUID
+    let uuid = '00'+OUTPUT_UUID // THIS WILL ALWAYS BE THE OUTPUT UUID
     let html = create_node(OUTPUT_NODE, uuid)
     main_canvas.appendChild(html)
     dragElement(document.getElementById(uuid)); // add element drag
     
+    document.getElementById(uuid).addEventListener('mouseover', (e) => {
+        hovering_uuid = uuid
+    })
+
+    document.getElementById(uuid).addEventListener('mouseout', (e) => {
+        hovering_uuid = null
+    })
+
     // add highlighting
     document.getElementById(`${uuid}header`).addEventListener('mousedown', (e) => {
         document.querySelectorAll('.node-drag').forEach((elm) => {
@@ -348,7 +379,7 @@ document.getElementById('output_node_add').addEventListener('click', (e) => {
         document.getElementById(`${uuid}header`).classList.add('selected-node')
     })
     // create matching node data
-    let input_node_dat = create_node_data(uuid, null, true, false, null, "ou")
+    let input_node_dat = create_node_data(null, true, false, null, "ou")
 
     // create a node value in local storage
     localStorage.setItem(uuid,JSON.stringify(input_node_dat))
@@ -359,7 +390,7 @@ document.getElementById('output_node_add').addEventListener('click', (e) => {
 
 // create dense node
 document.getElementById('dense_node_add').addEventListener('click', (e) => {
-    let uuid = uuidv4()
+    let uuid = '00'+uuidv4()
     let html = create_node(DENSE_NODE, uuid)
     main_canvas.appendChild(html)
     dragElement(document.getElementById(uuid)); // add element drag
@@ -375,8 +406,42 @@ document.getElementById('dense_node_add').addEventListener('click', (e) => {
         }
         document.getElementById(`${uuid}header`).classList.add('selected-node')
     })
+
+    // EDGE CREATION START
+    document.getElementById(uuid).addEventListener('mouseover', (e) => {
+        hovering_uuid = uuid
+    })
+
+
+    document.getElementById(uuid).addEventListener('mouseout', (e) => {
+        hovering_uuid = null
+    })
+
+    // add node out drag function
+    document.getElementById(`${uuid}out`).addEventListener('mousedown', (e) => {
+        document.body.style.cursor = 'grabbing'
+        document.getElementById(`${uuid}out`).style.cursor = 'grabbing'
+
+        let outnode = document.getElementById(`${uuid}`)
+        let outnodesq = document.getElementById(`${uuid}out`)
+
+        main_canvas.appendChild(createLine(
+            outnode.offsetLeft + (outnode.getBoundingClientRect().width/2)/zoom,
+            outnode.offsetTop + (outnode.getBoundingClientRect().height-outnodesq.getBoundingClientRect().height/2)/zoom,
+            outnode.offsetLeft + (outnode.getBoundingClientRect().width/2)/zoom,
+            outnode.offsetTop + (outnode.getBoundingClientRect().height-outnodesq.getBoundingClientRect().height/2)/zoom,
+            'temp_edge'));
+
+        edge_start_node = outnode
+        edge_start_node_sq = outnodesq
+
+        // set draggin UUID to outnode's uuid
+        selected_uuid = uuid
+    })
+    // EDGE CREATION END
+
     // create matching node data
-    let input_node_dat = create_node_data(uuid, null, false, false, null, "de")
+    let input_node_dat = create_node_data(null, false, false, null, "de")
 
     // create a node value in local storage
     localStorage.setItem(uuid,JSON.stringify(input_node_dat))
@@ -384,7 +449,7 @@ document.getElementById('dense_node_add').addEventListener('click', (e) => {
 
 // create activation node
 document.getElementById('act_node_add').addEventListener('click', (e) => {
-    let uuid = uuidv4()
+    let uuid = '00'+uuidv4()
     let html = create_node(ACT_NODE, uuid)
     main_canvas.appendChild(html)
     dragElement(document.getElementById(uuid)); // add element drag
@@ -400,8 +465,42 @@ document.getElementById('act_node_add').addEventListener('click', (e) => {
         }
         document.getElementById(`${uuid}header`).classList.add('selected-node')
     })
+
+    // EDGE CREATION START
+    document.getElementById(uuid).addEventListener('mouseover', (e) => {
+        hovering_uuid = uuid
+    })
+
+
+    document.getElementById(uuid).addEventListener('mouseout', (e) => {
+        hovering_uuid = null
+    })
+
+    // add node out drag function
+    document.getElementById(`${uuid}out`).addEventListener('mousedown', (e) => {
+        document.body.style.cursor = 'grabbing'
+        document.getElementById(`${uuid}out`).style.cursor = 'grabbing'
+
+        let outnode = document.getElementById(`${uuid}`)
+        let outnodesq = document.getElementById(`${uuid}out`)
+
+        main_canvas.appendChild(createLine(
+            outnode.offsetLeft + (outnode.getBoundingClientRect().width/2)/zoom,
+            outnode.offsetTop + (outnode.getBoundingClientRect().height-outnodesq.getBoundingClientRect().height/2)/zoom,
+            outnode.offsetLeft + (outnode.getBoundingClientRect().width/2)/zoom,
+            outnode.offsetTop + (outnode.getBoundingClientRect().height-outnodesq.getBoundingClientRect().height/2)/zoom,
+            'temp_edge'));
+
+        edge_start_node = outnode
+        edge_start_node_sq = outnodesq
+        
+        // set draggin UUID to outnode's uuid
+        selected_uuid = uuid
+    })
+    // EDGE CREATION END
+
     // create matching node data
-    let input_node_dat = create_node_data(uuid, null, false, false, null, "ac")
+    let input_node_dat = create_node_data(null, false, false, null, "ac")
 
     // create a node value in local storage
     localStorage.setItem(uuid,JSON.stringify(input_node_dat))
@@ -409,7 +508,7 @@ document.getElementById('act_node_add').addEventListener('click', (e) => {
 
 // create activation node
 document.getElementById('drop_node_add').addEventListener('click', (e) => {
-    let uuid = uuidv4()
+    let uuid = '00'+uuidv4()
     let html = create_node(DROP_NODE, uuid)
     main_canvas.appendChild(html)
     dragElement(document.getElementById(uuid)); // add element drag
@@ -425,8 +524,41 @@ document.getElementById('drop_node_add').addEventListener('click', (e) => {
         }
         document.getElementById(`${uuid}header`).classList.add('selected-node')
     })
+
+    // EDGE CREATION START
+    document.getElementById(uuid).addEventListener('mouseover', (e) => {
+        hovering_uuid = uuid
+    })
+
+    document.getElementById(uuid).addEventListener('mouseout', (e) => {
+        hovering_uuid = null
+    })
+
+    // add node out drag function
+    document.getElementById(`${uuid}out`).addEventListener('mousedown', (e) => {
+        document.body.style.cursor = 'grabbing'
+        document.getElementById(`${uuid}out`).style.cursor = 'grabbing'
+
+        let outnode = document.getElementById(`${uuid}`)
+        let outnodesq = document.getElementById(`${uuid}out`)
+
+        main_canvas.appendChild(createLine(
+            outnode.offsetLeft + (outnode.getBoundingClientRect().width/2)/zoom,
+            outnode.offsetTop + (outnode.getBoundingClientRect().height-outnodesq.getBoundingClientRect().height/2)/zoom,
+            outnode.offsetLeft + (outnode.getBoundingClientRect().width/2)/zoom,
+            outnode.offsetTop + (outnode.getBoundingClientRect().height-outnodesq.getBoundingClientRect().height/2)/zoom,
+            'temp_edge'));
+
+        edge_start_node = outnode
+        edge_start_node_sq = outnodesq
+
+        // set draggin UUID to outnode's uuid
+        selected_uuid = uuid
+    })
+    // EDGE CREATION END
+
     // create matching node data
-    let input_node_dat = create_node_data(uuid, null, false, false, null, "do")
+    let input_node_dat = create_node_data(null, false, false, null, "do")
 
     // create a node value in local storage
     localStorage.setItem(uuid,JSON.stringify(input_node_dat))
@@ -445,6 +577,8 @@ document.addEventListener('keydown', (evt) => {
         if(node_uuid === OUTPUT_UUID) document.getElementById('output_node_add').classList.remove('disable')
 
         main_canvas.removeChild(document.getElementById(node_uuid))
+
+        hovering_uuid = null // the node's own listener will stop functioning, so we'll have to reset it
     }
 })
 
@@ -455,7 +589,6 @@ const crosshair = document.querySelector('.crosshair')
 // update cursor edge position
 document.body.onmousemove = (e) => {
     // upadte edge offset based on crosshair position
-    
     if(document.getElementById('temp_edge') !== null){
         let relative_middle_x = edge_start_node.offsetLeft + (edge_start_node.getBoundingClientRect().width/2)/zoom
         let relative_bottom_y = edge_start_node.offsetTop + (edge_start_node.getBoundingClientRect().height - edge_start_node_sq.getBoundingClientRect().height/2)/zoom
@@ -474,13 +607,50 @@ document.body.onmousemove = (e) => {
     }
 }
 
-// delete cursor edge if cursor release detected
+// update all non-temporary edges
+// setTimeout((e) => {
+//     let edges = document.querySelectorAll('.edge')
+//     for(let i = 0; i < edges.length; i++){ // for loop cuz it's a bit faster
+//         let edge = edges[i]
+//         if(edge.id === perm_edge){
+//             // if matching, 
+//         }
+//     }
+// }, 3)
+
+// delete cursor edge and create connection if cursor release detected
 document.body.onmouseup = (e) => {
     // see if it exists
     if(document.getElementById('temp_edge') !== null){
         // if it exist remove all traces of it
         main_canvas.removeChild(document.getElementById('temp_edge'))
+        
+        // check if there are any nodes that are being hovered, and if it is the same as the starting node
+        if(hovering_uuid !== selected_uuid){
+            // if not, proceed with creating a visual line
+            let outnode = document.getElementById(`${selected_uuid}`)
+            let outnodesq = document.getElementById(`${selected_uuid}out`)
+
+            let innode = document.getElementById(`${hovering_uuid}`)
+
+            main_canvas.appendChild(createLine(
+                outnode.offsetLeft + (outnode.getBoundingClientRect().width/2)/zoom,
+                outnode.offsetTop + (outnode.getBoundingClientRect().height-outnodesq.getBoundingClientRect().height/2)/zoom,
+                innode.offsetLeft + (innode.getBoundingClientRect().width/2)/zoom,
+                innode.offsetTop + 5/zoom,
+                'perm_edge'));
+
+            // add edge entry to local storage
+            let edge_uuid = '01'+uuidv4()
+            let edge_data = create_edge_data(selected_uuid, hovering_uuid)
+            localStorage.setItem(edge_uuid,JSON.stringify(edge_data))
+
+            // TODO: manipulate the internal data structure too
+        }
     }
+
+    // clear selected node
+    selected_uuid = null
 }
 
 //-----------------------------
