@@ -376,3 +376,7 @@ input[type=number] {
     padding-right:clamp(0.3rem, min(1.5vw, 1.5vh), 1.5rem); */
     text-decoration: none;
 }
+
+#temp_edge{
+    opacity:0.5
+}

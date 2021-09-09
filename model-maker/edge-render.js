@@ -39,11 +39,7 @@ const OUTPUT_UUID = "dde3a704-50f9-4b74-a641-57720cbb5c0e"
 let hovering_uuid = null
 
 const INPUT_NODE = [
-    { // node in triangle
-        "<>" : "div",
-        "class" : "node-in",
-        "id" : "${id_tag}in",
-    }, {
+    {
         "<>" : "div",
         "class" : "node-drag",
         "id" : "${id_tag}header",
@@ -113,10 +109,6 @@ const OUTPUT_NODE = [
                 "style" : "cursor:move",
                 "html" : "Training Output"
             }]
-    }, { // node out
-        "<>" : "div",
-        "class" : "node-out",
-        "id" : "${id_tag}out"
     }
 ]
 
@@ -460,6 +452,7 @@ document.addEventListener('keydown', (evt) => {
 
 const crosshair = document.querySelector('.crosshair')
 
+// update cursor edge position
 document.body.onmousemove = (e) => {
     // upadte edge offset based on crosshair position
     
@@ -478,6 +471,15 @@ document.body.onmousemove = (e) => {
             relative_middle_x - (absolute_middle_x - e.x)/zoom,
             relative_bottom_y - (absolute_bottom_y - e.y)/zoom,
             'temp_edge'));   
+    }
+}
+
+// delete cursor edge if cursor release detected
+document.body.onmouseup = (e) => {
+    // see if it exists
+    if(document.getElementById('temp_edge') !== null){
+        // if it exist remove all traces of it
+        main_canvas.removeChild(document.getElementById('temp_edge'))
     }
 }
 
