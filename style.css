@@ -184,6 +184,10 @@ p.section-text{
     font-size: clamp(0.15rem, min(1.7vh, 0.6vw), 2.5rem);
 }
 
+hr{
+    opacity: 0.4;
+}
+
 .hr{
     position: absolute;
     width:100vw;
@@ -223,7 +227,8 @@ p.section-text{
     border-radius: 15px;
     padding:10px;
     box-shadow: -5px 5px 20px -10px black, 0px 0px 20px -10px black;
-    border: 1px solid transparent;
+    border: 1px solid;
+    border-color: #424242;
 }
 
 .selected-node{
@@ -236,6 +241,7 @@ p.section-text{
     width:8px;
     height:8px;
     margin-top:5px;
+    border-radius: 1.5px
 }
 
 .node-in{
@@ -264,6 +270,23 @@ p.section-text{
     z-index: 2;
     font-family: 'Montserrat';
     white-space: nowrap;
+}
+
+/* node menu container */
+
+.node-menu-container{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+    height: 100%;
+    width:100%;
+    padding-top: 15%
+}
+
+#default-node-menu{
+    justify-content: center;
+    padding: 0;
 }
 
 /* slider */
