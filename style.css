@@ -70,7 +70,7 @@ button, .buttonlike{
 p{
     cursor: default;
     font-weight: 400;
-    font-size: clamp(0.05rem, min(1.7vh, 1.7vw), 1rem);
+    font-size: clamp(0.05rem, min(1.7vh, 1vw), 1rem);
     margin:0;
     z-index: 2;
 }
@@ -78,7 +78,7 @@ p{
 h1{
     cursor: default;
     font-weight: 300;
-    font-size: clamp(0.5rem, min(7vh, 7vw), 7rem);
+    font-size: clamp(0.5rem, min(7vh, 5vw), 7rem);
     letter-spacing: 5px;
     margin:0;
     z-index: 2;
@@ -355,7 +355,7 @@ hr{
 
 .slider-parent-container p{
     font-weight: 500;
-    font-size: clamp(0.1rem, min(1.5vh, 1.5vw), 1.5rem);
+    font-size: clamp(0.1rem, min(1.5vh, 1vw), 1.5rem);
     margin-top: 0.5vh
 }
 

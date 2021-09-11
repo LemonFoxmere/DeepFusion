@@ -333,7 +333,7 @@ function reset_editor_menu(){ // TODO: IMPLEMENT THIS SHIT PLEASE MATE
     node_menu.appendChild(htmlObject)
 }
 
-function create_node(uuid, template, node_type){
+function create_node(uuid, template, node_type, node_template){
     // check node type validness
     if(recognized_node_code.indexOf(node_type) === -1) throw `invalid node code "${node_type}"`
 
@@ -349,6 +349,9 @@ function create_node(uuid, template, node_type){
         })
 
         document.getElementById(`${uuid}header`).classList.add('selected-node')
+
+        // set the menu
+        if(node_template !== null) set_editor_menu(node_template)
     })
 
     // EDGE CREATION START
@@ -399,7 +402,7 @@ function create_node(uuid, template, node_type){
 document.getElementById('input_node_add').addEventListener('click', (e) => {
     if(localStorage.getItem(INPUT_UUID)) return // check if it already exists
     
-    create_node(INPUT_UUID, INPUT_NODE, "in")
+    create_node(INPUT_UUID, INPUT_NODE, "in", INPUT_NODE_MENU)
 
     // disable the input button
     document.getElementById('input_node_add').classList.add('disable')
