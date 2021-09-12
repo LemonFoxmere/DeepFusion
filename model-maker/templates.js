@@ -6,9 +6,9 @@ function create_io_data(name, data){
     }    
 }
 
-// store empty input and output file data
-localStorage.setItem(INPUT_DAT_UUID, JSON.stringify(create_io_data("No Input Files", null)))
-localStorage.setItem(OUTPUT_DAT_UUID, JSON.stringify(create_io_data("No Output Files", null)))
+// // store empty input and output file data
+// localStorage.setItem(INPUT_DAT_UUID, JSON.stringify(create_io_data("No Input Files", null)))
+// localStorage.setItem(OUTPUT_DAT_UUID, JSON.stringify(create_io_data("No Output Files", null)))
 
 function create_dense_data(neuron_ct){
     return {

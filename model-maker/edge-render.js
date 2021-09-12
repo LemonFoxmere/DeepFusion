@@ -1,5 +1,19 @@
+// constant UUID init
+const INPUT_UUID = "006e9328d7-7b71-4af8-8b70-1b4c8cd2a708"
+const INPUT_DAT_UUID = "026e9328d7-7b71-4af8-8b70-1b4c8cd2a708"
+const OUTPUT_UUID = "00dde3a704-50f9-4b74-a641-57720cbb5c0e"
+const OUTPUT_DAT_UUID = "02dde3a704-50f9-4b74-a641-57720cbb5c0e"
+
+// store previous session's input and output
+let prev_session_input = localStorage.getItem(INPUT_DAT_UUID)
+let prev_session_output = localStorage.getItem(OUTPUT_DAT_UUID)
+
 // clear local storage
 localStorage.clear()
+
+// restore previous session's IO storage
+localStorage.setItem(INPUT_DAT_UUID, prev_session_input)
+localStorage.setItem(OUTPUT_DAT_UUID, prev_session_output)
 
 // warn user of reload
 window.onbeforeunload = function() {
@@ -58,12 +72,6 @@ so = softmax
 ta = tanh
 el = elu
 */
-
-const INPUT_UUID = "006e9328d7-7b71-4af8-8b70-1b4c8cd2a708"
-const INPUT_DAT_UUID = "026e9328d7-7b71-4af8-8b70-1b4c8cd2a708"
-const OUTPUT_UUID = "00dde3a704-50f9-4b74-a641-57720cbb5c0e"
-const OUTPUT_DAT_UUID = "02dde3a704-50f9-4b74-a641-57720cbb5c0e"
-
 
 let hovering_uuid = null
 let selected_uuid = null
@@ -387,8 +395,8 @@ document.body.onmousemove = (e) => {
 }
 
 // update all non-temporary edges
-setInterval(() => {
-    let edges = document.querySelectorAll('.edge')
+function update_non_temp_edges(){
+let edges = document.querySelectorAll('.edge')
 
     for(let i = 0; i < edges.length; i++){ // for loop cuz it's a bit faster
         let edge = edges[i]
@@ -409,7 +417,7 @@ setInterval(() => {
                 edge_uuid));
         }
     }
-}, 10)
+}
 
 // delete cursor edge and create connection if cursor release/drop detected
 document.body.onmouseup = (e) => {
@@ -521,6 +529,9 @@ function dragElement(elmnt) {
         // set the element's new position:
         elmnt.style.top = (elmnt.offsetTop - pos2/zoom) + "px";
         elmnt.style.left = (elmnt.offsetLeft - pos1/zoom) + "px";
+
+        // update the node's edges too
+        update_non_temp_edges()
     }
 
     function closeDragElement() {

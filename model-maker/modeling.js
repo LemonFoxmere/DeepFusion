@@ -116,9 +116,19 @@ function check_network(){
             dflog(errormsg, "Check failed. Reason: Network must start with non-activation layer")
             return 0
         }
+
+        // update last neuron count
         if(JSON.parse(localStorage.getItem(current_uuid)).type === 'de'){
             last_neuron_ct = JSON.parse(localStorage.getItem(JSON.parse(localStorage.getItem(current_uuid)).data)).neuron_ct
         }
+
+        // check for repeating activations
+        if(JSON.parse(localStorage.getItem(current_uuid)).type === 'ac' && 
+                JSON.parse(localStorage.getItem(JSON.parse(localStorage.getItem(current_uuid)).from)).type === 'ac'){
+                    dflog(errormsg, "Check failed. Reason: Cannot have two/more activations in a row")
+                    return 0
+        }
+
         if(next_uuid === null){
             dflog(errormsg, "Check failed. Reason: Broken network chain")
             return 0
@@ -213,6 +223,11 @@ function create_model(){
                     activation: get_activation(current_uuid)
                 }));
             }
+        }
+
+        // if current type of dropout, then ignore it and move on
+        if(current_node_data.type === 'do'){
+            continue
         }
         
         current_uuid = next_uuid
