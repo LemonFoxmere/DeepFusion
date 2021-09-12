@@ -5,15 +5,11 @@ const OUTPUT_UUID = "00dde3a704-50f9-4b74-a641-57720cbb5c0e"
 const OUTPUT_DAT_UUID = "02dde3a704-50f9-4b74-a641-57720cbb5c0e"
 
 // store previous session's input and output
-let prev_session_input = localStorage.getItem(INPUT_DAT_UUID)
-let prev_session_output = localStorage.getItem(OUTPUT_DAT_UUID)
+// let prev_session_input = localStorage.getItem(INPUT_DAT_UUID)
+// let prev_session_output = localStorage.getItem(OUTPUT_DAT_UUID)
 
 // clear local storage
 localStorage.clear()
-
-// restore previous session's IO storage
-localStorage.setItem(INPUT_DAT_UUID, prev_session_input)
-localStorage.setItem(OUTPUT_DAT_UUID, prev_session_output)
 
 // warn user of reload
 window.onbeforeunload = function() {
@@ -47,6 +43,8 @@ const activation_name_std = {
     ta : "Tanh",
     el : "Elu", 
 }
+
+
 
 /*
 node type standard
