@@ -69,6 +69,21 @@ const errormsg = [
     }
 ]
 
+const supportmsg = [
+    { // node in triangle
+        "<>" : "span",
+        "text" : "["
+    },{ // node in triangle
+        "<>" : "span",
+        "style" : "color: #e60ef9; margin:0",
+        "text" : "Fusion"
+    },{ // node in triangle
+        "<>" : "span",
+        "style" : "margin:0; line-height:0",
+        "text" : "]: ${msg}"
+    }
+]
+
 let terminal = document.getElementById('dfterm')
 
 function dflog(template, msg){
@@ -358,6 +373,12 @@ document.getElementById('train-net').addEventListener('click', (evt) => {
     dflog(successmsg, "Network compiled without error. Starting Training process:")
     train(model, epoch, b_size, X, y, document.getElementById('test-part-slider').value / 100).then(() => dflog(successmsg, "Model Trained Successfully")) // start async function of training network
 })
+
+document.getElementById('export-net').addEventListener('click', (evt) => {
+    dflog(supportmsg, "This feature is currently in development. If you would like you to you can support the development on my GitHub!")
+    dfnl()
+})
+
 
 // training model for EPOCH amount of times
 async function train(model, epoch, b_size, X, y, valSplit) {
