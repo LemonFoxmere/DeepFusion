@@ -2,13 +2,16 @@
 localStorage.clear()
 
 // warn user of reload
-// window.onbeforeunload = function() {
-//     return "Data will be lost if you leave the page, are you sure?";
-// };
+window.onbeforeunload = function() {
+    return "Data will be lost if you leave the page, are you sure?";
+};
 
 document.body.addEventListener('mouseup', (e) => {
     document.body.style.cursor = 'default'
     document.querySelectorAll('.node-out').forEach((e) => {
+        e.style.cursor = 'grab'
+    })
+    document.querySelectorAll('.node-in').forEach((e) => {
         e.style.cursor = 'grab'
     })
 })
@@ -19,28 +22,17 @@ let node_menu = document.getElementById('node-editor')
 let edge_start_node = null
 let edge_start_node_sq = null
 
-// define node jsons
-function create_node_data(from, dest, is_edge, is_start, data, type){
-    return {
-        "from" : from,
-        "dest" : dest,
-        "is_edge" : is_edge,
-        "is_start" : is_start,
-        "connected" : false,
-        "data" : data,
-        "type" : type,
-        "edge" : null
-    }
-}
-
-function create_edge_data(input, dest){
-    return {
-        "input" : input,
-        "dest" : dest
-    }
-}
-
 const recognized_node_code = ["in", "ou", "de", "ac", "do"]
+
+const activation_name_std = {
+    li : "Linear",
+    si : "Sigmoid",
+    re : "ReLU",
+    se : "Selu",
+    so : "Softmax",
+    ta : "Tanh",
+    el : "Elu", 
+}
 
 /*
 node type standard
@@ -53,210 +45,28 @@ do = dropout
 element type standard
 00 = node
 01 = edge
-02 = some stuff
+02 = data file
 ...
 FF = ?
+
+activation type standard
+li = linear
+si = sigmoid
+re = relu
+se = selu
+so = softmax
+ta = tanh
+el = elu
 */
 
 const INPUT_UUID = "006e9328d7-7b71-4af8-8b70-1b4c8cd2a708"
+const INPUT_DAT_UUID = "026e9328d7-7b71-4af8-8b70-1b4c8cd2a708"
 const OUTPUT_UUID = "00dde3a704-50f9-4b74-a641-57720cbb5c0e"
+const OUTPUT_DAT_UUID = "02dde3a704-50f9-4b74-a641-57720cbb5c0e"
+
 
 let hovering_uuid = null
 let selected_uuid = null
-
-const DEFAULT_NODE_MENU = [{
-    "<>" : "p",
-    "html" : "Click on a node to edit it"
-}]
-
-const INPUT_NODE = [
-    {
-        "<>" : "div",
-        "class" : "node-drag",
-        "id" : "${id_tag}header",
-        "html": [{ // display node title
-                "<>" : "h3",
-                "class" : "unselectable node-title",
-                "style" : "cursor:move",
-                "text" : "Input"
-            }, { // horizontal line
-                "<>" : "hr"
-            }, { // status
-                "<>" : "p",
-                "class" : "unselectable node-text",
-                "style" : "cursor:move",
-                "html" : "No File Added"
-            }, { // horizontal line
-                "<>" : "hr"
-            }, { // display node display
-                "<>" : "p",
-                "class" : "unselectable node-text",
-                "style" : "cursor:move",
-                "html" : "Click To Add/Modify"
-            }, { // more display 
-                "<>" : "p",
-                "class" : "unselectable node-text",
-                "style" : "cursor:move",
-                "html" : "Training Input"
-            }]
-    }, { // node out
-        "<>" : "div",
-        "class" : "node-out",
-        "id" : "${id_tag}out"
-    }
-]
-
-const INPUT_NODE_MENU = [{
-    "html" : "I am Gay"
-}]
-
-const OUTPUT_NODE = [
-    { // node in triangle
-        "<>" : "div",
-        "class" : "node-in",
-        "id" : "${id_tag}in"
-    }, {
-        "<>" : "div",
-        "class" : "node-drag",
-        "id" : "${id_tag}header",
-        "html": [{ // display node title
-                "<>" : "h3",
-                "class" : "unselectable node-title",
-                "style" : "cursor:move",
-                "text" : "Output"
-            }, { // horizontal line
-                "<>" : "hr"
-            }, { // status
-                "<>" : "p",
-                "class" : "unselectable node-text",
-                "style" : "cursor:move",
-                "html" : " No File Added"
-            }, { // horizontal line
-                "<>" : "hr"
-            }, { // display node display
-                "<>" : "p",
-                "class" : "unselectable node-text",
-                "style" : "cursor:move",
-                "html" : "Click To Add/Modify"
-            }, { // more display 
-                "<>" : "p",
-                "class" : "unselectable node-text",
-                "style" : "cursor:move",
-                "html" : "Training Output"
-            }]
-    }
-]
-
-const DENSE_NODE = [
-    { // node in triangle
-        "<>" : "div",
-        "class" : "node-in",
-        "id" : "${id_tag}in"
-    }, {
-        "<>" : "div",
-        "class" : "node-drag",
-        "id" : "${id_tag}header",
-        "html": [{ // display node title
-                "<>" : "h3",
-                "class" : "unselectable node-title",
-                "style" : "cursor:move",
-                "text" : "Dense"
-            }, { // horizontal line
-                "<>" : "hr"
-            }, { // display node display
-                "<>" : "p",
-                "id" : "${id_tag}info",
-                "class" : "unselectable node-text",
-                "style" : "cursor:move",
-                "html" : "Neurons: 10"
-            }, { // horizontal line
-                "<>" : "hr"
-            }, { // status
-                "<>" : "p",
-                "class" : "unselectable node-text",
-                "style" : "cursor:move",
-                "html" : "Click To Modify"
-            }]
-    }, { // node out
-        "<>" : "div",
-        "class" : "node-out",
-        "id" : "${id_tag}out"
-    }
-]
-
-const ACT_NODE = [
-    { // node in triangle
-        "<>" : "div",
-        "class" : "node-in",
-        "id" : "${id_tag}in"
-    }, {
-        "<>" : "div",
-        "class" : "node-drag",
-        "id" : "${id_tag}header",
-        "html": [{ // display node title
-                "<>" : "h3",
-                "class" : "unselectable node-title",
-                "style" : "cursor:move",
-                "text" : "Activation"
-            }, { // horizontal line
-                "<>" : "hr"
-            }, { // display node display
-                "<>" : "p",
-                "id" : "${id_tag}info",
-                "class" : "unselectable node-text",
-                "style" : "cursor:move",
-                "html" : "Type: Linear"
-            }, { // horizontal line
-                "<>" : "hr"
-            }, { // status
-                "<>" : "p",
-                "class" : "unselectable node-text",
-                "style" : "cursor:move",
-                "html" : "Click To Modify"
-            }]
-    }, { // node out
-        "<>" : "div",
-        "class" : "node-out",
-        "id" : "${id_tag}out"
-    }
-]
-
-const DROP_NODE = [
-    { // node in triangle
-        "<>" : "div",
-        "class" : "node-in",
-        "id" : "${id_tag}in"
-    }, {
-        "<>" : "div",
-        "class" : "node-drag",
-        "id" : "${id_tag}header",
-        "html": [{ // display node title
-                "<>" : "h3",
-                "class" : "unselectable node-title",
-                "style" : "cursor:move",
-                "text" : "Dropout"
-            }, { // horizontal line
-                "<>" : "hr"
-            }, { // display node display
-                "<>" : "p",
-                "id" : "${id_tag}info",
-                "class" : "unselectable node-text",
-                "style" : "cursor:move",
-                "html" : "Prob: 0%"
-            }, { // horizontal line
-                "<>" : "hr"
-            }, { // status
-                "<>" : "p",
-                "class" : "unselectable node-text",
-                "style" : "cursor:move",
-                "html" : "Click To Modify"
-            }]
-    }, { // node out
-        "<>" : "div",
-        "class" : "node-out",
-        "id" : "${id_tag}out"
-    }
-]
 
 function createLineElement(x, y, length, angle, id, type) {
     var line = document.createElement("div");
@@ -304,22 +114,7 @@ function create_node_element(template, id){
     return htmlObject
 }
 
-function set_editor_menu(template){ // TODO: add custom data later
-    // create the menu html
-    let htmlObject = document.createElement('div');
-    htmlObject.classList.add('node-menu-container');
-    htmlObject.innerHTML = json2html.render([{}], template);
-
-    console.log(htmlObject.innerHTML)
-
-    // remove previous menu containers
-    node_menu.removeChild(document.querySelector('.node-menu-container'));
-
-    // add new html
-    node_menu.appendChild(htmlObject)
-}
-
-function reset_editor_menu(){ // TODO: IMPLEMENT THIS SHIT PLEASE MATE
+function reset_editor_menu(){
     // create the menu html
     let htmlObject = document.createElement('div');
     htmlObject.classList.add('node-menu-container');
@@ -333,7 +128,7 @@ function reset_editor_menu(){ // TODO: IMPLEMENT THIS SHIT PLEASE MATE
     node_menu.appendChild(htmlObject)
 }
 
-function create_node(uuid, template, node_type, node_template){
+function create_node(uuid, template, node_type, set_node_template=null, default_data){
     // check node type validness
     if(recognized_node_code.indexOf(node_type) === -1) throw `invalid node code "${node_type}"`
 
@@ -341,6 +136,13 @@ function create_node(uuid, template, node_type, node_template){
     let html = create_node_element(template, uuid)
     main_canvas.appendChild(html)
     dragElement(document.getElementById(uuid)); // add element drag
+
+    // add file name updating
+    if(node_type === "in"){
+        document.getElementById(`inputinfo`).innerHTML = `File: ${JSON.parse(localStorage.getItem(INPUT_DAT_UUID)).name}`
+    } if(node_type === "ou"){
+        document.getElementById(`outputinfo`).innerHTML = `File: ${JSON.parse(localStorage.getItem(OUTPUT_DAT_UUID)).name}`
+    }
 
     // add highlighting
     document.getElementById(`${uuid}header`).addEventListener('mousedown', (e) => {
@@ -351,7 +153,10 @@ function create_node(uuid, template, node_type, node_template){
         document.getElementById(`${uuid}header`).classList.add('selected-node')
 
         // set the menu
-        if(node_template !== null) set_editor_menu(node_template)
+        if(set_node_template !== null){
+            let data = JSON.parse(localStorage.getItem( JSON.parse(localStorage.getItem(uuid)).data )) // get the data
+            set_node_template(uuid, data)
+        }
     })
 
     // EDGE CREATION START
@@ -364,34 +169,86 @@ function create_node(uuid, template, node_type, node_template){
     })
 
     // add node out drag function
-    document.getElementById(`${uuid}out`).addEventListener('mousedown', (e) => {
-        document.body.style.cursor = 'grabbing'
-        document.getElementById(`${uuid}out`).style.cursor = 'grabbing'
+    if(node_type !== 'ou'){
+        document.getElementById(`${uuid}out`).addEventListener('mousedown', (e) => {
+            document.body.style.cursor = 'grabbing'
+            document.getElementById(`${uuid}out`).style.cursor = 'grabbing'
+    
+            let outnode = document.getElementById(`${uuid}`)
+            let outnodesq = document.getElementById(`${uuid}out`)
+    
+            main_canvas.appendChild(createLine(
+                outnode.offsetLeft + (outnode.getBoundingClientRect().width/2)/zoom,
+                outnode.offsetTop + (outnode.getBoundingClientRect().height-outnodesq.getBoundingClientRect().height/2)/zoom,
+                outnode.offsetLeft + (outnode.getBoundingClientRect().width/2)/zoom,
+                outnode.offsetTop + (outnode.getBoundingClientRect().height-outnodesq.getBoundingClientRect().height/2)/zoom,
+                'temp_edge'));
+    
+            edge_start_node = outnode
+            edge_start_node_sq = outnodesq
+    
+            // set draggin UUID to outnode's uuid
+            selected_uuid = uuid
+        })
+    }
 
-        let outnode = document.getElementById(`${uuid}`)
-        let outnodesq = document.getElementById(`${uuid}out`)
+    // add node deletion function
+    if(node_type !== 'in'){
+        document.getElementById(`${uuid}in`).addEventListener('mousedown', (e) => {
+            // check if there is a from node. Continue only if there is
+            if(JSON.parse(localStorage.getItem(uuid)).from === null) return
+    
+            document.body.style.cursor = 'grabbing' // set cursor
+            document.getElementById(`${uuid}in`).style.cursor = 'grabbing'
+    
+            let node_data = JSON.parse(localStorage.getItem(uuid))
+            let outnode = document.getElementById(`${node_data.from}`)
+            let outnodesq = document.getElementById(`${node_data.from}out`)
+    
+            main_canvas.appendChild(createLine(
+                outnode.offsetLeft + (outnode.getBoundingClientRect().width/2)/zoom,
+                outnode.offsetTop + (outnode.getBoundingClientRect().height-outnodesq.getBoundingClientRect().height/2)/zoom,
+                outnode.offsetLeft + (outnode.getBoundingClientRect().width/2)/zoom,
+                outnode.offsetTop + (outnode.getBoundingClientRect().height-outnodesq.getBoundingClientRect().height/2)/zoom,
+                'temp_edge'));
+    
+            edge_start_node = outnode
+            edge_start_node_sq = outnodesq
+    
+            // set draggin UUID to outnode's uuid
+            selected_uuid = node_data.from
+    
+            // delete front node's dest and edge
+            let from_node_data = JSON.parse(localStorage.getItem(node_data.from))
+            from_node_data.dest = null
+            // remove graphical line
+            remove_edge(from_node_data.edge)
+            from_node_data.edge = null
+            localStorage.setItem(node_data.from, JSON.stringify(from_node_data))
+            // delete this node's from
+            node_data.from = null
+            node_data.connected = false
+            // write it
+            localStorage.setItem(uuid, JSON.stringify(node_data))
+        })
+    }
 
-        main_canvas.appendChild(createLine(
-            outnode.offsetLeft + (outnode.getBoundingClientRect().width/2)/zoom,
-            outnode.offsetTop + (outnode.getBoundingClientRect().height-outnodesq.getBoundingClientRect().height/2)/zoom,
-            outnode.offsetLeft + (outnode.getBoundingClientRect().width/2)/zoom,
-            outnode.offsetTop + (outnode.getBoundingClientRect().height-outnodesq.getBoundingClientRect().height/2)/zoom,
-            'temp_edge'));
-
-        edge_start_node = outnode
-        edge_start_node_sq = outnodesq
-
-        // set draggin UUID to outnode's uuid
-        selected_uuid = uuid
-    })
     // EDGE CREATION END
 
+    // create data based on type (only if it is not an input or output)
+    
+    let data_uuid = '02'+uuidv4()
+    if(default_data !== null){
+        let data_string = JSON.stringify(default_data)
+        localStorage.setItem(data_uuid, default_data)
+    }
+
     // create matching node data
-    let input_node_dat = create_node_data(null, null, false, false, null, node_type)
+    let input_node_dat = create_node_data(null, null, false, false, data_uuid, node_type)
     if(node_type === "in"){
-        let input_node_dat = create_node_data(null, null, true, true, null, node_type)
+        input_node_dat = create_node_data(null, null, true, true, INPUT_DAT_UUID, node_type)
     } else if(node_type === "ou"){
-        let input_node_dat = create_node_data(null, null, true, false, null, node_type)
+        input_node_dat = create_node_data(null, null, true, false, OUTPUT_DAT_UUID, node_type)
     }
 
     // create a node value in local storage
@@ -401,47 +258,19 @@ function create_node(uuid, template, node_type, node_template){
 // create input node
 document.getElementById('input_node_add').addEventListener('click', (e) => {
     if(localStorage.getItem(INPUT_UUID)) return // check if it already exists
-    
-    create_node(INPUT_UUID, INPUT_NODE, "in", INPUT_NODE_MENU)
+
+    create_node(INPUT_UUID, INPUT_NODE, "in", set_input_menu, null)
 
     // disable the input button
     document.getElementById('input_node_add').classList.add('disable')
 })
 
-// create output node (SPECIAL ONE MUST BE CUSTOM CODED)
+// create output node
 document.getElementById('output_node_add').addEventListener('click', (e) => {
-    if(localStorage.getItem(OUTPUT_UUID)) return
-
-    let uuid = OUTPUT_UUID // THIS WILL ALWAYS BE THE OUTPUT UUID
-    let html = create_node_element(OUTPUT_NODE, uuid)
-    main_canvas.appendChild(html)
-    dragElement(document.getElementById(uuid)); // add element drag
+    if(localStorage.getItem(OUTPUT_UUID)) return // check if it already exists
     
-    document.getElementById(uuid).addEventListener('mouseover', (e) => {
-        hovering_uuid = uuid
-    })
+    create_node(OUTPUT_UUID, OUTPUT_NODE, "ou", set_output_menu, null)
 
-    document.getElementById(uuid).addEventListener('mouseout', (e) => {
-        hovering_uuid = null
-    })
-
-    // add highlighting
-    document.getElementById(`${uuid}header`).addEventListener('mousedown', (e) => {
-        document.querySelectorAll('.node-drag').forEach((elm) => {
-            elm.classList.remove('selected-node')
-        })
-        if(document.getElementById(`${uuid}header`).classList.contains('selected-node')){
-            document.getElementById(`${uuid}header`).classList.remove('selected-node')
-            return
-        }
-        document.getElementById(`${uuid}header`).classList.add('selected-node')
-    })
-    // create matching node data
-    let input_node_dat = create_node_data(null, null, true, false, null, "ou")
-
-    // create a node value in local storage
-    localStorage.setItem(uuid,JSON.stringify(input_node_dat))
-    
     // disable the input button
     document.getElementById('output_node_add').classList.add('disable')
 })
@@ -449,25 +278,28 @@ document.getElementById('output_node_add').addEventListener('click', (e) => {
 // create dense node
 document.getElementById('dense_node_add').addEventListener('click', (e) => {
     let uuid = '00'+uuidv4()
-    create_node(uuid, DENSE_NODE, "de")
+    create_node(uuid, DENSE_NODE, "de", set_dense_menu, JSON.stringify(create_dense_data(10)))
 })
 
 // create activation node
 document.getElementById('act_node_add').addEventListener('click', (e) => {
     let uuid = '00'+uuidv4()
-    create_node(uuid, ACT_NODE, "ac")
+    create_node(uuid, ACT_NODE, "ac", set_act_menu, JSON.stringify(create_act_data("li")))
+
 })
 
 // create activation node
 document.getElementById('drop_node_add').addEventListener('click', (e) => {
     let uuid = '00'+uuidv4()
-    create_node(uuid, DROP_NODE, "ac")
+    create_node(uuid, DROP_NODE, "do", set_drop_menu, JSON.stringify(create_drop_data(0)))
+
 })
 
 // listen for delete command
 document.addEventListener('keydown', (evt) => {
-    if(evt.keyCode === 46 || evt.keyCode === 8){
+    if(evt.keyCode === 46){
         delete_selected_node()
+        reset_editor_menu()
     }
 })
 
@@ -509,6 +341,11 @@ function delete_selected_node(){
 
     if(del_node_uuid === INPUT_UUID) document.getElementById('input_node_add').classList.remove('disable')
     if(del_node_uuid === OUTPUT_UUID) document.getElementById('output_node_add').classList.remove('disable')
+
+    // remove linked data
+    if(del_node_data.type !== "ou" && del_node_data.type !== "in"){
+        localStorage.removeItem(del_node_data.data)
+    }
 
     //remove node element from local storage
     localStorage.removeItem(del_node_uuid)
@@ -582,8 +419,8 @@ document.body.onmouseup = (e) => {
         main_canvas.removeChild(document.getElementById('temp_edge'))
         
         // check if there are any nodes that are being hovered
-        // and if it is the same as the starting node or input node
-        console.log(JSON.parse(localStorage.getItem(selected_uuid)).edge === null)
+        // // and if it is the same as the starting node or input node
+        // console.log(JSON.parse(localStorage.getItem(selected_uuid)).edge === null)
         if(hovering_uuid !== selected_uuid && hovering_uuid !== INPUT_UUID && hovering_uuid !== null &&
             JSON.parse(localStorage.getItem(selected_uuid)).edge === null &&
             !JSON.parse(localStorage.getItem(hovering_uuid)).connected){

@@ -19,7 +19,7 @@
 
     <!-- bottom menu -->
     <div class='menu-container' style='
-        width:calc(100vw - clamp(1rem, 15vw, 17rem) * 2); padding-bottom: 4.5vh; height:clamp(1rem, 10vh, 6rem); bottom:0; right:clamp(1rem, 15vw, 17rem);
+        width:calc(100vw - clamp(1rem, 15vw, 17rem) * 2); padding-bottom: 4.5vh; height:clamp(1rem, 15vh, 15rem); bottom:0; right:clamp(1rem, 15vw, 17rem);
         display:flex; align-items: center; justify-content: center; flex-direction: column;'>
             <section style='margin-top:1.2%'>
                 <h4 style='margin-left:2vw; margin-right:1vw'>Add Nodes:</h4>
@@ -43,7 +43,7 @@
                 </button>
                 <button class='absolute-btn node-selection' id='act_node_add'>
                     <p>
-                        Actiavtion
+                        Activation
                     </p>
                 </button>
                 <button class='absolute-btn node-selection' id='drop_node_add'>
@@ -55,7 +55,7 @@
     </div>
 
     <!-- right top menu -->
-    <div class='menu-container' style='width:clamp(1rem, 15vw, 17rem); height:60vh; top:0; right:0;
+    <div class='menu-container' style='width:clamp(1rem, 15vw, 17rem); height:70vh; top:0; right:0;
         display:flex; align-items: center; justify-content: center;' id='node-editor'>
         <div class='node-menu-container' id='default-node-menu'>
             <p>
@@ -65,37 +65,54 @@
     </div>
 
     <!-- right bottom menu -->
-    <div class='menu-container' style='width:clamp(1rem, 15vw, 17rem); height:40vh; bottom:0; right:0;
-        display:flex; align-items: center; justify-content: center;'>
-        TRAINING CONTROL
+    <div class='menu-container' style='width:clamp(1rem, 15vw, 17rem); height:30vh; bottom:0; right:0;
+        display:flex; align-items: center; justify-content: flex-start; flex-direction: column; padding-top: 2vh;'>
+        <h4>
+            Training Controls
+        </h4>
+        
+        <hr style='width:80%; margin: 1vh 0 1vh 0'>
+
+        <button class='absolute-btn' id='check-net'>
+            Check Network
+        </button>
+
+        <hr style='width:30%; margin: 1vh 0 1vh 0'>
+
+        <button class='absolute-btn' id='train-net'>
+            Train Network
+        </button>
+
+        <button class='absolute-btn' id='test-net'>
+            Test Network
+        </button>
     </div>
 
     <!-- left top menu -->
     <div class='
         menu-container' style='width:clamp(1rem, 15vw, 17rem); height:calc(100vh - clamp(1rem, 7vh, 4rem) - 50vh); top:clamp(1rem, 7vh, 4rem); left:0;
-        display:flex; align-items: center; justify-content: flex-start; padding-top:1vh; flex-direction: column;'>
-        <h3 class='unselectable section-text'>
-            Data Control
-        </h3>
+        display:flex; align-items: center; justify-content: center; padding:0vh 0.5vw 1vh 0.5vw; flex-direction: column;'>
+        <div class='terminal' id='dfterm'>
+            <span>Welcome to DeepFusion <span style='color:greenyellow'>0.1.0</span>. This is where you can see your training progress or any errors that might occur.</span>
+            <span>If you want to you can support this project on 
+                <a style='color:rgb(0, 153, 255); font-weight: 600;' href='https://github.com/LemonOrangeWasTaken/DeepFusion'>GitHub</a>
+                , or subscribe to my 
+                <a style='color:rgb(255, 68, 68); font-weight: 600;' href='https://www.youtube.com/channel/UCut2xeBl7HcPEPatqpEUoQw'>YouTube</a>.
+            </span>
+            <span>===</span>
+        </div>
+    </div>
+    <!-- left bottom menu -->
+    <div class='
+        menu-container' style='width:clamp(1rem, 15vw, 17rem); height:calc(100vh - clamp(1rem, 7vh, 4rem) - calc(100vh - clamp(1rem, 7vh, 4rem) - 50vh)); bottom:0; left:0;
+        display:flex; align-items: center; justify-content: flex-start; padding-top:2vh; flex-direction: column;'>
+        <h4>
+            Training Parameters
+        </h4>
 
-        <hr style='width: 80%; opacity: 0.4; color:white'>
+        <hr style='width:80%; margin: 1vh 0 1vh 0'>
 
-
-        <button class='absolute-btn' id='input-upload'>
-            <p class='unselectable section-text'>
-                Upload Training Input
-            </p>
-        </button>
-        
-        <button class='absolute-btn' id='label-upload' >
-            <p class='unselectable section-text'>
-                Upload Training Label
-            </p>
-        </button>
-
-        <hr style='width: 30%; opacity: 0.3; color:white'>
-
-        <section class='slider-parent-container'>
+        <section class='input-parent-container'>
             <p class='unselectable section-text'>Validation Part (%):</p>
             <section class='slider-container'>
                 <input type="range" min="0" max="10" value="5" class="slider" id="val-part-slider">
@@ -103,19 +120,31 @@
             </section>
         </section>
 
-        <section class='slider-parent-container'>
+        <section class='input-parent-container'>
             <p class='unselectable section-text'>Testing Part (%):</p>
             <section class='slider-container'>
                 <input type="range" min="0" max="5" value="2" class="slider" id="test-part-slider">
                 <input type="number" class="number-box" id="test-part"> </input>
             </section>
         </section>
-    </div>
-    <!-- left bottom menu -->
-    <div class='
-        menu-container' style='width:clamp(1rem, 15vw, 17rem); height:calc(100vh - clamp(1rem, 7vh, 4rem) - calc(100vh - clamp(1rem, 7vh, 4rem) - 50vh)); bottom:0; left:0;
-        display:flex; align-items: center; justify-content: center;'>
-        TRAINING PARAM
+
+        <hr style='width:30%; margin: 1vh 0 1vh 0'>
+
+        <section class='input-parent-container'>
+            <p class='unselectable section-text'>Batch Size:</p>
+            <section class='slider-container'>
+                <input type="range" min="1" max="100" value="25" class="slider" id="batch-part-slider">
+                <input type="number" class="number-box" id="batch-part"> </input>
+            </section>
+        </section>
+
+        <section class='input-parent-container'>
+            <p class='unselectable section-text'>Epoch Size:</p>
+            <section class='slider-container'>
+                <input type="range" min="1" max="100" value="5" class="slider" id="epoch-part-slider">
+                <input type="number" class="number-box" id="epoch-part"> </input>
+            </section>
+        </section>        
     </div>
 
     <!-- help btn -->
@@ -128,7 +157,7 @@
     <!-- return -->
     <a href='../index.html'>
         <div class='menu-container' style='width:clamp(1rem, 15vw, 17rem); height:clamp(1rem, 7vh, 4rem); top:0; left:0; display:flex; align-items: center; justify-content: center'>
-            <h2 class='unselectable' style='font-size: clamp(0.1rem, min(3vh, 1.3vw), 4rem); letter-spacing:3px; color:gray; cursor:pointer'>
+            <h2 class='unselectable logo-text' style='font-size: clamp(0.1rem, min(3vh, 1.3vw), 4rem); letter-spacing:3px; color:gray; cursor:pointer'>
                 DeepFusion
             </h2>
         </div>
@@ -207,27 +236,6 @@
                 </svg>
             </div>
             
-            <!-- <div class='node' id='00x1'>
-                <div class='node-in'></div>
-                <div class='node-drag' id='00x1header'>
-                    <h3 class='unselectable node-title' style='cursor:move'>
-                        Conv1D
-                    </h3>
-                    <hr>
-                    <p class='unselectable node-text' style='cursor:move'>
-                        kernel <3>
-                    </p>
-                    <p class='unselectable node-text' style='cursor:move'>
-                        stride <1>
-                    </p>
-                    <p class='unselectable node-text' style='cursor:move'>
-                        output <64x32>
-                    </p>
-                    <hr>
-                </div>
-                <div class='node-out'></div>
-            </div> -->
-        
             <!-- for canvas tracking -->
             <div class='crosshair'></div>
         </section>
@@ -235,13 +243,15 @@
 
     <p class='copyrightmsg unselectable' style='position: absolute; bottom:0.5%; color:rgba(255, 255, 255, 0.178); z-index:100'>
         Copyright &copy; 2021 LemonOrange | To learn more, visit this project's
-        <a style='text-decoration:none; color:rgba(255, 255, 255, 0.363); font-weight: 600;' href='google.com'>GitHub</a>
+        <a style='text-decoration:none; color:rgba(255, 255, 255, 0.363); font-weight: 600;' href='https://github.com/LemonOrangeWasTaken/DeepFusion'>GitHub</a>
     </p>
 
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.0.0/dist/tf.min.js"></script>
     <script src="../anime.min.js"></script>
     <script src="../json2html.min.js"></script>
     <script src="events.js"></script>
     <script src="edge-render.js"></script>
     <script src="modeling.js"></script>
+    <script src="templates.js"></script>
 </body>
 </html>

@@ -1,3 +1,9 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 body{
     background-color: #1d2021;
     overflow: hidden;
@@ -172,6 +178,28 @@ button p{
     background-color: #161819;
 }
 
+.terminal{
+    width:100%;
+    height:100%;
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-end;
+    background-color: #0f1011;
+    border: 1px solid #333737;
+    padding:1vh 0.5vw 0.5vh 0.5vw;
+    border-radius:1.4vh;
+    color:#b3b3b3;
+    word-wrap: break-word;
+}
+
+.terminal span{
+    margin-top:2vh;
+    line-height:2vh;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: clamp(0.075rem, min(1.7vh, 1.7vw), 0.8rem);
+    cursor:text;
+}
+
 h3.section-text{
     font-size: clamp(0.3rem, min(2.5vh, 1.5vw), 3rem);
 }
@@ -252,6 +280,7 @@ hr{
     border-right: 5px solid transparent;
     border-top: 8px solid rgb(19, 224, 0);
     margin-bottom:5px;
+    cursor: grab;
 }
 
 .node-title{
@@ -281,7 +310,7 @@ hr{
     flex-direction: column;
     height: 100%;
     width:100%;
-    padding-top: 15%
+    padding-top: 5%
 }
 
 #default-node-menu{
@@ -349,11 +378,11 @@ hr{
     margin:0.3vh
 }
 
-.slider-parent-container{
+.input-parent-container{
     width:80%;
 }
 
-.slider-parent-container p{
+.input-parent-container p{
     font-weight: 500;
     font-size: clamp(0.1rem, min(1.5vh, 1vw), 1.5rem);
     margin-top: 0.5vh
@@ -362,11 +391,10 @@ hr{
 /* number input */
 .number-box{
     width: 20%;
-    height:1.75vh;
-    border: 1px solid #040707;
-    border-radius: 0.4vh;
+    border: 1px solid #b8b8b8;
+    border-radius: 0.6vh;
     text-align: center;
-    background-color: #141616;
+    background-color: transparent;
     color:white;
     outline: none;
     font-size: clamp(0.15rem, min(1.5vh, 1.5vw), 1.5rem);
@@ -402,4 +430,20 @@ input[type=number] {
 
 #temp_edge{
     opacity:0.5
+}
+
+
+/* ===== all selector css ==== */
+
+ /* The container must be positioned relative: */
+
+select {
+    background-color: transparent;
+    border: 1px solid #b3b3b3;
+    color:white;
+    border-radius: 1vh;
+    padding: 0.5vh 0.5vw 0.5vh 0.5vw;
+    font-size: clamp(0.2rem, min(1.3vh, 1.3vw), 1.5rem);
+    margin:0;
+    cursor: pointer;
 }

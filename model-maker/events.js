@@ -40,6 +40,7 @@ function dragCanvas(canvas, elmnts) {
         if(x) return
         document.querySelectorAll('.node-drag').forEach((elm2) => {
             elm2.classList.remove('selected-node')
+            reset_editor_menu()
         }) // remove all node selection
 
         document.querySelectorAll('.menu-container').forEach(elmnt => {
@@ -169,7 +170,8 @@ function update_zoom_text(){
     document.getElementById('zoom-scale').innerHTML = Math.floor(zoom*100) + "%"
 }
 
-document.querySelectorAll(".slider").forEach((e) => {
+// field input related
+document.querySelectorAll(".slider").forEach((e) => { // add all slider events
     e.onmousedown = (evt) => {
         e.onmousemove = (evt2) => {
             if(document.getElementById(e.id.substring(0,e.id.length-7))){
@@ -182,8 +184,7 @@ document.querySelectorAll(".slider").forEach((e) => {
     }
 })
 
-// field input related
-document.querySelectorAll(".number-box").forEach((e) => {
+document.querySelectorAll(".number-box").forEach((e) => { // add all input field events
     e.addEventListener("keypress", function (evt) {
         if (evt.which < 48 || evt.which > 57){
             evt.preventDefault();
@@ -212,3 +213,118 @@ document.querySelectorAll(".number-box").forEach((e) => {
         e.value = document.getElementById(e.id + '-slider').value;
     }
 })
+
+function add_dense_menu_events(uuid){
+    { // ADDING INPUT FIELD EVENTS
+        // add input field listender
+        let e = document.getElementById(`${uuid}data`)
+        if(e === null) return
+        // console.log(e.id)
+        e.addEventListener("keypress", function (evt) {
+            if (evt.which < 48 || evt.which > 57){
+                evt.preventDefault();
+            }
+    
+            if (evt.which === 13){
+                e.blur()
+            }
+        }); // prevent unorthodox number entering
+        
+        e.addEventListener("focusout", (evt) => {
+            if(document.getElementById(e.id + '-slider')){
+                let slider = document.getElementById(e.id + '-slider')
+                let max_val = slider.max
+                let min_val = slider.min
+                if (Number(e.value) > max_val){
+                    e.value = max_val;
+                } else if (Number(e.value) < min_val){
+                    e.value = min_val;
+                }
+                slider.value = e.value
+                update_dense_data(e.id.substring(0,e.id.length-4), e.value)
+            }
+        })
+    
+        if(document.getElementById(e.id + '-slider')){
+            e.value = document.getElementById(e.id + '-slider').value;
+        }
+    } { // ADDING SLIDER EVENTS
+        let e = document.getElementById(`${uuid}data-slider`)
+        e.onmousedown = (evt) => {
+            e.onmousemove = (evt2) => {
+                let slider_value = e.value
+                if(document.getElementById(e.id.substring(0,e.id.length-7))){
+                    document.getElementById(e.id.substring(0,e.id.length-7)).value = slider_value;
+                }
+                update_dense_data(e.id.substring(0,e.id.length-11), slider_value)
+            }
+        }
+        e.onmouseup = (evt) => {
+            e.onmousemove = null
+        }
+    }
+}
+
+function add_activation_menu_events(uuid){
+    // ADDING DROPDOWN FIELD EVENTS
+    // add input field listender
+    let e = document.getElementById(`${uuid}data`)
+    if(e === null) return
+    // console.log(e.id)
+
+    e.onchange = (evt) => {
+        update_act_data(e.id.substring(0,e.id.length-4), e.value) // update values
+    }
+}
+
+function add_input_menu_events(){
+    // add input field listender
+    let e = document.getElementById("input-upload")
+    if(e === null) return
+        
+    document.querySelector('#input-file').onchange = () => {
+        // read csv file from the upload button
+        let file = document.querySelector('#input-file').files[0], read = new FileReader()
+        let file_name = file.name
+        read.readAsBinaryString(file); // convert to String
+        read.onloadend = function(){
+            update_input_data(file_name, CSVToJSON(read.result)) // update values
+        }
+    }
+
+    document.getElementById('input-upload').addEventListener('click', (evt) => {
+        document.getElementById('input-file').click()
+    })
+}
+
+function add_output_menu_events(){
+    // add output field listender
+    let e = document.getElementById("output-upload")
+    if(e === null) return
+        
+    document.querySelector('#output-file').onchange = () => {
+        // read csv file from the upload button
+        let file = document.querySelector('#output-file').files[0], read = new FileReader()
+        let file_name = file.name
+        read.readAsBinaryString(file); // convert to String
+        read.onloadend = function(){
+            update_output_data(file_name, CSVToJSON(read.result)) // update values
+        }
+    }
+
+    document.getElementById('output-upload').addEventListener('click', (evt) => {
+        document.getElementById('output-file').click()
+    })
+}
+
+// CSV to json
+function CSVToJSON(csvData) {
+    let jsonFormat = "{\n"
+    let i = 0
+    csvData.split('\n').forEach(s => {
+        jsonFormat += "\t\"" + i + "\":[" + s + "]" + (csvData.split('\n').length-1 != i ? ",\n" : "\n")
+        i += 1
+    });
+    jsonFormat += "}"
+    return jsonFormat 
+}
