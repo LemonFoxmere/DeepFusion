@@ -255,13 +255,13 @@ hr{
     border-radius: 15px;
     padding:10px;
     box-shadow: -5px 5px 20px -10px black, 0px 0px 20px -10px black;
-    border: 2px solid;
+    border: 1.5px solid;
     border-color: #424242;
 }
 
 .selected-node{
     border-color: rgb(177, 0, 0);
-    border-width: 2px;
+    border-width: 1.2px;
 }
 
 .node-out{

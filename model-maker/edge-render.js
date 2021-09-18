@@ -44,8 +44,6 @@ const activation_name_std = {
     el : "Elu", 
 }
 
-
-
 /*
 node type standard
 in = input
