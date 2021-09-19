@@ -194,6 +194,9 @@ se = selu
 so = softmax
 ta = tanh
 el = elu
+
+commands
+00 = show help
 */
 
 function get_activation(current_uuid){
@@ -209,6 +212,7 @@ function get_activation(current_uuid){
 }
 
 function create_model(){
+    model = null // clear model first
     model = tf.sequential()
 
     let current_uuid = INPUT_UUID
@@ -379,6 +383,13 @@ document.getElementById('export-net').addEventListener('click', (evt) => {
     dfnl()
 })
 
+document.getElementById('term-input').addEventListener('keydown', (evt) => {
+    if(evt.keyCode === 13){
+        parse_cmd(document.getElementById('term-input').value)
+
+        document.getElementById('term-input').value = '' // clear command
+    }
+})
 
 // training model for EPOCH amount of times
 async function train(model, epoch, b_size, X, y, valSplit) {

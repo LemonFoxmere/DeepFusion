@@ -38,10 +38,12 @@ function dragCanvas(canvas, elmnts) {
         });
 
         if(x) return
+
         document.querySelectorAll('.node-drag').forEach((elm2) => {
             elm2.classList.remove('selected-node')
             reset_editor_menu()
-        }) // remove all node selection
+            document.getElementById('del-selected').disabled = true // enable option for delete
+        }) // remove all node selection and disable node deletion button
 
         document.querySelectorAll('.menu-container').forEach(elmnt => {
             let box = elmnt.getBoundingClientRect()
@@ -154,7 +156,18 @@ document.getElementById('zoom-res').addEventListener('click', (e) => {
     update_zoom_text()
 })
 
-document.addEventListener("wheel", function(e) {  
+document.addEventListener("wheel", function(e) { 
+    // check if not in menus
+    let x = false
+    document.querySelectorAll('.menu-container').forEach(elmnt => {
+        let box = elmnt.getBoundingClientRect()
+        if(e.x > box.x && e.x < box.x + box.width &&
+            e.y > box.y && e.y < box.y + box.height){
+                x = true
+        }
+    });
+    if(x) return
+
     if(e.deltaY > 0){ 
         if(zoom < 3){ 
             canvas.style.transform = `scale(${zoom += WHEEL_ZOOM_SPEED})`;  
@@ -215,54 +228,7 @@ document.querySelectorAll(".number-box").forEach((e) => { // add all input field
 })
 
 function add_dense_menu_events(uuid){
-    { // ADDING INPUT FIELD EVENTS
-        // add input field listender
-        let e = document.getElementById(`${uuid}data`)
-        if(e === null) return
-        // console.log(e.id)
-        e.addEventListener("keypress", function (evt) {
-            if (evt.which < 48 || evt.which > 57){
-                evt.preventDefault();
-            }
-    
-            if (evt.which === 13){
-                e.blur()
-            }
-        }); // prevent unorthodox number entering
-        
-        e.addEventListener("focusout", (evt) => {
-            if(document.getElementById(e.id + '-slider')){
-                let slider = document.getElementById(e.id + '-slider')
-                let max_val = slider.max
-                let min_val = slider.min
-                if (Number(e.value) > max_val){
-                    e.value = max_val;
-                } else if (Number(e.value) < min_val){
-                    e.value = min_val;
-                }
-                slider.value = e.value
-                update_dense_data(e.id.substring(0,e.id.length-4), e.value)
-            }
-        })
-    
-        if(document.getElementById(e.id + '-slider')){
-            e.value = document.getElementById(e.id + '-slider').value;
-        }
-    } { // ADDING SLIDER EVENTS
-        let e = document.getElementById(`${uuid}data-slider`)
-        e.onmousedown = (evt) => {
-            e.onmousemove = (evt2) => {
-                let slider_value = e.value
-                if(document.getElementById(e.id.substring(0,e.id.length-7))){
-                    document.getElementById(e.id.substring(0,e.id.length-7)).value = slider_value;
-                }
-                update_dense_data(e.id.substring(0,e.id.length-11), slider_value)
-            }
-        }
-        e.onmouseup = (evt) => {
-            e.onmousemove = null
-        }
-    }
+    update_menu_slider(uuid, update_dense_slider_data)
 }
 
 function add_activation_menu_events(uuid){
@@ -315,6 +281,61 @@ function add_output_menu_events(){
     document.getElementById('output-upload').addEventListener('click', (evt) => {
         document.getElementById('output-file').click()
     })
+}
+
+function add_drop_menu_events(uuid){
+    update_menu_slider(uuid, update_drop_slider_data)
+}
+
+function update_menu_slider(uuid, update_value){
+    { // ADDING INPUT FIELD EVENTS
+        // add input field listender
+        let e = document.getElementById(`${uuid}data`)
+        if(e === null) return
+        // console.log(e.id)
+        e.addEventListener("keypress", function (evt) {
+            if (evt.which < 48 || evt.which > 57){
+                evt.preventDefault();
+            }
+    
+            if (evt.which === 13){
+                e.blur()
+            }
+        }); // prevent unorthodox number entering
+        
+        e.addEventListener("focusout", (evt) => {
+            if(document.getElementById(e.id + '-slider')){
+                let slider = document.getElementById(e.id + '-slider')
+                let max_val = slider.max
+                let min_val = slider.min
+                if (Number(e.value) > max_val){
+                    e.value = max_val;
+                } else if (Number(e.value) < min_val){
+                    e.value = min_val;
+                }
+                slider.value = e.value
+                update_value(e.id.substring(0,e.id.length-4), e.value)
+            }
+        })
+    
+        if(document.getElementById(e.id + '-slider')){
+            e.value = document.getElementById(e.id + '-slider').value;
+        }
+    } { // ADDING SLIDER EVENTS
+        let e = document.getElementById(`${uuid}data-slider`)
+        e.onmousedown = (evt) => {
+            e.onmousemove = (evt2) => {
+                let slider_value = e.value
+                if(document.getElementById(e.id.substring(0,e.id.length-7))){
+                    document.getElementById(e.id.substring(0,e.id.length-7)).value = slider_value;
+                }
+                update_value(e.id.substring(0,e.id.length-11), slider_value)
+            }
+        }
+        e.onmouseup = (evt) => {
+            e.onmousemove = null
+        }
+    }
 }
 
 // CSV to json

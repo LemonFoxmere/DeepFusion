@@ -25,7 +25,7 @@ button, .buttonlike{
     margin-top: 0.5vh;
     margin-bottom: 0.5vh;
     background-color: transparent;
-    z-index: 2;
+    z-index: 10;
 
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -45,27 +45,59 @@ button, .buttonlike{
     padding-right: 1vw;
 }
 
+.absolute-btn:disabled{
+    opacity:0.5;
+    cursor:not-allowed
+}
+
+.absolute-btn:disabled:hover{
+    padding-left: 1vw;
+    padding-right: 1vw;
+}
+.del-btn{
+    backdrop-filter: blur(6px);
+    border-color:red;
+    color:red
+}
+
+
 .subtle-txt{
     font-family: 'Montserrat';
     margin:0;
     padding:0;
     text-align:center;
+    z-index: 10;
+}
+
+#position_debug{
+    backdrop-filter: blur(6px);
+    background-color: rgba(99, 99, 99, 0.316);
+    padding: 0.5vh 0.7vw 0.5vh 0.7vw;
+    border-radius: clamp(0.1rem, min(0.7vw, 0.7vh), 1.7rem);
+    transition: all 230ms cubic-bezier(0.260, 0.050, 0.250, 1.000); /* custom */
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.248), -5px 5px 20px 0px rgba(0, 0, 0, 0.17);
+    border: 1px solid rgba(187, 187, 187, 0.289);
 }
 
 .subtle-btn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     border:none;
-    margin:0;
-    background-color: rgba(0,0,0,0.2);
+    margin:0px 0.5vw 0px 0.5vw;
+    background-color: #171a1a;
     padding:0;
     border-radius: calc(clamp(0.5rem, min(4.5vh, 4.5vw), 5rem) / 2);
     width: clamp(0.5rem, min(4.5vh, 4.5vw), 5rem);
     height: clamp(0.5rem, min(4.5vh, 4.5vw), 5rem);
     color:rgb(180, 180, 180);
     transition: all 230ms cubic-bezier(0.260, 0.050, 0.250, 1.000); /* custom */
+    z-index: 10;
 }
 
 .subtle-btn:hover{
-    background-color: rgba(0,0,0,0.4);
+    /* background-color: #0e0f0f; */
     width: clamp(0.5rem, min(4.5vh, 4.5vw), 5rem);
     height: clamp(0.5rem, min(4.5vh, 4.5vw), 5rem);
     padding:0;
@@ -78,7 +110,7 @@ p{
     font-weight: 400;
     font-size: clamp(0.05rem, min(1.7vh, 1vw), 1rem);
     margin:0;
-    z-index: 2;
+    z-index: 10;
 }
 
 h1{
@@ -87,7 +119,7 @@ h1{
     font-size: clamp(0.5rem, min(7vh, 5vw), 7rem);
     letter-spacing: 5px;
     margin:0;
-    z-index: 2;
+    z-index: 10;
 }
 
 h2{
@@ -96,21 +128,21 @@ h2{
     font-size: clamp(0.5rem, min(4vh, 4vw), 4rem);
     letter-spacing: 5px;
     margin:0;
-    z-index: 2;
+    z-index: 10;
 }
 
 h3{
     font-size: clamp(0.3rem, min(2.5vh, 2.5vw), 3rem);
     font-weight: 400;
     margin:0;
-    z-index: 2;
+    z-index: 10;
 }
 
 h4{
     font-size: clamp(0.2rem, min(2vh, 2vw), 2.5rem);
     font-weight: 500;
     margin:0;
-    z-index: 2;
+    z-index: 10;
     opacity: 1;
 }
 
@@ -180,16 +212,40 @@ button p{
 
 .terminal{
     width:100%;
-    height:100%;
+    height:90%;
+    overflow:hidden;
     display:flex;
     flex-direction:column;
     justify-content:flex-end;
     background-color: #0f1011;
     border: 1px solid #333737;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.145);
     padding:1vh 0.5vw 0.5vh 0.5vw;
-    border-radius:1.4vh;
+    border-radius:1.4vh 1.4vh 0 0;
     color:#b3b3b3;
     word-wrap: break-word;
+}
+
+.terminal-in{
+    width:100%;
+    height:100%;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    text-align: left;
+    background-color: #0f1011;
+    border: 1px solid #333737;
+    padding:1vh 0.5vw 0.5vh 0.5vw;
+    border-radius:0 0 1.4vh 1.4vh;
+    border-top: none;
+    color:#b3b3b3;
+    word-wrap: break-word;
+    font-size: clamp(0.075rem, min(1.2vh, 1.2vw), 1.2rem);
+    letter-spacing: -0.3px;
+}
+
+.terminal-in:focus {
+    outline: 1px solid rgb(177, 0, 0);
 }
 
 .terminal span{

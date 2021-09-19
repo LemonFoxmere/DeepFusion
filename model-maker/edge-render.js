@@ -12,9 +12,9 @@ const OUTPUT_DAT_UUID = "02dde3a704-50f9-4b74-a641-57720cbb5c0e"
 localStorage.clear()
 
 // warn user of reload
-window.onbeforeunload = function() {
-    return "Data will be lost if you leave the page, are you sure?";
-};
+// window.onbeforeunload = function() {
+//     return "Data will be lost if you leave the page, are you sure?";
+// };
 
 document.body.addEventListener('mouseup', (e) => {
     document.body.style.cursor = 'default'
@@ -155,6 +155,7 @@ function create_node(uuid, template, node_type, set_node_template=null, default_
         })
 
         document.getElementById(`${uuid}header`).classList.add('selected-node')
+        document.getElementById('del-selected').disabled = false // enable option for delete
 
         // set the menu
         if(set_node_template !== null){
@@ -296,14 +297,12 @@ document.getElementById('act_node_add').addEventListener('click', (e) => {
 document.getElementById('drop_node_add').addEventListener('click', (e) => {
     let uuid = '00'+uuidv4()
     create_node(uuid, DROP_NODE, "do", set_drop_menu, JSON.stringify(create_drop_data(0)))
-
 })
 
 // listen for delete command
 document.addEventListener('keydown', (evt) => {
     if(evt.keyCode === 46){
         delete_selected_node()
-        reset_editor_menu()
     }
 })
 
@@ -356,6 +355,10 @@ function delete_selected_node(){
     main_canvas.removeChild(document.getElementById(del_node_uuid))
 
     hovering_uuid = null // the node's own listener will stop functioning, so we'll have to reset it
+    reset_editor_menu() // reset the editor menu
+
+    // set delete selected to disabled
+    document.getElementById('del-selected').disabled = true
 }
 
 function remove_edge(uuid){
