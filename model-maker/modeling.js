@@ -84,6 +84,19 @@ const supportmsg = [
     }
 ]
 
+// user input msgs
+const defaultinput = [
+    { // node in triangle
+        "<>" : "span",
+        "style":"font-weight:600",
+        "text" : "> "
+    },{ // node in triangle
+        "<>" : "span",
+        "style" : "margin:0; line-height:0; font-weight:600",
+        "text" : "${msg}"
+    }
+]
+
 let terminal = document.getElementById('dfterm')
 
 function dflog(template, msg){
@@ -101,24 +114,31 @@ function dfnl(){
 
 // check validity of neural network
 function check_network(){
-    dflog(msg, "Checking network...")
+    let valid = true
+
     // start by checking if input and output neuron exist
     if(document.getElementById(INPUT_UUID) === null){
-        dflog(errormsg, "Check failed. Reason: Missing input node")
-        return 0
+        dflog(warningmsg, "Missing input node.")
+        valid = false
     }
     if(document.getElementById(OUTPUT_UUID) === null){
-        dflog(errormsg, "Check failed. Reason: Missing output node")
-        return 0
+        
+        dflog(warningmsg, "Missing output node.")
+        valid = false
     }
 
     // check if input and output data is null
     if(JSON.parse(localStorage.getItem(INPUT_DAT_UUID)).data === null){ // CHANGE
-        dflog(errormsg, "Check failed. Reason: Missing input file")
-        return 0
+        dflog(warningmsg, "Missing input file.")
+        valid = false
     }
     if(JSON.parse(localStorage.getItem(OUTPUT_DAT_UUID)).data === null){ // CHANGE
-        dflog(errormsg, "Check failed. Reason: Missing output file")
+        dflog(warningmsg, "Missing output file.")
+        valid = false
+    }
+
+    if(!valid){
+        dflog(errormsg, "Too many IO errors. Check failed.")
         return 0
     }
 
@@ -128,8 +148,8 @@ function check_network(){
     while(current_uuid !== OUTPUT_UUID){
         let next_uuid = JSON.parse(localStorage.getItem(current_uuid)).dest
         if(JSON.parse(localStorage.getItem(current_uuid)).type !== 'de' && JSON.parse(localStorage.getItem(current_uuid)).from === INPUT_UUID){
-            dflog(errormsg, "Check failed. Reason: Network must start with non-activation layer")
-            return 0
+            dflog(warningmsg, "Invalid first layer.")
+            valid = false
         }
 
         // update last neuron count
@@ -140,15 +160,20 @@ function check_network(){
         // check for repeating activations
         if(JSON.parse(localStorage.getItem(current_uuid)).type === 'ac' && 
                 JSON.parse(localStorage.getItem(JSON.parse(localStorage.getItem(current_uuid)).from)).type === 'ac'){
-                    dflog(errormsg, "Check failed. Reason: Cannot have two/more activations in a row")
-                    return 0
+            dflog(warningmsg, "Cannot have 2 or more activation in a row.")
+            valid = false
         }
 
         if(next_uuid === null){
-            dflog(errormsg, "Check failed. Reason: Broken network chain")
-            return 0
+            dflog(warningmsg, "Broken network chain.")
+            valid = false
         }
         current_uuid = next_uuid
+    }
+
+    if(!valid){
+        dflog(errormsg, "Broken network. Check failed.")
+        return 0
     }
 
     dflog(successmsg, "Check complete. No errors found.")
@@ -156,8 +181,8 @@ function check_network(){
 }
 
 document.getElementById('check-net').addEventListener('click', (evt) => {
+    dflog(defaultinput, "checknet")
     check_network()
-    dfnl()
 })
 
 let trained = false
@@ -254,9 +279,10 @@ function create_model(){
 }
 
 document.getElementById('test-net').addEventListener('click', (evt) => {
+    dflog(defaultinput, "test -r")
     if(model == null) {
         dflog(warningmsg, "You must train before you can test!")
-        dfnl()
+        dflog(errormsg, "Testing aborted.")
         return
     }
 
@@ -282,10 +308,11 @@ document.getElementById('test-net').addEventListener('click', (evt) => {
     dflog(debugmsg, `Input: ${tXarr[index]}`)
     dflog(debugmsg, `Pred: ${pred}`)
     dflog(debugmsg, `Answer: ${tyarr[index]}`)
-    dfnl()
 })
 
 document.getElementById('train-net').addEventListener('click', (evt) => {
+    dflog(defaultinput, "trainnet")
+
     dflog(msg, "Attemping to train...")
     // disable btns
     document.querySelector("#train-net").disabled = true
@@ -296,7 +323,6 @@ document.getElementById('train-net').addEventListener('click', (evt) => {
     let last_neuron_ct = check_network()
     if(last_neuron_ct === 0){ // complete check first
         dflog(errormsg, "Training aborted.")
-        dfnl()
         document.querySelector("#train-net").disabled = false
         document.querySelector("#train-net").classList.remove('disable')
         document.querySelector("#test-net").disabled = false
@@ -312,7 +338,6 @@ document.getElementById('train-net').addEventListener('click', (evt) => {
     
     if(Object.keys(training_full).length !== Object.keys(label_full).length){
         dflog(errormsg, "Input and output length mismatch. Training aborted.")
-        dfnl()
         document.querySelector("#train-net").disabled = false
         document.querySelector("#train-net").classList.remove('disable')
         document.querySelector("#test-net").disabled = false
@@ -353,7 +378,6 @@ document.getElementById('train-net').addEventListener('click', (evt) => {
         document.querySelector("#train-net").classList.remove('disable')
         document.querySelector("#test-net").disabled = false
         document.querySelector("#test-net").classList.remove('disable')
-        dfnl()
         return 
     }
 
@@ -379,8 +403,8 @@ document.getElementById('train-net').addEventListener('click', (evt) => {
 })
 
 document.getElementById('export-net').addEventListener('click', (evt) => {
+    dflog(defaultinput, "exportnet")
     dflog(supportmsg, "This feature is currently in development. If you would like you to you can support the development on my GitHub!")
-    dfnl()
 })
 
 document.getElementById('term-input').addEventListener('keydown', (evt) => {

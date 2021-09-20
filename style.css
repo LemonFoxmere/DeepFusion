@@ -56,6 +56,8 @@ button, .buttonlike{
 }
 .del-btn{
     backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+
     border-color:red;
     color:red
 }
@@ -71,6 +73,8 @@ button, .buttonlike{
 
 #position_debug{
     backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+
     background-color: rgba(99, 99, 99, 0.316);
     padding: 0.5vh 0.7vw 0.5vh 0.7vw;
     border-radius: clamp(0.1rem, min(0.7vw, 0.7vh), 1.7rem);
@@ -240,20 +244,26 @@ button p{
     border-top: none;
     color:#b3b3b3;
     word-wrap: break-word;
-    font-size: clamp(0.075rem, min(1.2vh, 1.2vw), 1.2rem);
+    font-size: clamp(0.075rem, min(1.5vh, 1.5vw), 1.5rem);
     letter-spacing: -0.3px;
 }
 
 .terminal-in:focus {
     outline: 1px solid rgb(177, 0, 0);
+    font-weight: 600;
 }
 
 .terminal span{
     margin-top:2vh;
     line-height:2vh;
     font-family: 'Courier New', Courier, monospace;
-    font-size: clamp(0.075rem, min(1.7vh, 1.7vw), 0.8rem);
+    font-size: clamp(0.075rem, min(1.5vh, 1.5vw), 1rem);
     cursor:text;
+}
+
+.terminal span.info{
+    margin:0;
+    color:#727272
 }
 
 h3.section-text{

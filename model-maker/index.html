@@ -101,19 +101,20 @@
         menu-container' style='width:clamp(1rem, 15vw, 17rem); height:calc(100vh - clamp(1rem, 7vh, 4rem) - 50vh); top:clamp(1rem, 7vh, 4rem); left:0;
         display:flex; align-items: center; justify-content: center; padding:0vh 0.5vw 1vh 0.5vw; flex-direction: column;'>
         <div class='terminal' id='dfterm'>
-            <span>Welcome to DeepFusion <span style='color:greenyellow'>0.1.1</span>. This is where you can see your training progress or any errors that might occur.</span>
+            <span>Welcome to DeepFusion <span style='color:greenyellow'>0.1.1</span>.</span>
             <span>If you want to you can support this project on 
                 <a style='color:rgb(0, 153, 255); font-weight: 600;' href='https://github.com/LemonOrangeWasTaken/DeepFusion'>GitHub</a>
                 , or subscribe to my 
                 <a style='color:rgb(255, 68, 68); font-weight: 600;' href='https://www.youtube.com/channel/UCut2xeBl7HcPEPatqpEUoQw'>YouTube</a>.
             </span>
-            <span>===</span>
+            <span style='margin:0'>---</span>
+            <span class='info'>Type "help", "copyright", "license", or "about" for more information</span>
         </div>
         
         <!-- terminal input section -->
         
         <section style='display:flex; width:100%; height:8%;'>
-            <input type="text" class='terminal-in' id='term-input' style="padding-bottom:1vh; font-family: 'Courier New', 'Courier', 'monospace';" placeholder="type 'help' here for more info">
+            <input type="text" class='terminal-in' id='term-input' style="padding-bottom:1vh; font-family: 'Courier New', 'Courier', 'monospace';" placeholder=">">
             </input>
         </section>
 
@@ -184,32 +185,38 @@
         <section style='
             display:flex; flex-direction: row; justify-content: center; align-items: center; background: rgba(99, 99, 99, 0.316); padding: 1vh 1vw 1vh 1vw;
             border-radius: clamp(0.1rem, min(1.3vw, 1.3vh), 2.5rem);
-            backdrop-filter: blur(6px); box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.248), -5px 5px 20px 0px rgba(0, 0, 0, 0.17); border: 1px solid rgba(187, 187, 187, 0.289)'>
+            -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); 
+            box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.248), -5px 5px 20px 0px rgba(0, 0, 0, 0.17); border: 1px solid rgba(187, 187, 187, 0.289)'>
 
             <button id='reset-canvas' class='subtle-btn'>
-                <h3 class='unselectable  subtle-txt' style='cursor:pointer; margin-bottom:0.4vh; font-size: clamp(0.05rem, min(1.7vh, 1vw), 1rem);'>
+                <!-- <h3 class='unselectable  subtle-txt' style='cursor:pointer; margin-bottom:0.4vh; font-size: clamp(0.05rem, min(1.7vh, 1vw), 1rem);'>
                     <strong>&#9974</strong>
-                </h3>
+                </h3> -->
+                <img style="width:35%; height:auto;" src="../re-center.svg" alt="Re-center">
+
             </button>
             
             <div class='vr' style='height: 4vh; position: relative; background-color: rgba(255, 255, 255, 0.412); z-index: 10; margin-left: 0.5vw; margin-right:0.5vw; width:1px'></div>
 
             <button id='zoom-in' class='subtle-btn'>
-                <h3 class='unselectable  subtle-txt' style='cursor:pointer'>
+                <!-- <h3 class='unselectable  subtle-txt' style='cursor:pointer'>
                     +
-                </h3>
+                </h3> -->
+                <img style="width:30%; height:auto;" src="../zoom-in.svg" alt="Re-center">
             </button>
             
             <button id='zoom-out' class='subtle-btn'>
-                <h3 class='unselectable  subtle-txt' style='cursor:pointer'>
+                <!-- <h3 class='unselectable  subtle-txt' style='cursor:pointer'>
                     &#8722
-                </h3>
+                </h3> -->
+                <img style="width:30%; height:auto;" src="../zoom-out.svg" alt="Re-center">
             </button>
 
             <button id='zoom-res' class='subtle-btn'>
-                <h3 class='unselectable subtle-txt' style='cursor:pointer; margin-left:0.05vw'>
+                <!-- <h3 class='unselectable subtle-txt' style='cursor:pointer; margin-left:0.05vw'>
                     ↺
-                </h3>
+                </h3> -->
+                <img style="width:40%; height:auto;" src="../zoom-reset.svg" alt="Re-center">
             </button>
         </section>
         <p id='zoom-scale' class='unselectable' style='color:white; opacity:1; margin-top:0.5vh; font-family: Montserrat'>
