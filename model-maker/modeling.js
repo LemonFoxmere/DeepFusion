@@ -139,22 +139,33 @@ function check_network(){
 
     if(!valid){
         dflog(errormsg, "Too many IO errors. Check failed.")
-        return 0
+        return -1
     }
+
 
     // check continuity of network
     let current_uuid = INPUT_UUID
-    let last_neuron_ct = 0
+    let last_neuron_ct = -1
     while(current_uuid !== OUTPUT_UUID){
         let next_uuid = JSON.parse(localStorage.getItem(current_uuid)).dest
-        if(JSON.parse(localStorage.getItem(current_uuid)).type !== 'de' && JSON.parse(localStorage.getItem(current_uuid)).from === INPUT_UUID){
-            dflog(warningmsg, "Invalid first layer.")
+        
+        if(next_uuid === null){
+            dflog(warningmsg, "Broken network chain.")
             valid = false
         }
 
+        if(JSON.parse(localStorage.getItem(current_uuid)).from === INPUT_UUID){
+            if(JSON.parse(localStorage.getItem(current_uuid)).type === 'ac'){
+                dflog(warningmsg, "First layer cannot be an activation!")
+                valid = false
+            }
+        }
+
         // update last neuron count
+        console.log(current_uuid, next_uuid)
         if(JSON.parse(localStorage.getItem(current_uuid)).type === 'de'){
             last_neuron_ct = JSON.parse(localStorage.getItem(JSON.parse(localStorage.getItem(current_uuid)).data)).neuron_ct
+            console.log(last_neuron_ct)
         }
 
         // check for repeating activations
@@ -164,16 +175,22 @@ function check_network(){
             valid = false
         }
 
-        if(next_uuid === null){
-            dflog(warningmsg, "Broken network chain.")
-            valid = false
-        }
         current_uuid = next_uuid
+    }
+    
+    if(JSON.parse(localStorage.getItem(OUTPUT_UUID)).from === INPUT_UUID) {
+        dflog(warningmsg, "You must have at least 1 layer present in your model!")
+        valid = false
+    }
+
+    if(last_neuron_ct === -1) {
+        dflog(warningmsg, "Missing output layer.")
+        valid = false
     }
 
     if(!valid){
-        dflog(errormsg, "Broken network. Check failed.")
-        return 0
+        dflog(errormsg, "Invalid network. Check failed.")
+        return -1
     }
 
     dflog(successmsg, "Check complete. No errors found.")
@@ -250,7 +267,8 @@ function create_model(){
         
         // detect current node type
         current_node_data = JSON.parse(localStorage.getItem(current_uuid))
-        if(current_node_data.type === 'de'){
+
+        if(current_node_data.type === 'de'){ // if current layer is a dense layer
             // add dense layer with correct neuron count
             let layer_data = JSON.parse(localStorage.getItem(current_node_data.data))
             if(current_node_data.from === INPUT_UUID){ // check if it is the first node
@@ -269,9 +287,21 @@ function create_model(){
             }
         }
 
-        // if current type of dropout, then ignore it and move on
-        if(current_node_data.type === 'do'){
-            continue
+
+        if(current_node_data.type === 'do'){ // if current layer is a dropout layer
+            let layer_data = JSON.parse(localStorage.getItem(current_node_data.data))
+            drop_rate = Number(layer_data.chance) / 100 // must convert to a percentage scale
+
+            if(current_node_data.from === INPUT_UUID){ // check if it is the first node
+                model.add(tf.layers.dropout({
+                    rate: Number(drop_rate),
+                    inputShape: [X.shape[1]]
+                }))
+            } else { // if not, add it like normal
+                model.add(tf.layers.dropout({
+                    rate: Number(drop_rate)
+                }));
+            }
         }
         
         current_uuid = next_uuid
@@ -321,7 +351,7 @@ document.getElementById('train-net').addEventListener('click', (evt) => {
     document.querySelector("#test-net").classList.add('disable')
 
     let last_neuron_ct = check_network()
-    if(last_neuron_ct === 0){ // complete check first
+    if(last_neuron_ct === -1){ // complete check first
         dflog(errormsg, "Training aborted.")
         document.querySelector("#train-net").disabled = false
         document.querySelector("#train-net").classList.remove('disable')
@@ -337,11 +367,12 @@ document.getElementById('train-net').addEventListener('click', (evt) => {
     // check if training length and label length match
     
     if(Object.keys(training_full).length !== Object.keys(label_full).length){
-        dflog(errormsg, "Input and output length mismatch. Training aborted.")
+        dflog(warningmsg, `IO length mismatch! InputLength: ${Object.keys(training_full).length}; OutputLength: ${Object.keys(label_full).length}`)
         document.querySelector("#train-net").disabled = false
         document.querySelector("#train-net").classList.remove('disable')
         document.querySelector("#test-net").disabled = false
         document.querySelector("#test-net").classList.remove('disable')
+        dflog(errormsg, `Training aborted.`)
         return
     }
     
@@ -373,11 +404,12 @@ document.getElementById('train-net').addEventListener('click', (evt) => {
     // check last node's validity
     console.log(last_neuron_ct)
     if(Number(last_neuron_ct) !== Number(y.shape[1])){
-        dflog(errormsg, "A fatal error occured, training aborted. Reason: Invalid output node shape")
+        dflog(warningmsg, `Invalid output layer shape! Requires: [${y.shape[1]}]; recieved: [${last_neuron_ct}]`)
         document.querySelector("#train-net").disabled = false
         document.querySelector("#train-net").classList.remove('disable')
         document.querySelector("#test-net").disabled = false
         document.querySelector("#test-net").classList.remove('disable')
+        dflog(errormsg, `Training aborted.`)
         return 
     }
 

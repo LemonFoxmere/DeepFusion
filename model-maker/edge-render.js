@@ -15,6 +15,8 @@ localStorage.clear()
 // window.onbeforeunload = function() {
 //     return "Data will be lost if you leave the page, are you sure?";
 // };
+// update edges at resize
+window.onresize = update_non_temp_edges
 
 document.body.addEventListener('mouseup', (e) => {
     document.body.style.cursor = 'default'
@@ -395,7 +397,7 @@ document.body.onmousemove = (e) => {
 
 // update all non-temporary edges
 function update_non_temp_edges(){
-let edges = document.querySelectorAll('.edge')
+    let edges = document.querySelectorAll('.edge')
 
     for(let i = 0; i < edges.length; i++){ // for loop cuz it's a bit faster
         let edge = edges[i]
