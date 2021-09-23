@@ -4,6 +4,12 @@
   box-sizing: border-box;
 }
 
+.logo{
+    color:rgb(119, 119, 119);
+} .logo:hover{
+    color:rgb(177, 177, 177);
+}
+
 body{
     background-color: #1d2021;
     overflow: hidden;
@@ -40,6 +46,10 @@ button, .buttonlike{
     transition: all 230ms cubic-bezier(0.260, 0.050, 0.250, 1.000); /* custom */
 }
 
+.buttonlike:hover{
+    text-decoration: none;
+}
+
 .absolute-btn{
     padding-left: 1vw;
     padding-right: 1vw;
@@ -50,10 +60,15 @@ button, .buttonlike{
     cursor:not-allowed
 }
 
+.absolute-btn:disabled p{
+    cursor:not-allowed
+}
+
 .absolute-btn:disabled:hover{
     padding-left: 1vw;
     padding-right: 1vw;
 }
+
 .del-btn{
     backdrop-filter: blur(6px);
     -webkit-backdrop-filter: blur(6px);
@@ -119,7 +134,7 @@ p{
     z-index: 10;
 }
 .legal p{
-    font-size: 0.8rem;
+    font-size: 0.75rem;
 }
 
 h1{
@@ -157,7 +172,7 @@ h3{
 }
 
 h4{
-    font-size: clamp(0.2rem, min(2vh, 2vw), 2.5rem);
+    font-size: clamp(0.2rem, min(2vh, 1.3vw), 2.5rem);
     font-weight: 500;
     margin:0;
     z-index: 10;
@@ -177,6 +192,11 @@ h5{
 
 a{
     color: rgb(69, 165, 255);
+    text-decoration: none;
+}
+
+a:hover{
+    text-decoration: underline;
 }
 
 .spoiler, .spoiler2{
@@ -225,10 +245,10 @@ button, .buttonlike:hover{
 
 .absolute-btn.disable{
     opacity:0.5;
+    cursor: not-allowed;
 }
 
 .absolute-btn.disable:hover{
-    cursor: not-allowed;
     padding-left: 1vw;
     padding-right: 1vw;
 }
@@ -262,7 +282,7 @@ button p{
 }
 
 .copyrightmsg{
-    font-size: clamp(0.075rem, min(1.5vh, 1.5vw), 1.5rem);
+    font-size: clamp(0.075rem, min(1.5vh, 1.5vw), 1.3rem);
 }
 
 .menu-container{
@@ -312,22 +332,21 @@ button p{
     padding:1vh 0.5vw 0.5vh 0.5vw;
     border-radius:0 0 1.4vh 1.4vh;
     border-top: none;
-    color:#b3b3b3;
+    color:#ffffff;
     word-wrap: break-word;
-    font-size: clamp(0.075rem, min(1.5vh, 1.5vw), 1.5rem);
+    font-size: clamp(0.075rem, min(1.3vh, 1.3vw), 1.3rem);
     letter-spacing: -0.3px;
 }
 
 .terminal-in:focus {
     outline: 1px solid rgb(177, 0, 0);
-    font-weight: 600;
 }
 
 .terminal span{
     margin-top:2vh;
     line-height:2vh;
     font-family: 'Courier New', Courier, monospace;
-    font-size: clamp(0.075rem, min(1.5vh, 1.5vw), 1rem);
+    font-size: clamp(0.075rem, min(1.5vh, 1.5vw), 0.75rem);
     cursor:text;
 }
 
@@ -360,10 +379,11 @@ hr{
 }
 
 .vr{
-    position: absolute;
-    width:2px;
-    height:100vh;
+    width:1px;
+    margin: 0 0.5vw 0 0.5vw;
     background-color: rgba(255, 255, 255, 0.062);
+    z-index: 10;
+    background-color:#ffffff3d
 }
 
 .node{
@@ -534,7 +554,7 @@ hr{
     background-color: transparent;
     color:white;
     outline: none;
-    font-size: clamp(0.15rem, min(1.5vh, 1.5vw), 1.5rem);
+    font-size: clamp(0.15rem, min(1.5vh, 1vw), 1.5rem);
 }
 
 .number-box:disabled{

@@ -19,13 +19,13 @@
 
     <!-- bottom menu -->
     <div class='menu-container' style='
-        width:calc(100vw - clamp(1rem, 15vw, 17rem) * 2); padding-bottom: 4.5vh; height:clamp(1rem, 15vh, 15rem); bottom:0; right:clamp(1rem, 15vw, 17rem);
+        width:calc(100vw - clamp(1rem, 15vw, 17rem) * 2); padding-bottom: 5.5vh; height:auto; bottom:0; right:clamp(1rem, 15vw, 17rem);
         display:flex; align-items: center; justify-content: center; flex-direction: column;'>
-            <section style='margin-top:1.2%'>
+            <section style='margin-top:2vh'>
                 <h4 style='margin-left:2vw; margin-right:1vw'>Add Nodes:</h4>
             </section>
 
-            <section style='margin-top:0.5%'>
+            <section style='margin-top:0.5vh; display:flex; flex-direction: row'>
                 <button class='absolute-btn node-selection' id='input_node_add'>
                     <p>
                         Input
@@ -36,6 +36,10 @@
                         Output
                     </p>
                 </button>
+
+                <!-- separator -->
+                <div class="vr"></div>
+
                 <button class='absolute-btn node-selection' id='dense_node_add'>
                     <p>
                         Dense
@@ -55,7 +59,7 @@
     </div>
 
     <!-- right top menu -->
-    <div class='menu-container' style='width:clamp(1rem, 15vw, 17rem); height:70vh; top:0; right:0;
+    <div class='menu-container' style='width:clamp(1rem, 15vw, 17rem); height:68vh; top:0; right:0;
         display:flex; align-items: center; justify-content: center;' id='node-editor'>
         <div class='node-menu-container' id='default-node-menu'>
             <p>
@@ -63,12 +67,18 @@
             </p>
         </div>
 
-        <button style='position:absolute; bottom:1vh' id='del-selected' class='del-btn absolute-btn' onClick = "delete_selected_node(); " disabled>Delete selected node</button>
+        <button style='position:absolute; bottom:1vh' id='del-selected' class='del-btn absolute-btn'
+                onClick = "delete_selected_node(); " disabled>
+            <p>
+                Delete selected node
+            </p>
+        </button>
     </div>
 
     <!-- right bottom menu -->
-    <div class='menu-container' style='width:clamp(1rem, 15vw, 17rem); height:30vh; bottom:0; right:0;
-        display:flex; align-items: center; justify-content: flex-start; flex-direction: column; padding-top: 2vh;'>
+    <div class='menu-container' style='width:clamp(1rem, 15vw, 17rem); height:32vh; bottom:0; right:0;
+        display:flex; align-items: center; justify-content: flex-start; flex-direction: column;
+        padding-top: 2vh; padding-bottom: 2vh'>
         <h4>
             Training Controls
         </h4>
@@ -76,23 +86,31 @@
         <hr style='width:80%; margin: 1vh 0 1vh 0'>
 
         <button class='absolute-btn' id='check-net'>
-            Check Network
+            <p>
+                Check Network
+            </p>
         </button>
 
         <hr style='width:30%; margin: 1vh 0 1vh 0'>
 
         <button class='absolute-btn' id='train-net'>
-            Train Network
+            <p>
+                Train Network
+            </p>
         </button>
 
         <button class='absolute-btn' id='test-net'>
-            Test Network
+            <p>
+                Test Network
+            </p>
         </button>
 
         <hr style='width:30%; margin: 1vh 0 1vh 0'>
 
         <button class='absolute-btn' id='export-net'>
-            Export Network
+            <p>
+                Export Network
+            </p>
         </button>
     </div>
 
@@ -113,8 +131,9 @@
         
         <!-- terminal input section -->
         
-        <section style='display:flex; width:100%; height:8%;'>
-            <input type="text" class='terminal-in' id='term-input' style="padding-bottom:1vh; font-family: 'Courier New', 'Courier', 'monospace';" placeholder=">">
+        <section style='display:flex; width:100%; height:auto;'>
+            <input type="text" class='terminal-in' id='term-input'
+                style="padding:0.5vh 0 0.5vh 0.5vw; font-family: 'Courier New', 'Courier', 'monospace';" placeholder=">">
             </input>
         </section>
 
@@ -173,8 +192,8 @@
     
     <!-- return -->
     <a href='../'>
-        <div class='menu-container' style='width:clamp(1rem, 15vw, 17rem); height:clamp(1rem, 7vh, 4rem); top:0; left:0; display:flex; align-items: center; justify-content: center'>
-            <h2 class='unselectable logo-text' style='font-size: clamp(0.1rem, min(3vh, 1.3vw), 4rem); letter-spacing:3px; color:gray; cursor:pointer'>
+        <div class='menu-container logo' style='width:clamp(1rem, 15vw, 17rem); height:clamp(1rem, 7vh, 4rem); top:0; left:0; display:flex; align-items: center; justify-content: center'>
+            <h2 class='unselectable' style='font-size: clamp(0.1rem, min(3vh, 1.3vw), 4rem); letter-spacing:3px; cursor:pointer'>
                 DeepFusion
             </h2>
         </div>
@@ -272,7 +291,7 @@
 
     <!-- copyright information -->
     <p class='copyrightmsg unselectable' style='position: absolute; bottom:0.5%; color:rgba(255, 255, 255, 0.178); z-index:100'>
-        <a href="../license-info/" style='color:inherit; text-decoration: none;'>
+        <a href="../license-info/" style='color:inherit;'>
             Copyright &copy; 2021 LemonOrange
         </a> | To learn more, visit this project's
         <a style='text-decoration:none; color:rgba(255, 255, 255, 0.363); font-weight: 600;' href='https://github.com/LemonOrangeWasTaken/DeepFusion'>GitHub</a>
