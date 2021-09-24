@@ -8,7 +8,7 @@ const separator = [
 const msg = [
     { // node in triangle
         "<>" : "span",
-        "text" : "[Fusion]: ${msg}"
+        "text" : "[Fusion] ${msg}"
     }
 ]
 
@@ -22,7 +22,7 @@ const successmsg = [
         "text" : "Success"
     },{ // node in triangle
         "<>" : "span",
-        "text" : "]: ${msg}"
+        "html" : "] ${msg}"
     }
 ]
 
@@ -36,7 +36,7 @@ const debugmsg = [
         "text" : "Debug"
     },{ // node in triangle
         "<>" : "span",
-        "text" : "]: ${msg}"
+        "html" : "] ${msg}"
     }
 ]
 
@@ -50,7 +50,7 @@ const warningmsg = [
         "text" : "Warning"
     },{ // node in triangle
         "<>" : "span",
-        "text" : "]: ${msg}"
+        "html" : "] ${msg}"
     }
 ]
 
@@ -65,7 +65,7 @@ const errormsg = [
     },{ // node in triangle
         "<>" : "span",
         "style" : "margin:0; line-height:0",
-        "text" : "]: ${msg}"
+        "html" : "] ${msg}"
     }
 ]
 
@@ -80,7 +80,19 @@ const supportmsg = [
     },{ // node in triangle
         "<>" : "span",
         "style" : "margin:0; line-height:0",
-        "text" : "]: ${msg}"
+        "html" : "] ${msg}"
+    }
+]
+
+const blankmsg = [
+    { // node in triangle
+        "<>" : "span",
+        "style" : "font-weight:600; margin:0",
+        "html" : "${pref}"
+    },{
+        "<>" : "span",
+        "style" : "margin:1vh 0 0 0; line-height:0",
+        "html" : "${msg}"
     }
 ]
 
@@ -88,22 +100,28 @@ const supportmsg = [
 const defaultinput = [
     { // node in triangle
         "<>" : "span",
-        "style":"font-weight:600",
-        "text" : "> "
+        "style":"font-weight:400; color:#fff",
+        "text" : ">>> "
     },{ // node in triangle
         "<>" : "span",
-        "style" : "margin:0; line-height:0; font-weight:600",
+        "style" : "margin:0; line-height:0; font-weight:400; color:#fff",
         "text" : "${msg}"
     }
 ]
 
 let terminal = document.getElementById('dfterm')
 
-function dflog(template, msg){
+function dflog(template, msg, pref=null, indent=0){
     let htmlObject = document.createElement('span');
-    htmlObject.style.margin = "0.2vh";
-    htmlObject.innerHTML = json2html.render({'msg' : msg}, template);
+    htmlObject.style.margin = `0.2vh 0 0 ${indent}`;
+    if(pref !== null){
+        htmlObject.innerHTML = json2html.render({'msg' : msg, 'pref' : pref}, template);
+    } else {
+        htmlObject.innerHTML = json2html.render({'msg' : msg}, template);
+    }
     terminal.appendChild(htmlObject);
+
+    update_term_scroll()
 }
 
 function dfnl(){
@@ -200,6 +218,8 @@ function check_network(){
 document.getElementById('check-net').addEventListener('click', (evt) => {
     dflog(defaultinput, "checknet")
     check_network()
+
+    
 })
 
 let trained = false
@@ -309,7 +329,10 @@ function create_model(){
 }
 
 document.getElementById('test-net').addEventListener('click', (evt) => {
-    dflog(defaultinput, "test -r")
+    dflog(defaultinput, "test")
+    test_net_random()
+})
+function test_net_random(){
     if(model == null) {
         dflog(warningmsg, "You must train before you can test!")
         dflog(errormsg, "Testing aborted.")
@@ -338,11 +361,14 @@ document.getElementById('test-net').addEventListener('click', (evt) => {
     dflog(debugmsg, `Input: ${tXarr[index]}`)
     dflog(debugmsg, `Pred: ${pred}`)
     dflog(debugmsg, `Answer: ${tyarr[index]}`)
-})
+}
+
 
 document.getElementById('train-net').addEventListener('click', (evt) => {
     dflog(defaultinput, "trainnet")
-
+    train_net()
+})
+function train_net(){
     dflog(msg, "Attemping to train...")
     // disable btns
     document.querySelector("#train-net").disabled = true
@@ -432,18 +458,34 @@ document.getElementById('train-net').addEventListener('click', (evt) => {
     model.compile(config)
     dflog(successmsg, "Network compiled without error. Starting Training process:")
     train(model, epoch, b_size, X, y, document.getElementById('test-part-slider').value / 100).then(() => dflog(successmsg, "Model Trained Successfully")) // start async function of training network
-})
+}
+
 
 document.getElementById('export-net').addEventListener('click', (evt) => {
     dflog(defaultinput, "exportnet")
-    dflog(supportmsg, "This feature is currently in development. If you would like you to you can support the development on my GitHub!")
+    export_net()
 })
+function export_net(){
+    dflog(supportmsg, "This feature is currently in development. If you would like you to you can support the development on my GitHub!")
+}
 
-document.getElementById('term-input').addEventListener('keydown', (evt) => {
+document.getElementById('term-input').addEventListener('keydown', (evt) => { // TERMINAL HANDLERS
     if(evt.keyCode === 13){
-        parse_cmd(document.getElementById('term-input').value)
-
+        let original_command = document.getElementById('term-input').value
+        let full_command = parse_cmd(original_command) // parse the command
         document.getElementById('term-input').value = '' // clear command
+
+        // check if execution is null
+        let execute = full_command[0]
+        let values = full_command[1]
+        let attributes = full_command[2]
+
+        if(execute === null){
+            return
+        }
+
+        // execute the command
+        execute_cmd(execute, values, attributes, original_command)
     }
 })
 

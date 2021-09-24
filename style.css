@@ -307,17 +307,20 @@ button p{
 .terminal{
     width:100%;
     height:90%;
-    overflow:hidden;
+    overflow:auto;
     display:flex;
     flex-direction:column;
-    justify-content:flex-end;
     background-color: #0f1011;
     border: 1px solid #333737;
     border-bottom: 1px solid rgba(255, 255, 255, 0.145);
-    padding:1vh 0.5vw 0.5vh 0.5vw;
+    padding:1vh 0.2vw 0.5vh 0.2vw;
     border-radius:1.4vh 1.4vh 0 0;
     color:#b3b3b3;
     word-wrap: break-word;
+
+    /* hide scrollbar */
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    scrollbar-width:none;  /* Firefox */
 }
 
 .terminal-in{

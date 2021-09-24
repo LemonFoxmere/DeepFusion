@@ -1,3 +1,69 @@
+// list of known commands
+const ALL_CMDS = {
+    'help' : (value)=>{
+
+        console.log(value)
+
+        if(value.length === 1){
+            if(value[0] === 'checknet'){
+                dflog(supportmsg, 'Check if the current model can be used for training, or have any errors.', null)
+            } else if(value[0] === 'trainnet'){
+                dflog(supportmsg, 'Train the current model, given that it is valid.', null)
+                dflog(blankmsg, 'Model must be valid, and IO file must exist.', pref='&emsp;Prerequisites: ')
+            } else if(value[0] === 'testnet'){
+                dflog(supportmsg, 'Test the current model on some random data.', null)
+                dflog(blankmsg, 'Model must be valid and trained.', pref='&emsp;Prerequisites: ')
+            } else if(value[0] === 'exportnet'){
+                dflog(supportmsg, 'Export the current model to a TensorFlow model for external usage.', null)
+                dflog(blankmsg, 'This is still a WIP, and will not work at the moment.', pref='&emsp;Note: ')
+            } else if(value[0] === 'delnode'){
+                dflog(supportmsg, 'Deletes the currently selected node.', null)
+            }
+
+            else{
+                dflog(blankmsg, `Unknown command: ${value[0]}`, null, indent='0.5vw')
+            }
+        } else{
+            dflog(supportmsg, 'Type "help [command]" for more information on that command.<br>---')
+            dflog(blankmsg, 'Check the network\'s validity.', pref='checknet: ')
+    
+            dflog(blankmsg, 'Train the current model', pref=' trainnet: ')
+            
+            dflog(blankmsg, 'Test the current model', pref='testnet: ')
+            
+            dflog(blankmsg, 'Export the current model', pref='exportnet: ')
+            dflog(blankmsg, 'Delete the selected node', pref='delnode: ')
+        }
+    },
+    'about' : ()=>{
+        dflog(supportmsg, 'Welcome to DeepFusion! This is a program where you can create neural networks without graphically and train them too!')
+    },
+    'license' : ()=>{
+        dflog(blankmsg, '&emsp;DeepFusion is a free and opensource software licensed under the GPL3 license.')
+        dflog(blankmsg, '&emsp;You may click on any of the copyright messages at the bottom of this website to view the full license as well as contact information. Or you can click <a href="../license-info">here</a>.')
+    },
+    'checknet' : ()=>{
+        dflog(blankmsg, '<span style="color:#39ff14">OK</span>')
+        check_network()
+    },
+    'trainnet' : ()=>{
+        dflog(blankmsg, '<span style="color:#39ff14">OK</span>')
+        train_net()
+    },
+    'test' : ()=>{
+        dflog(blankmsg, '<span style="color:#39ff14">OK</span>')
+        test_net_random()
+    },
+    'exportnet' : ()=>{
+        dflog(blankmsg, '<span style="color:#39ff14">OK</span>')
+        export_net()
+    },
+    'delnode':()=>{
+        dflog(blankmsg, '<span style="color:#39ff14">OK</span>')
+        delete_selected_node()
+    }
+}
+
 function parse_cmd(command){
     let parts = command.split(' ')
 
@@ -24,11 +90,28 @@ function parse_cmd(command){
         }    
     }
 
-    console.log(execute)
-    console.log(values)
-    console.log(attributes)
+    return [execute, values, attributes]
 }
 
-function execute_cmd(){
-    
+function execute_cmd(cmd, val, attr, orig){
+    dflog(defaultinput, orig)
+
+    // detect validity of command first
+    if(!Object.keys(ALL_CMDS).includes(cmd)){
+        // if command unknown
+        dflog(errormsg, `Unknown command: ${cmd}`)
+        return
+    }
+
+    ALL_CMDS[cmd](val, attr)
+
+    // quick little trick to set the terminal to always at the bottom
+    var messageBody = document.querySelector('.terminal');
+    messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
+}
+
+function update_term_scroll(){
+    // quick little trick to set the terminal to always at the bottom
+    var messageBody = document.querySelector('.terminal');
+    messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
 }
