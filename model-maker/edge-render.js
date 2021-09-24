@@ -12,9 +12,9 @@ const OUTPUT_DAT_UUID = "02dde3a704-50f9-4b74-a641-57720cbb5c0e"
 localStorage.clear()
 
 // warn user of reload
-// window.onbeforeunload = function() {
-//     return "Data will be lost if you leave the page, are you sure?";
-// };
+window.onbeforeunload = function() {
+    return "Data will be lost if you leave the page, are you sure?";
+};
 // update edges at resize
 window.onresize = update_non_temp_edges
 

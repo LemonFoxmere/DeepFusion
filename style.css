@@ -313,7 +313,7 @@ button p{
     background-color: #0f1011;
     border: 1px solid #333737;
     border-bottom: 1px solid rgba(255, 255, 255, 0.145);
-    padding:1vh 0.2vw 0.5vh 0.2vw;
+    padding: 0.3vw 0.5vh 0.3vw;
     border-radius:1.4vh 1.4vh 0 0;
     color:#b3b3b3;
     word-wrap: break-word;

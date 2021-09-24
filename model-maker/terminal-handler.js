@@ -36,11 +36,11 @@ const ALL_CMDS = {
         }
     },
     'about' : ()=>{
-        dflog(supportmsg, 'Welcome to DeepFusion! This is a program where you can create neural networks without graphically and train them too!')
+        dflog(supportmsg, 'Welcome to DeepFusion! This is a program where you can create and train neural networks without writing a single line of code!')
     },
     'license' : ()=>{
         dflog(blankmsg, '&emsp;DeepFusion is a free and opensource software licensed under the GPL3 license.')
-        dflog(blankmsg, '&emsp;You may click on any of the copyright messages at the bottom of this website to view the full license as well as contact information. Or you can click <a href="../license-info">here</a>.')
+        dflog(blankmsg, '&emsp;You may click on any of the copyright messages at the bottom of this webapp to view the full license as well as the contact information. Or you can click <a href="../license-info">here</a>.')
     },
     'checknet' : ()=>{
         dflog(blankmsg, '<span style="color:#39ff14">OK</span>')
