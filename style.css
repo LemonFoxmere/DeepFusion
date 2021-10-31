@@ -584,6 +584,9 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
+input[type=number]:focus{
+    border-color: #be1a00;
+}
 
 .node-selection{
     /* padding-top:clamp(0.2rem, min(1vw, 1vh), 1rem);
