@@ -322,6 +322,10 @@ button p{
     -ms-overflow-style: none;  /* Internet Explorer 10+ */
     scrollbar-width:none;  /* Firefox */
 }
+.terminal::-webkit-scrollbar{
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    display: none;
+}
 
 .terminal-in{
     width:100%;
@@ -342,7 +346,7 @@ button p{
 }
 
 .terminal-in:focus {
-    outline: 1px solid rgb(177, 0, 0);
+    outline: none;
 }
 
 .terminal span{
@@ -564,7 +568,8 @@ hr{
     color:gray;
 }
 
-.number-box:focus{
+input[type=text]:focus{
+    border-top: 1px solid #be1a00;
     border-color: #be1a00;
 }
 
@@ -578,6 +583,9 @@ input::-webkit-inner-spin-button {
 /* Firefox */
 input[type=number] {
   -moz-appearance: textfield;
+}
+input[type=number]:focus{
+    border-color: #be1a00;
 }
 
 .node-selection{
