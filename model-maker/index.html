@@ -120,11 +120,12 @@
         display:flex; align-items: center; justify-content: center; padding:0vh 0.5vw 0vh 0.5vw; flex-direction: column;'>
 
         <div class='terminal' id='dfterm'>
-            <span style='margin:0.5vh 0 0 0'>Welcome to DeepFusion <span style='color:greenyellow'>0.2.0</span>.</span>
+            <span style='margin:0.5vh 0 0 0'>Welcome to DeepFusion <span style='color:greenyellow'>0.3.0</span>.</span>
             <span>If you want to you can support this project on 
                 <a style='color:rgb(0, 153, 255); font-weight: 600;' href='https://github.com/LemonOrangeWasTaken/DeepFusion'>GitHub</a>
                 , or subscribe to my 
                 <a style='color:rgb(255, 68, 68); font-weight: 600;' href='https://www.youtube.com/channel/UCut2xeBl7HcPEPatqpEUoQw'>YouTube</a>.
+                Yes you can scroll on this makeshift terminal.
             </span>
             <span style='margin:0'>---</span>
             <span class='info'>Type "help", "about", or "license" for more information</span>
@@ -178,14 +179,14 @@
         <section class='input-parent-container'>
             <p class='unselectable section-text'>Epoch Size:</p>
             <section class='slider-container'>
-                <input type="range" min="1" max="100" value="5" class="slider" id="epoch-part-slider">
+                <input type="range" min="1" max="1500" value="150" class="slider" id="epoch-part-slider">
                 <input type="number" class="number-box" id="epoch-part"> </input>
             </section>
         </section>        
     </div>
 
     <!-- help btn -->
-    <!-- <button class='subtle-btn' style='position:absolute; top:1vh; right:calc(clamp(1rem, 15vw, 17rem) + 1vh);'>
+    <!-- <button class='subtle-btn' style='position:absolute; top:1vh; right:calc(clamp(1rem, 15vw, 17rem)  1vh);'>
         <h3 class='unselectable' style='cursor:pointer'>
             ?
         </h3>
@@ -201,12 +202,12 @@
     </a>
 
     <!-- zoom control -->
-    <section style='position:absolute; top:1vh; display:flex; justify-content: center; align-items:center; flex-direction: column; z-index: 10;'>
+    <section id="canvas-ctrl" style='position:absolute; top:1vh; display:flex; justify-content: center; align-items:center; flex-direction: column; z-index: 10;'>
         <section style='
             display:flex; flex-direction: row; justify-content: center; align-items: center; background: rgba(99, 99, 99, 0.316); padding: 1vh 1vw 1vh 1vw;
             border-radius: clamp(0.1rem, min(1.3vw, 1.3vh), 2.5rem);
             -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); 
-            box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.248), -5px 5px 20px 0px rgba(0, 0, 0, 0.17); border: 1px solid rgba(187, 187, 187, 0.289)'>
+            box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.248), -5px 5px 20px 0px rgba(0, 0, 0, 0.17); border: 1px solid rgba(187, 187, 187, 0.289);'>
 
             <button id='reset-canvas' class='subtle-btn'>
                 <!-- <h3 class='unselectable  subtle-txt' style='cursor:pointer; margin-bottom:0.4vh; font-size: clamp(0.05rem, min(1.7vh, 1vw), 1rem);'>
@@ -245,12 +246,19 @@
     </section>
 
     <!-- position debug -->
-    <section style='position: absolute; top: 0; left:clamp(1rem, 15vw, 17rem); margin-top:1vh; margin-left:1vh;
+    <section style='position: absolute; top: 0; right:clamp(1rem, 15vw, 17rem); margin-top:1vh; margin-right:1vh;
             display:flex; flex-direction: row; align-items:center'>
         <!-- location thing -->
         <p id='position_debug' class='unselectable' style='color:white; opacity:1; font-family: Montserrat; margin-left:0vw;'>
             0,0
         </p>
+    </section>
+
+    <!-- network name -->
+    <section style='position: absolute; top: 0; left:clamp(1rem, 15vw, 17rem); margin-top:2vh; margin-left:2vh;
+    display:flex; flex-direction: row; align-items:center'>
+        <input id="networkname" maxlength="50" type="text" placeholder="Untitled.h5">
+        </input>
     </section>
     
 
@@ -301,10 +309,11 @@
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.0.0/dist/tf.min.js"></script>
     <script src="../anime.min.js"></script>
     <script src="../json2html.min.js"></script>
-    <script src="events.js"></script>
-    <script src="edge-render.js"></script>
-    <script src="modeling.js"></script>
+    <script src="style.js"></script>
     <script src="templates.js"></script>
+    <script src="events.js"></script>
+    <script src="modeling.js"></script>
     <script src="terminal-handler.js"></script>
+    <script src="edge-render.js"></script>
 </body>
 </html>

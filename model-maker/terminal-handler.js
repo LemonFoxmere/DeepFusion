@@ -55,7 +55,6 @@ const ALL_CMDS = {
         test_net_random()
     },
     'exportnet' : ()=>{
-        dflog(blankmsg, '<span style="color:#39ff14">OK</span>')
         export_net()
     },
     'delnode':()=>{

@@ -4,47 +4,11 @@ const INPUT_DAT_UUID = "026e9328d7-7b71-4af8-8b70-1b4c8cd2a708"
 const OUTPUT_UUID = "00dde3a704-50f9-4b74-a641-57720cbb5c0e"
 const OUTPUT_DAT_UUID = "02dde3a704-50f9-4b74-a641-57720cbb5c0e"
 
-// store previous session's input and output
-// let prev_session_input = localStorage.getItem(INPUT_DAT_UUID)
-// let prev_session_output = localStorage.getItem(OUTPUT_DAT_UUID)
-
-// clear local storage
-localStorage.clear()
-
-// warn user of reload
-window.onbeforeunload = function() {
-    return "Data will be lost if you leave the page, are you sure?";
-};
-// update edges at resize
-window.onresize = update_non_temp_edges
-
-document.body.addEventListener('mouseup', (e) => {
-    document.body.style.cursor = 'default'
-    document.querySelectorAll('.node-out').forEach((e) => {
-        e.style.cursor = 'grab'
-    })
-    document.querySelectorAll('.node-in').forEach((e) => {
-        e.style.cursor = 'grab'
-    })
-})
-
 let main_canvas = document.getElementById('main-canvas')
 let base_canvas = document.getElementById('base-canvas')
 let node_menu = document.getElementById('node-editor')
 let edge_start_node = null
 let edge_start_node_sq = null
-
-const recognized_node_code = ["in", "ou", "de", "ac", "do"]
-
-const activation_name_std = {
-    li : "Linear",
-    si : "Sigmoid",
-    re : "ReLU",
-    se : "Selu",
-    so : "Softmax",
-    ta : "Tanh",
-    el : "Elu", 
-}
 
 /*
 node type standard
@@ -71,8 +35,95 @@ ta = tanh
 el = elu
 */
 
+let recognized_node_code = ["in", "ou", "de", "ac", "do"]
+
+const activation_name_std = {
+    li : "Linear",
+    si : "Sigmoid",
+    re : "ReLU",
+    se : "Selu",
+    so : "Softmax",
+    ta : "Tanh",
+    el : "Elu", 
+}
+
 let hovering_uuid = null
 let selected_uuid = null
+
+// store previous session's input and output
+// let prev_session_input = localStorage.getItem(INPUT_DAT_UUID)
+// let prev_session_output = localStorage.getItem(OUTPUT_DAT_UUID)
+
+let previous_input = localStorage.getItem(INPUT_DAT_UUID)
+let previous_output = localStorage.getItem(OUTPUT_DAT_UUID)
+let restore_input = null
+let restore_output = null
+try{
+    restore_input = JSON.parse(localStorage.getItem(INPUT_DAT_UUID)).data != null
+    restore_output = JSON.parse(localStorage.getItem(OUTPUT_DAT_UUID)).data != null
+    localStorage.clear()
+} catch (err){
+    localStorage.clear()
+    // if nothing exists, create them
+    localStorage.setItem(INPUT_DAT_UUID, JSON.stringify({
+        "name" : "No Input Files",
+        "data" : null,
+    }))
+    localStorage.setItem(OUTPUT_DAT_UUID, JSON.stringify({
+        "name" : "No Output Files",
+        "data" : null,
+    }))
+}
+
+if(restore_input){ // restore the input
+    localStorage.setItem(INPUT_DAT_UUID, previous_input)
+
+    create_node(INPUT_UUID, INPUT_NODE, "in", set_input_menu, null)
+    document.getElementById('input_node_add').classList.add('disable')
+    if(restore_output){ // shift it to the left a bit if the output also exist
+        document.getElementById(INPUT_UUID).style.left = `${document.getElementById(INPUT_UUID).offsetLeft-100}px`
+    }
+    dflog(supportmsg, "Successfully restored input file.")
+} else {
+    // // store empty input and output file data
+    localStorage.setItem(INPUT_DAT_UUID, JSON.stringify({
+        "name" : "No Input Files",
+        "data" : null,
+    }))
+}
+
+if(restore_output){ // restore the output
+    localStorage.setItem(OUTPUT_DAT_UUID, previous_output)
+    create_node(OUTPUT_UUID, OUTPUT_NODE, "ou", set_output_menu, null)
+    document.getElementById('output_node_add').classList.add('disable')
+    if(restore_input){ // shift it to the left a bit if the output also exist
+        document.getElementById(OUTPUT_UUID).style.left = `${document.getElementById(OUTPUT_UUID).offsetLeft+100}px`
+    }
+    dflog(supportmsg, "Successfully restored output file.")
+} else {
+    localStorage.setItem(OUTPUT_DAT_UUID, JSON.stringify({
+        "name" : "No Output Files",
+        "data" : null,
+    }))
+}
+
+// warn user of reload
+// window.onbeforeunload = function() {
+//     return "Data will be lost if you leave the page, are you sure?";
+// };
+
+// update edges at resize
+window.onresize = update_non_temp_edges
+
+document.body.addEventListener('mouseup', (e) => {
+    document.body.style.cursor = 'default'
+    document.querySelectorAll('.node-out').forEach((e) => {
+        e.style.cursor = 'grab'
+    })
+    document.querySelectorAll('.node-in').forEach((e) => {
+        e.style.cursor = 'grab'
+    })
+})
 
 function createLineElement(x, y, length, angle, id, type) {
     var line = document.createElement("div");

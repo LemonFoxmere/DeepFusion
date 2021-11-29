@@ -6,10 +6,6 @@ function create_io_data(name, data){
     }    
 }
 
-// // store empty input and output file data
-localStorage.setItem(INPUT_DAT_UUID, JSON.stringify(create_io_data("No Input Files", null)))
-localStorage.setItem(OUTPUT_DAT_UUID, JSON.stringify(create_io_data("No Output Files", null)))
-
 function create_dense_data(neuron_ct){
     return {
         "neuron_ct" : neuron_ct,
@@ -217,17 +213,7 @@ const DROP_NODE = [
                 "class" : "unselectable node-title",
                 "style" : "cursor:move",
                 "text" : "Dropout"
-            }, { // horizontal line
-                "<>" : "hr"
-            }, { // display node display
-                "<>" : "p",
-                "id" : "${id_tag}info",
-                "class" : "unselectable node-text",
-                "style" : "cursor:move",
-                "html" : "Prob: 0%"
-            }, { // horizontal line
-                "<>" : "hr"
-            }, { // status
+            }, { // horizontal lined warranty of MERCH
                 "<>" : "p",
                 "class" : "unselectable node-text",
                 "style" : "cursor:move",
