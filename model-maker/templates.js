@@ -352,7 +352,7 @@ const DENSE_NODE_MENU = [ // uuid, neuronct
         "html" : "Dense Layer"
     },{
         "<>" : "hr",
-        "style" : "width: 80%; opacity:0.3; color: white",
+        "style" : "width: 100%; height:1px; opacity:0.1; color: white",
     },{
         "<>" : "section",
         "class" : "input-parent-container",
@@ -424,25 +424,29 @@ const DENSE_NODE_MENU = [ // uuid, neuronct
                         "text" : "Elu", 
                     },
                 ],
+            },{
+                "<>" : "hr",
+                "style" : "width: 125%; height:1px; opacity:0.1; color: white; transform:translateX(-10%); margin:5% 0 2% 0",
             },{ //checkbox for using bias
                 "<>" : "section",
                 "class" : "slider-container",
-                "style" : "justify-content: flex-start",
+                "style" : "justify-content: space-between;",
                 "html" : [
                     {
                         "<>" : "p",
                         "class" : "unselectable section-text",
-                        "text" : "Using Bias: ",
+                        "text" : "Using Bias",
                     },{
                         "<>" : "label",
                         "id" : "${uuid}-usebias",
-                        "style" : "margin-left:3%",
+                        "style" : "margin-left:5%; margin-top:2%",
                         "class" : "switch",
                         "html" : [
                             {
                                 "<>" : "input",
                                 "type" : "checkbox",
-                                "class" : "custom-checkbox"
+                                "class" : "custom-checkbox",
+                                "checked" : "true"
                             },{
                                 "<>" : "span",
                                 "class" : "checkbox-slider round",
