@@ -1,14 +1,16 @@
 // ===================== NODE DATA =====================
-function create_io_data(name, data){
+function create_io_data(name, data, dim){
     return {
         "name" : name,
         "data" : data,
+        "dimension" : dim,
     }    
 }
 
-function create_dense_data(neuron_ct){
+function create_dense_data(neuron_ct, activation){
     return {
         "neuron_ct" : neuron_ct,
+        "activation" : activation,
     }    
 }
 
@@ -141,12 +143,24 @@ const DENSE_NODE = [
                 "text" : "Dense"
             }, { // horizontal line
                 "<>" : "hr"
-            }, { // display node display
+            }, { // display node info 1
                 "<>" : "p",
                 "id" : "${id_tag}info",
                 "class" : "unselectable node-text",
                 "style" : "cursor:move",
-                "html" : "Neurons: 10"
+                "text" : "Neurons: 10"
+            }, { // display node info 2
+                "<>" : "p",
+                "id" : "${id_tag}info-act",
+                "class" : "unselectable node-text",
+                "style" : "cursor:move; margin-top:5%",
+                "text" : "Activation: Linear"
+            }, { // display node info 3
+                "<>" : "p",
+                "id" : "${id_tag}info-usebias",
+                "class" : "unselectable node-text",
+                "style" : "cursor:move; margin-top:5%",
+                "text" : "Using Bias: True"
             }, { // horizontal line
                 "<>" : "hr"
             }, { // status
@@ -216,7 +230,7 @@ const DROP_NODE = [
             }, { // horizontal lined warranty of MERCH
                 "<>" : "p",
                 "class" : "unselectable node-text",
-                "style" : "cursor:move",
+                "style" : "cursor:move; margin-top:10%",
                 "html" : "Click To Modify"
             }]
     }, { // node out
@@ -238,31 +252,24 @@ const INPUT_NODE_MENU = [ // file_name
         "html" : "Input File"
     },{
         "<>" : "hr",
-        "style" : "width: 80%; opacity:0.3; color: white",
-    },{
-        "<>" : "button",
-        "class" : "absolute-btn",
-        "id" : "input-upload",
-        "style" : "margin-top:2%",
-        "html" : [
-            {
-                "<>" : "p",
-                "class" : "unselectable section-text",
-                "text" : "Upload Training Input",
-            }
-        ],
+        "style" : "width: 30%; opacity:0.2; color: white",
     },{
         "<>" : "input",
         "id" : "input-file",
         "type" : "file",
         "style" : "display:none",  
     },{
-        "<>" : "hr",
-        "style" : "width: 30%; opacity:0.3; color: white",
-    },{
         "<>" : "section",
         "style" : "width: 85%; display:flex; alight-items:flex-start; flex-direction:column",
-        "html" : [ 
+        "html" : [
+            {
+                "<>" : "button",
+                "class" : "absolute-btn",
+                "id" : "input-upload",
+                "style" : "margin-top:2%; margin-bottom:8%",
+                "text" : "Upload File"
+            },
+            // name
             {
                 "<>" : "p",
                 "style" : "font-weight:300",
@@ -273,15 +280,17 @@ const INPUT_NODE_MENU = [ // file_name
                 "style" : "font-weight:500; opacity:0.6",
                 "text" : "${file_name}",
             },
-            // {
-            //     "<>" : "p",
-            //     "style" : "font-weight:300",
-            //     "text" : "Data Shape:",
-            // }, {
-            //     "<>" : "p",
-            //     "style" : "font-weight:500; opacity:0.6",
-            //     "text" : "${shape}",
-            // }
+            // dimension
+            {
+                "<>" : "p",
+                "style" : "font-weight:300; margin-top:3%",
+                "text" : "Dimension:",
+            }, {
+                "<>" : "p",
+                "id" : "inputmenuname",
+                "style" : "font-weight:500; opacity:0.6",
+                "text" : "${dimension}",
+            }
         ],
     }
 ]
@@ -293,31 +302,24 @@ const OUTPUT_NODE_MENU = [ // file_name
         "html" : "Output File"
     },{
         "<>" : "hr",
-        "style" : "width: 80%; opacity:0.3; color: white",
-    },{
-        "<>" : "button",
-        "class" : "absolute-btn",
-        "id" : "output-upload",
-        "style" : "margin-top:2%",
-        "html" : [
-            {
-                "<>" : "p",
-                "class" : "unselectable section-text",
-                "text" : "Upload Training Output",
-            }
-        ],
+        "style" : "width: 30%; opacity:0.2; color: white",
     },{
         "<>" : "input",
         "id" : "output-file",
         "type" : "file",
         "style" : "display:none",
     },{
-        "<>" : "hr",
-        "style" : "width: 30%; opacity:0.3; color: white",
-    },{
         "<>" : "section",
         "style" : "width: 85%; display:flex; alight-items:flex-start; flex-direction:column",
-        "html" : [ 
+        "html" : [
+            {
+                "<>" : "button",
+                "class" : "absolute-btn",
+                "id" : "output-upload",
+                "style" : "margin-top:2%; margin-bottom:8%",
+                "text" : "Upload File"
+            },
+            // name
             {
                 "<>" : "p",
                 "style" : "font-weight:300",
@@ -328,15 +330,17 @@ const OUTPUT_NODE_MENU = [ // file_name
                 "style" : "font-weight:500; opacity:0.6",
                 "text" : "${file_name}",
             },
-            // {
-            //     "<>" : "p",
-            //     "style" : "font-weight:300",
-            //     "text" : "Data Shape:",
-            // }, {
-            //     "<>" : "p",
-            //     "style" : "font-weight:500; opacity:0.6",
-            //     "text" : "${shape}",
-            // }
+            // dimension
+            {
+                "<>" : "p",
+                "style" : "font-weight:300; margin-top:3%",
+                "text" : "Dimension:",
+            }, {
+                "<>" : "p",
+                "id" : "inputmenuname",
+                "style" : "font-weight:500; opacity:0.6",
+                "text" : "${dimension}",
+            }
         ],
     }
 ]
@@ -353,6 +357,7 @@ const DENSE_NODE_MENU = [ // uuid, neuronct
         "<>" : "section",
         "class" : "input-parent-container",
         "html" : [
+            // Neuron Count
             {
                 "<>" : "p",
                 "class" : "unselectable section-text",
@@ -374,6 +379,75 @@ const DENSE_NODE_MENU = [ // uuid, neuronct
                         "type" : "number",
                         "class" : "number-box",
                         "id" : "${uuid}data",
+                    },
+                ],
+            },
+            // Activation Selection
+            {
+                "<>" : "p",
+                "class" : "unselectable section-text",
+                "style" : "margin-top:5%",
+                "text" : "Activation:",
+            },{
+                "<>" : "select",
+                "id" : "${uuid}-act",
+                "class" : "actiavtion-selector",
+                "style" : "margin-top:3%",
+                "html" : [ // all the options
+                    {
+                        "<>" : "option",
+                        "value" : "li",
+                        "text" : "Linear", 
+                    },{
+                        "<>" : "option",
+                        "value" : "si",
+                        "text" : "Sigmoid", 
+                    },{
+                        "<>" : "option",
+                        "value" : "re",
+                        "text" : "Relu", 
+                    },{
+                        "<>" : "option",
+                        "value" : "se",
+                        "text" : "Selu", 
+                    },{
+                        "<>" : "option",
+                        "value" : "so",
+                        "text" : "Softmax", 
+                    },{
+                        "<>" : "option",
+                        "value" : "ta",
+                        "text" : "Tanh", 
+                    },{
+                        "<>" : "option",
+                        "value" : "el",
+                        "text" : "Elu", 
+                    },
+                ],
+            },{ //checkbox for using bias
+                "<>" : "section",
+                "class" : "slider-container",
+                "style" : "justify-content: flex-start",
+                "html" : [
+                    {
+                        "<>" : "p",
+                        "class" : "unselectable section-text",
+                        "text" : "Using Bias: ",
+                    },{
+                        "<>" : "label",
+                        "id" : "${uuid}-usebias",
+                        "style" : "margin-left:3%",
+                        "class" : "switch",
+                        "html" : [
+                            {
+                                "<>" : "input",
+                                "type" : "checkbox",
+                                "class" : "custom-checkbox"
+                            },{
+                                "<>" : "span",
+                                "class" : "checkbox-slider round",
+                            }
+                        ]
                     }
                 ],
             }

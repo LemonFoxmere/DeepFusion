@@ -18,6 +18,9 @@ function dragCanvas(canvas, elmnts) {
 
     function dragMouseDown(e) {
         e.preventDefault();
+
+        // change cursor
+        document.body.style.cursor = "move"
         // get the mouse cursor position at startup:
         pos3 = e.clientX;
         pos4 = e.clientY;
