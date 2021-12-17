@@ -585,7 +585,7 @@ hr{
 }
 
 .input-parent-container{
-    width:80%;
+    width:90%;
 }
 
 .input-parent-container p{
@@ -687,7 +687,7 @@ input::-webkit-inner-spin-button {
   
 .custom-checkbox:checked + .checkbox-slider {
     background-color: #2196F3;
-    border:1px solid #40a2f3;
+    border:1px solid #48a4ee;
 }
   
 .custom-checkbox:focus + .checkbox-slider {
@@ -740,7 +740,7 @@ select{
     border: 1px solid rgba(255, 255, 255, 0.349);
     color:white;
     border-radius: 100vh;
-    padding: 0.7vh 0 0.7vh 0.6vw;
+    padding: 0.35vh 0 0.35vh 0.6vw;
     font-size: clamp(0.3rem, min(1.7vh, 1.7vw), 2.3rem);
     margin:0;
     cursor: pointer;

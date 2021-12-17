@@ -227,10 +227,20 @@ const DROP_NODE = [
                 "class" : "unselectable node-title",
                 "style" : "cursor:move",
                 "text" : "Dropout"
-            }, { // horizontal lined warranty of MERCH
+            }, { // horizontal line
+                "<>" : "hr"
+            }, { // display node display
+                "<>" : "p",
+                "id" : "${id_tag}info",
+                "class" : "unselectable node-text",
+                "style" : "cursor:move",
+                "html" : "Chance: 0%"
+            }, { // horizontal line
+                "<>" : "hr"
+            }, { // status
                 "<>" : "p",
                 "class" : "unselectable node-text",
-                "style" : "cursor:move; margin-top:10%",
+                "style" : "cursor:move",
                 "html" : "Click To Modify"
             }]
     }, { // node out
@@ -239,7 +249,6 @@ const DROP_NODE = [
         "id" : "${id_tag}out"
     }
 ]
-
 
 
 // ===================== NODES MENUS =====================
@@ -352,7 +361,7 @@ const DENSE_NODE_MENU = [ // uuid, neuronct
         "html" : "Dense Layer"
     },{
         "<>" : "hr",
-        "style" : "width: 100%; height:1px; opacity:0.1; color: white",
+        "style" : "width: 30%; height:1px; opacity:0.1; color: white",
     },{
         "<>" : "section",
         "class" : "input-parent-container",
@@ -426,7 +435,7 @@ const DENSE_NODE_MENU = [ // uuid, neuronct
                 ],
             },{
                 "<>" : "hr",
-                "style" : "width: 125%; height:1px; opacity:0.1; color: white; transform:translateX(-10%); margin:5% 0 2% 0",
+                "style" : "width: 100%; height:1px; opacity:0.1; color: white; margin:7% 0 4% 0",
             },{ //checkbox for using bias
                 "<>" : "section",
                 "class" : "slider-container",
@@ -466,7 +475,7 @@ const ACT_NODE_MENU = [ // uuid, value
         "html" : "Activation Layer"
     },{
         "<>" : "hr",
-        "style" : "width: 80%; opacity:0.3; color: white",
+        "style" : "width: 30%; opacity:0.1; color: white",
     },{
         "<>" : "section",
         "class" : "input-parent-container",
@@ -523,7 +532,7 @@ const DROP_NODE_MENU = [ // uuid, neuronct
         "html" : "Dropout Layer"
     },{
         "<>" : "hr",
-        "style" : "width: 80%; opacity:0.3; color: white",
+        "style" : "width: 30%; opacity:0.1; color: white",
     },{
         "<>" : "section",
         "class" : "input-parent-container",
