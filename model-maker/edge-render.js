@@ -336,7 +336,7 @@ document.getElementById('output_node_add').addEventListener('click', (e) => {
 // create dense node
 document.getElementById('dense_node_add').addEventListener('click', (e) => {
     let uuid = '00'+uuidv4()
-    create_node(uuid, DENSE_NODE, "de", set_dense_menu, JSON.stringify(create_dense_data(10)))
+    create_node(uuid, DENSE_NODE, "de", set_dense_menu, JSON.stringify(create_dense_data(10, "li", true)))
 })
 
 // create activation node

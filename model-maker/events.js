@@ -12,6 +12,10 @@ const CLICK_ZOOM_SPEED = 0.25;
 dragCanvas(document.querySelector('#canvas-drag'), '.node'); // add 
 let shifted = false;
 
+// get background grid size, and turn them into numbers
+let background_grid_size_x = extract_value(document.getElementById("main-canvas").style.backgroundSize.split(" ")[0])
+let background_grid_size_y = extract_value(document.getElementById("main-canvas").style.backgroundSize.split(" ")[1])
+
 function dragCanvas(canvas, elmnts) {
     var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
     canvas.onmousedown = dragMouseDown;
@@ -25,7 +29,7 @@ function dragCanvas(canvas, elmnts) {
         pos3 = e.clientX;
         pos4 = e.clientY;
 
-            // check if its inside of any node / menus
+        // check if its inside of any node / menus
         let x = false;
         document.querySelectorAll(elmnts).forEach(elmnt => {
             let box = elmnt.getBoundingClientRect()
@@ -62,10 +66,12 @@ function dragCanvas(canvas, elmnts) {
         document.querySelectorAll(elmnts).forEach(elmnt => {
             elmnt.classList.add('notransition')
         });
-
         document.querySelectorAll(".crosshair").forEach(elmnt => {
             elmnt.classList.add('notransition')
         });
+        document.querySelectorAll('#main-canvas').forEach((elmnt) => {
+            elmnt.classList.add('notransition')
+        })
 
         document.onmouseup = closeDragElement;
         // call a function whenever the cursor moves:
@@ -88,6 +94,14 @@ function dragCanvas(canvas, elmnts) {
         
         document.querySelector('.crosshair').style.top = (document.querySelector('.crosshair').offsetTop - pos2/zoom) + "px";
         document.querySelector('.crosshair').style.left = (document.querySelector('.crosshair').offsetLeft - pos1/zoom) + "px";
+        document.querySelector('.decorational-crosshair').style.top = (document.querySelector('.decorational-crosshair').offsetTop - pos2/zoom) + "px";
+        document.querySelector('.decorational-crosshair').style.left = (document.querySelector('.decorational-crosshair').offsetLeft - pos1/zoom) + "px";
+
+        // move the background along
+        document.querySelector('#main-canvas').style.backgroundPositionY = document.querySelector('.crosshair').offsetTop
+         - background_grid_size_y/2 + "px";
+        document.querySelector('#main-canvas').style.backgroundPositionX = document.querySelector('.crosshair').offsetLeft
+         - background_grid_size_x/2 + "px";
         
         canvas_position_x -= pos1/zoom; //it's the opposite way around
         canvas_position_y -= pos2/zoom; //it's the opposite way around
@@ -100,14 +114,23 @@ function dragCanvas(canvas, elmnts) {
         // stop moving when mouse button is released:
         document.onmouseup = null;
         document.onmousemove = null;
-        
-        // add back no ransition
+
+        // remove no ransition
         document.querySelectorAll(elmnts).forEach(elmnt => {
             elmnt.classList.remove('notransition')
         });
         document.querySelectorAll(".crosshair").forEach(elmnt => {
             elmnt.classList.remove('notransition')
         });
+        document.querySelectorAll('#main-canvas').forEach((e) => {
+            e.classList.remove('notransition')
+        })
+
+        // move the background along
+        // document.querySelector('#main-canvas').style.backgroundPositionY = (document.querySelector('#functional-crosshair').offsetTop)
+        // - background_grid_size_y/2 + "px";
+        // document.querySelector('#main-canvas').style.backgroundPositionX = (document.querySelector('#functional-crosshair').offsetLeft)
+        // - background_grid_size_x/2 + "px";
     }
 }
 
@@ -119,6 +142,9 @@ document.getElementById('reset-canvas').addEventListener('click', async (e) => {
     document.querySelectorAll('.crosshair').forEach((e) => {
         e.classList.remove('notransition')
     })
+    document.querySelectorAll('#main-canvas').forEach((e) => {
+        e.classList.remove('notransition')
+    })
 
     document.querySelectorAll('.node').forEach((e) => {
         e.style.top = (e.offsetTop - canvas_position_y) + "px";
@@ -129,6 +155,12 @@ document.getElementById('reset-canvas').addEventListener('click', async (e) => {
         e.style.top = (e.offsetTop - canvas_position_y) + "px";
         e.style.left = (e.offsetLeft - canvas_position_x) + "px";
     })
+
+    // move the background along
+    document.querySelector('#main-canvas').style.backgroundPositionY = (document.querySelector('#functional-crosshair').offsetTop)
+    - background_grid_size_y/2 + "px";
+    document.querySelector('#main-canvas').style.backgroundPositionX = (document.querySelector('#functional-crosshair').offsetLeft)
+    - background_grid_size_x/2 + "px";
     
     canvas_position_y = 0
     canvas_position_x = 0
@@ -230,22 +262,6 @@ document.querySelectorAll(".number-box").forEach((e) => { // add all input field
     }
 })
 
-function add_dense_menu_events(uuid){
-    update_menu_slider(uuid, update_dense_slider_data)
-}
-
-function add_activation_menu_events(uuid){
-    // ADDING DROPDOWN FIELD EVENTS
-    // add input field listender
-    let e = document.getElementById(`${uuid}data`)
-    if(e === null) return
-    // console.log(e.id)
-
-    e.onchange = (evt) => {
-        update_act_data(e.id.substring(0,e.id.length-4), e.value) // update values
-    }
-}
-
 function add_input_menu_events(){
     // add input field listender
     let e = document.getElementById("input-upload")
@@ -286,14 +302,32 @@ function add_output_menu_events(){
     })
 }
 
-function add_drop_menu_events(uuid){
-    update_menu_slider(uuid, update_drop_slider_data)
+function add_dense_menu_events(uuid){
+    update_menu_slider(uuid, "neuron", "Neurons")
 }
 
-function update_menu_slider(uuid, update_value){
+function add_activation_menu_events(uuid){
+    // ADDING DROPDOWN FIELD EVENTS
+    // add input field listender
+    let e = document.getElementById(`${uuid}data`)
+    if(e === null) return
+    // console.log(e.id)
+
+    e.onchange = (evt) => {
+        update_act_data(e.id.substring(0,e.id.length-4), e.value) // update values
+    }
+}
+
+function add_drop_menu_events(uuid){
+    update_menu_slider(uuid, "prob", "Chance", data_affix="%")
+}
+
+// Update menu sliders to the node's display value
+// Note: INFO name is the SAME as the DATA name!!!
+function update_menu_slider(uuid, data_name, display_name, data_affix=""){
     { // ADDING INPUT FIELD EVENTS
         // add input field listender
-        let e = document.getElementById(`${uuid}data`)
+        let e = document.getElementById(`${uuid}${data_name}`)
         if(e === null) return
         // console.log(e.id)
         e.addEventListener("keypress", function (evt) {
@@ -317,7 +351,7 @@ function update_menu_slider(uuid, update_value){
                     e.value = min_val;
                 }
                 slider.value = e.value
-                update_value(e.id.substring(0,e.id.length-4), e.value)
+                update_node_data(e.id.substring(0,e.id.length-data_name.length), data_name, e.value, name=display_name, affix=data_affix)
             }
         })
     
@@ -325,14 +359,14 @@ function update_menu_slider(uuid, update_value){
             e.value = document.getElementById(e.id + '-slider').value;
         }
     } { // ADDING SLIDER EVENTS
-        let e = document.getElementById(`${uuid}data-slider`)
+        let e = document.getElementById(`${uuid}${data_name}-slider`)
         e.onmousedown = (evt) => {
             e.onmousemove = (evt2) => {
                 let slider_value = e.value
                 if(document.getElementById(e.id.substring(0,e.id.length-7))){
                     document.getElementById(e.id.substring(0,e.id.length-7)).value = slider_value;
                 }
-                update_value(e.id.substring(0,e.id.length-11), slider_value)
+                update_node_data(e.id.substring(0,e.id.length-data_name.length-7), data_name, e.value, name=display_name, affix=data_affix)
             }
         }
         e.onmouseup = (evt) => {
@@ -351,4 +385,10 @@ function CSVToJSON(csvData) {
     });
     jsonFormat += "}"
     return jsonFormat 
+}
+
+// extracting dom values
+function extract_value(txt) {
+    var numbers = txt.match(/\d/g);
+    return Number((numbers) ? numbers.join("") : "");
 }

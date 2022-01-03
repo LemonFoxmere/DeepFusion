@@ -7,10 +7,11 @@ function create_io_data(name, data, dim){
     }    
 }
 
-function create_dense_data(neuron_ct, activation){
+function create_dense_data(neuron_ct, activation, usebias){
     return {
         "neuron_ct" : neuron_ct,
         "activation" : activation,
+        "usebias" : usebias
     }    
 }
 
@@ -145,7 +146,7 @@ const DENSE_NODE = [
                 "<>" : "hr"
             }, { // display node info 1
                 "<>" : "p",
-                "id" : "${id_tag}info",
+                "id" : "${id_tag}info-neuron",
                 "class" : "unselectable node-text",
                 "style" : "cursor:move",
                 "text" : "Neurons: 10"
@@ -231,7 +232,7 @@ const DROP_NODE = [
                 "<>" : "hr"
             }, { // display node display
                 "<>" : "p",
-                "id" : "${id_tag}info",
+                "id" : "${id_tag}info-prob",
                 "class" : "unselectable node-text",
                 "style" : "cursor:move",
                 "html" : "Chance: 0%"
@@ -382,12 +383,12 @@ const DENSE_NODE_MENU = [ // uuid, neuronct
                         "max" : "200",
                         "value" : "${neuronct}",
                         "class" : "slider",
-                        "id" : "${uuid}data-slider",
+                        "id" : "${uuid}neuron-slider",
                     }, {
                         "<>" : "input",
                         "type" : "number",
                         "class" : "number-box",
-                        "id" : "${uuid}data",
+                        "id" : "${uuid}neuron",
                     },
                 ],
             },
@@ -399,7 +400,7 @@ const DENSE_NODE_MENU = [ // uuid, neuronct
                 "text" : "Activation:",
             },{
                 "<>" : "select",
-                "id" : "${uuid}-act",
+                "id" : "${uuid}-activation",
                 "class" : "actiavtion-selector",
                 "style" : "margin-top:3%",
                 "html" : [ // all the options
@@ -552,12 +553,12 @@ const DROP_NODE_MENU = [ // uuid, neuronct
                         "max" : "100",
                         "value" : "${chance}",
                         "class" : "slider",
-                        "id" : "${uuid}data-slider",
+                        "id" : "${uuid}prob-slider",
                     }, {
                         "<>" : "input",
                         "type" : "number",
                         "class" : "number-box",
-                        "id" : "${uuid}data",
+                        "id" : "${uuid}prob",
                     }
                 ],
             }
@@ -633,18 +634,9 @@ function set_dense_menu(uuid, data){
     htmlObject.innerHTML = json2html.render([{"uuid" : uuid, "neuronct" : neuron_ct}], DENSE_NODE_MENU);
     set_menu(htmlObject)
 
-    document.getElementById(`${uuid}data-slider`).value = neuron_ct // update value
+    document.getElementById(`${uuid}neuron-slider`).value = neuron_ct // update value
     add_dense_menu_events(uuid)
 }
-function update_dense_slider_data(uuid, new_value){
-    document.getElementById(uuid+'info').innerHTML = `Neurons: ${new_value}`
-    let data_uuid = JSON.parse(localStorage.getItem(uuid)).data
-    let new_data = JSON.parse(localStorage.getItem(data_uuid))
-    new_data.neuron_ct = new_value
-    localStorage.setItem(data_uuid, JSON.stringify(new_data))
-}
-
-
 
 function set_act_menu(uuid, data){
     let htmlObject = create_menu_container()
@@ -663,20 +655,21 @@ function update_act_data(uuid, new_value){
     localStorage.setItem(data_uuid, JSON.stringify(new_data))
 }
 
-
-
 function set_drop_menu(uuid, data){
     let htmlObject = create_menu_container()
     let chance = data.chance
     htmlObject.innerHTML = json2html.render([{"uuid" : uuid, "chance" : chance}], DROP_NODE_MENU);
     set_menu(htmlObject)
-    document.getElementById(`${uuid}data-slider`).value = chance // update value
+    document.getElementById(`${uuid}prob-slider`).value = chance // update value
     add_drop_menu_events(uuid)
 }
-function update_drop_slider_data(uuid, new_value){
-    document.getElementById(uuid+'info').innerHTML = `Prob: ${new_value}%`
+
+// -----
+
+function update_node_data(uuid, info_name, new_value, name="Value", affix=""){
+    document.getElementById(uuid+'info-'+info_name).innerHTML = `${name}: ${new_value}${affix}`
     let data_uuid = JSON.parse(localStorage.getItem(uuid)).data
     let new_data = JSON.parse(localStorage.getItem(data_uuid))
-    new_data.value = new_value
+    new_data.neuron_ct = new_value
     localStorage.setItem(data_uuid, JSON.stringify(new_data))
 }

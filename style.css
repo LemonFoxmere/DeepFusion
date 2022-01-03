@@ -11,7 +11,7 @@
 }
 
 body{
-    background-color: #1d2021;
+    background-color: #1f2323ff;
     overflow: hidden;
     color:white;
     font-family:Poppins; 
@@ -50,7 +50,7 @@ button, .buttonlike{
     border-radius: 100vh;
     color:white;
 
-    padding: 1vh 7% 1vh 7%;
+    padding: 0.5vh 7% 0.5vh 7%;
     margin-left: 0.5vw;
     margin-right: 0.5vw;
     margin-top: 0.5vh;
@@ -65,7 +65,7 @@ button, .buttonlike{
     -ms-user-select: none;
     user-select: none;
 
-    font-size: clamp(0.2rem, min(2vh, 2vw), 2rem);
+    font-size: clamp(0.2rem, min(1.8vh, 1.8vw), 1.8rem);
 
     cursor:pointer;
     transition: all 230ms cubic-bezier(0.260, 0.050, 0.250, 1.000); /* custom */
@@ -316,15 +316,37 @@ button p{
     font-size: clamp(0.075rem, min(1.5vh, 1.5vw), 1.3rem);
 }
 
+#node-menu:before{
+    content: "";
+    position:absolute;
+    top:-60px;
+    left:0;
+    height:60px;
+    width: 60px;
+    border-bottom-left-radius: 50%;
+    background:transparent;
+    box-shadow: 0 30px 0 0 #181a1b;
+}
+
+#node-menu:after {
+    content: "";
+    position:absolute;
+    top:-60px;
+    right:0;
+    height:60px;
+    width: 60px;
+    border-bottom-right-radius: 50%;
+    background:transparent;
+    box-shadow: 0 30px 0 0 #181a1b;
+}
+
 .menu-container{
     background-color: rgb(24, 26, 27);
     position:absolute;
     transition: background-color 150ms cubic-bezier(0.260, 0.050, 0.250, 1.000); /* custom */
     z-index: 3;
-}
 
-.menu-container:hover{
-    background-color: #161819;
+    /* box-shadow: 0 0 20px black */
 }
 
 .no-scroll-bar {
@@ -344,7 +366,7 @@ button p{
     background-color: #0f1011;
     border: 1px solid #333737;
     border-bottom: 1px solid rgba(255, 255, 255, 0.145);
-    padding: 0.3vw 0.5vh 0.3vw;
+    padding: 0.3vw 0.5vh 0.3vw 0.5rem;
     border-radius:1.4vh 1.4vh 0 0;
     color:#b3b3b3;
     word-wrap: break-word;
@@ -567,15 +589,6 @@ hr{
     cursor: pointer;
 }
 
-.slider::-moz-range-thumb:hover {
-    width: clamp(0.3rem, min(2.5vw, 2.5vh), 5rem);
-    height: clamp(0.3rem, min(2.5vw, 2.5vh), 5rem);
-}
-.slider::-webkit-slider-thumb:hover{
-    width: clamp(0.3rem, min(2.5vw, 2.5vh), 5rem);
-    height: clamp(0.3rem, min(2.5vw, 2.5vh), 5rem);
-}
-
 .slider-container{
     width:100%;
     display: flex;
@@ -597,7 +610,7 @@ hr{
 /* number input */
 .number-box{
     width: 23%;
-    padding: 0.4vh 0 0.4vh 0;
+    padding: 0.2vh 0 0.2vh 0;
     border: 1px solid #ffffff52;
     border-radius: 100vh;
     text-align: center;

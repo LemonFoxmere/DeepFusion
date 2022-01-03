@@ -17,4 +17,4 @@ let p3 = name_p3[Math.floor(Math.random() * name_p3.length)];
 
 var networkname = p1+p2+p3
 
-document.getElementById("networkname").value = networkname+".h5"
+document.getElementById("networkname").value = networkname
