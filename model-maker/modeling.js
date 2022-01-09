@@ -180,10 +180,10 @@ function check_network(){
         }
 
         // update last neuron count
-        console.log(current_uuid, next_uuid)
+        // console.log(current_uuid, next_uuid)
         if(JSON.parse(localStorage.getItem(current_uuid)).type === 'de'){
-            last_neuron_ct = JSON.parse(localStorage.getItem(JSON.parse(localStorage.getItem(current_uuid)).data)).neuron_ct
-            console.log(last_neuron_ct)
+            last_neuron_ct = JSON.parse(localStorage.getItem(JSON.parse(localStorage.getItem(current_uuid)).data)).neuron
+            // console.log(last_neuron_ct)
         }
 
         // check for repeating activations
@@ -230,16 +230,6 @@ let tXarr = null; let tyarr = null;
 let model = null
 let lr = 0.001
 
-const activation_code_std = {
-    li : "linear",
-    si : "sigmoid",
-    re : "relu",
-    se : "selu",
-    so : "softmax",
-    ta : "tanh",
-    el : "elu", 
-}
-
 /*
 node type standard
 in = input
@@ -261,17 +251,17 @@ commands
 00 = show help
 */
 
-function get_activation(current_uuid){
-    let current_data = JSON.parse(localStorage.getItem(current_uuid))
-    let next_node_data = JSON.parse(localStorage.getItem(current_data.dest))
+// function get_activation(current_uuid){
+//     let current_data = JSON.parse(localStorage.getItem(current_uuid))
+//     let next_node_data = JSON.parse(localStorage.getItem(current_data.dest))
 
-    // check if it is activation node
-    if(next_node_data.type !== 'ac') return "linear"
+//     // check if it is activation node
+//     if(next_node_data.type !== 'ac') return "linear"
 
-    // if it is, check the data of it
-    let next_node_value = JSON.parse(localStorage.getItem(next_node_data.data)).value
-    return activation_code_std[next_node_value]
-}
+//     // if it is, check the data of it
+//     let next_node_value = JSON.parse(localStorage.getItem(next_node_data.data)).value
+//     return activation_code_std[next_node_value]
+// }
 
 function create_model(){
     model = null // clear model first
@@ -293,16 +283,16 @@ function create_model(){
             let layer_data = JSON.parse(localStorage.getItem(current_node_data.data))
             if(current_node_data.from === INPUT_UUID){ // check if it is the first node
                 model.add(tf.layers.dense({
-                    units: Number(layer_data.neuron_ct),
+                    units: Number(layer_data.neuron),
                     inputShape: [X.shape[1]],
-                    useBias: true,
-                    activation: get_activation(current_uuid)
+                    useBias: Boolean(layer_data.useBias),
+                    activation: activation_code_std[layer_data.activation]
                 }))
             } else { // if not, add it like normal
                 model.add(tf.layers.dense({
-                    units: Number(layer_data.neuron_ct),
-                    useBias: true,
-                    activation: get_activation(current_uuid)
+                    units: Number(layer_data.neuron),
+                    useBias: Boolean(layer_data.useBias),
+                    activation: activation_code_std[layer_data.activation]
                 }));
             }
         }
@@ -310,7 +300,7 @@ function create_model(){
 
         if(current_node_data.type === 'do'){ // if current layer is a dropout layer
             let layer_data = JSON.parse(localStorage.getItem(current_node_data.data))
-            drop_rate = Number(layer_data.chance) / 100 // must convert to a percentage scale
+            drop_rate = Number(layer_data.prob) / 100 // must convert to a percentage scale
 
             if(current_node_data.from === INPUT_UUID){ // check if it is the first node
                 model.add(tf.layers.dropout({
@@ -428,7 +418,7 @@ function train_net(){
     tyarr = ty.arraySync()
  
     // check last node's validity
-    console.log(last_neuron_ct)
+    // console.log(last_neuron_ct)
     if(Number(last_neuron_ct) !== Number(y.shape[1])){
         dflog(warningmsg, `Invalid output layer shape! Requires: [${y.shape[1]}]; recieved: [${last_neuron_ct}]`)
         document.querySelector("#train-net").disabled = false
@@ -442,7 +432,7 @@ function train_net(){
     create_model()
     console.log("Compiled: network structure:")
     model.summary()
-    dflog(successmsg, "Successfully built the network. If you would like to verify the strucutre, press [F12 > Console].")
+    dflog(successmsg, "Successfully built the network. If you would like to verify the strucutre, press [F12] > Console.")
 
     // compile model
     let epoch = Number(document.querySelector("#epoch-part-slider").value)

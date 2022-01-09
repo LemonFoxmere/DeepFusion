@@ -302,34 +302,25 @@ function add_output_menu_events(){
     })
 }
 
-function add_dense_menu_events(uuid){
-    update_menu_slider(uuid, "neuron", "Neurons")
-}
-
-function add_activation_menu_events(uuid){
-    // ADDING DROPDOWN FIELD EVENTS
-    // add input field listender
-    let e = document.getElementById(`${uuid}data`)
-    if(e === null) return
-    // console.log(e.id)
-
-    e.onchange = (evt) => {
-        update_act_data(e.id.substring(0,e.id.length-4), e.value) // update values
-    }
-}
-
 function add_drop_menu_events(uuid){
     update_menu_slider(uuid, "prob", "Chance", data_affix="%")
 }
 
-// Update menu sliders to the node's display value
+// Update menu sliders to the node's display value. This is for SLIDER ELEMENTS in the menu ONLY!!!
 // Note: INFO name is the SAME as the DATA name!!!
 function update_menu_slider(uuid, data_name, display_name, data_affix=""){
     { // ADDING INPUT FIELD EVENTS
         // add input field listender
-        let e = document.getElementById(`${uuid}${data_name}`)
+        let e = document.getElementById(`${uuid}${data_name}`) //check is the dataname that is being updated even exist
         if(e === null) return
-        // console.log(e.id)
+        
+        // if the slider indeed exists, then set its current value
+        document.getElementById(e.id + '-slider').value = JSON.parse(
+            localStorage.getItem(
+                JSON.parse(localStorage.getItem(uuid)).data
+            )
+        )[data_name]
+
         e.addEventListener("keypress", function (evt) {
             if (evt.which < 48 || evt.which > 57){
                 evt.preventDefault();
@@ -351,7 +342,7 @@ function update_menu_slider(uuid, data_name, display_name, data_affix=""){
                     e.value = min_val;
                 }
                 slider.value = e.value
-                update_node_data(e.id.substring(0,e.id.length-data_name.length), data_name, e.value, name=display_name, affix=data_affix)
+                update_node_data(e.id.substring(0,e.id.length-data_name.length), data_name, e.value, e.value, name=display_name, affix=data_affix)
             }
         })
     
@@ -366,12 +357,46 @@ function update_menu_slider(uuid, data_name, display_name, data_affix=""){
                 if(document.getElementById(e.id.substring(0,e.id.length-7))){
                     document.getElementById(e.id.substring(0,e.id.length-7)).value = slider_value;
                 }
-                update_node_data(e.id.substring(0,e.id.length-data_name.length-7), data_name, e.value, name=display_name, affix=data_affix)
+                update_node_data(e.id.substring(0,e.id.length-data_name.length-7), data_name, e.value, e.value, name=display_name, affix=data_affix)
             }
         }
         e.onmouseup = (evt) => {
             e.onmousemove = null
         }
+    }
+}
+
+function update_menu_dropdown(uuid, data_name, display_name){
+    let e = document.getElementById(`${uuid}${data_name}`) // check that is the dataname exists
+    if(e === null) return
+
+    // if the slider indeed exists, then set its current value
+    document.getElementById(e.id).value = JSON.parse(
+        localStorage.getItem(
+            JSON.parse(localStorage.getItem(uuid)).data
+        )
+    )[data_name]
+
+    e.onchange = (evt) => { // add the event listener
+        update_node_data(e.id.substring(0,e.id.length-data_name.length), data_name, e.value, activation_name_std[e.value],
+            name=display_name)
+    }
+}
+
+function update_menu_toggle(uuid, data_name, display_name){
+    let e = document.getElementById(`${uuid}${data_name}`) // check that is the dataname exists
+    if(e === null) return
+
+    // if the slider indeed exists, then set its current value
+    document.getElementById(e.id).checked = JSON.parse(
+        localStorage.getItem(
+            JSON.parse(localStorage.getItem(uuid)).data
+        )
+    )[data_name] ? true : false
+
+    e.onchange = (evt) => { // add the event listener
+        update_node_data(e.id.substring(0,e.id.length-data_name.length), data_name, e.checked, e.checked?"Yes":"No",
+            name=display_name)
     }
 }
 
