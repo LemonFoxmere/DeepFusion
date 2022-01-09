@@ -10,43 +10,6 @@ let node_menu = document.getElementById('node-editor')
 let edge_start_node = null
 let edge_start_node_sq = null
 
-/*
-node type standard
-in = input
-ou = output
-de = dense
-ac = activation
-do = dropout
-
-element type standard
-00 = node
-01 = edge
-02 = data file
-...
-FF = ?
-
-activation type standard
-li = linear
-si = sigmoid
-re = relu
-se = selu
-so = softmax
-ta = tanh
-el = elu
-*/
-
-let recognized_node_code = ["in", "ou", "de", "ac", "do"]
-
-const activation_name_std = {
-    li : "Linear",
-    si : "Sigmoid",
-    re : "ReLU",
-    se : "Selu",
-    so : "Softmax",
-    ta : "Tanh",
-    el : "Elu", 
-}
-
 let hovering_uuid = null
 let selected_uuid = null
 
@@ -336,7 +299,7 @@ document.getElementById('output_node_add').addEventListener('click', (e) => {
 // create dense node
 document.getElementById('dense_node_add').addEventListener('click', (e) => {
     let uuid = '00'+uuidv4()
-    create_node(uuid, DENSE_NODE, "de", set_dense_menu, JSON.stringify(create_dense_data(10)))
+    create_node(uuid, DENSE_NODE, "de", set_dense_menu, JSON.stringify(create_dense_data(10, "li", true)))
 })
 
 // create activation node
