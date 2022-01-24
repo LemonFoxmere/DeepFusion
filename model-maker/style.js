@@ -1,15 +1,15 @@
 // show warning message before unloading
-window.onbeforeunload = function (e) {
-    e = e || window.event;
+// window.onbeforeunload = function (e) {
+//     e = e || window.event;
 
-    // For IE and Firefox prior to version 4
-    if (e) {
-        e.returnValue = 'Leaving this site WILL result in your work permanatly erased. But your IO data will be kept. Are you sure?';
-    }
+//     // For IE and Firefox prior to version 4
+//     if (e) {
+//         e.returnValue = 'Leaving this site WILL result in your work permanatly erased. But your IO data will be kept. Are you sure?';
+//     }
 
-    // For Safari
-    return 'Leaving this site WILL result in your work permanatly erased. But your IO data will be kept. Are you sure?';
-};
+//     // For Safari
+//     return 'Leaving this site WILL result in your work permanatly erased. But your IO data will be kept. Are you sure?';
+// };
 
 name_p1 = ["Colossal", "Decisive", "Marked", "Jaded", "Petite", "Handsome", "Tiny", "Giant", "Likeable", "Exotic", "Big","Small","Long","Special","Bland","Strange","Beautiful",
 "Cynical","Sociopathic","Amazing"]

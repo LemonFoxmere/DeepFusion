@@ -201,34 +201,42 @@
         </a>
 
         <!-- zoom control -->
-        <section id="canvas-ctrl" style='position:absolute; top:1vh; display:flex; justify-content: center; align-items:center; flex-direction: column; z-index: 10;'>
+        <section id="canvas-ctrl" style='position:absolute; top:1rem; display:flex; justify-content: center; align-items:center; flex-direction: column; z-index: 10;'>
             <section style='
-                display:flex; flex-direction: row; justify-content: center; align-items: center; background: #181a1b7b; padding: 0.5vh 0 0.5vh 0;
-                border-radius: clamp(0.1rem, min(1.3vw, 1.3vh), 2.5rem);
+                display:flex; flex-direction: row; justify-content: center; align-items: center; background: #181a1bd3;
+                border-radius: 0.7rem;
                 -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); 
-                box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.248), -5px 5px 20px 0px rgba(0, 0, 0, 0.17); border: 1px solid #373c3c'>
+                box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.248), -5px 5px 20px 0px rgba(0, 0, 0, 0.17); border: 1px solid #373c3c;
+                padding:0.2rem 0.4rem 0.2rem 0.4rem'>
 
                 <button id='reset-canvas' class='subtle-btn' title="Recenter Canvas">
                     <!-- recenter -->
-                    <img style="width:35%; height:auto;" src="../re-center.svg" alt="Center">
+                    <img style="width:40%; height:auto;" src="../re-center.svg" alt="Center">
                 </button>
                 
-                <div class='vr' style='height: 4vh; position: relative; background-color: rgba(255, 255, 255, 0.412); z-index: 10; width:1px'></div>
+                <div class='vr' style='height: 1.5rem; position: relative; background-color: rgba(255, 255, 255, 0.205); z-index: 10; width:1px'></div>
 
                 <button id='zoom-in' class='subtle-btn' title="Zoom In">
                     <!-- zoon in -->
-                    <img style="width:30%; height:auto;" src="../zoom-in.svg" alt="Zoom In">
+                    <img style="width:40%; height:auto;" src="../zoom-in.svg" alt="Zoom In">
                 </button>
                 
                 <button id='zoom-out' class='subtle-btn' title="Zoom Out">
                     <!-- zoon out -->
-                    <img style="width:30%; height:auto;" src="../zoom-out.svg" alt="Zoom Out">
+                    <img style="width:40%; height:auto;" src="../zoom-out.svg" alt="Zoom Out">
                 </button>
 
                 <button id='zoom-res' class='subtle-btn' title="Reset Zoom">
                     <!-- zoon reset -->
                     <img style="width:40%; height:auto;" src="../zoom-reset.svg" alt="Reset Zoom">
                 </button>
+
+                <!-- <div class='vr' style='height: 1.5rem; position: relative; background-color: rgba(255, 255, 255, 0.205); z-index: 10; width:1px'></div>
+
+                <button id='selection' class='subtle-btn' title="Selection">
+                    <img style="width:40%; height:auto;" src="../selection.svg" alt="Selection">
+                </button> -->
+
             </section>
             <p id='zoom-scale' class='unselectable' style='color:white; opacity:1; margin-top:0.5vh; font-family: Montserrat'>
                 100%
@@ -277,20 +285,21 @@
             </section>
         </section>
     </div>
-
+    
     <noscript>
         <style type="text/css">
             .pagecontainer {display:none;}
         </style>
-        <div class="noscriptmsg">
-            <h1 style="font-family: arial; text-align: center; margin-bottom:2rem; cursor: text">
+        <div class="noscriptmsg" style="z-index:999; position:absolute; width:100%; height:100%; top:0; left:0; display:flex; flex-direction: column;
+        align-items: center; justify-content: center; background-color: #00000083; backdrop-filter: blur(10px);">
+            <h1 style="font-family: arial; text-align: center; margin-bottom:2rem; cursor: text; z-index: 1000;">
                 ¯\_(ツ)_/¯
             </h1>
-            <h2 style="letter-spacing:0; font-weight: 500; font-size: 2rem; cursor: text">
+            <h2 style="letter-spacing:0; font-weight: 500; font-size: 2rem; cursor: text; z-index: 1000;">
                 You don't seem to have Javascript enabled...
             </h2>
-            <h4 style="text-align:center; margin-top:1vh; font-weight: 400; font-size: 1rem">
-                Fun fact: you need Javascript to make neural networks!
+            <h4 style="text-align:center; margin-top:1vh; font-weight: 400; font-size: 1rem; z-index: 1000;">
+                This site needs Javascript to function properly. I swear it's not a scam.
             </h4>
         </div>
     </noscript>    

@@ -43,7 +43,7 @@ const INPUT_NODE_MENU = [ // file_name
                 "text" : "Dimension:",
             }, {
                 "<>" : "p",
-                "id" : "inputmenuname",
+                "id" : "inputmenudim",
                 "style" : "font-weight:500; opacity:0.6",
                 "text" : "${dimension}",
             }

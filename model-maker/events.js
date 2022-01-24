@@ -3,13 +3,15 @@ const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay))
 
 let canvas_position_x = 0;
 let canvas_position_y = 0;
-let canvas = document.getElementById('main-canvas');
+let canvas = document.getElementById("main-canvas");
 // canvas zooms
 let zoom = 1;
 const WHEEL_ZOOM_SPEED = 0.1;
 const CLICK_ZOOM_SPEED = 0.25;
 
-dragCanvas(document.querySelector('#canvas-drag'), '.node'); // add 
+let is_selecting = false
+
+dragCanvas(document.querySelector("#canvas-drag"), ".node"); // add 
 let shifted = false;
 
 // get background grid size, and turn them into numbers
@@ -21,6 +23,8 @@ function dragCanvas(canvas, elmnts) {
     canvas.onmousedown = dragMouseDown;
 
     function dragMouseDown(e) {
+        if(is_selecting) return
+
         e.preventDefault();
 
         // change cursor
@@ -35,7 +39,7 @@ function dragCanvas(canvas, elmnts) {
             let box = elmnt.getBoundingClientRect()
             if(pos3 > box.x && pos3 < box.x + box.width &&
                 pos4 > box.y && pos4 < box.y + box.height){
-                    if(elmnt.classList.contains('edge')){
+                    if(elmnt.classList.contains("edge")){
                         x += false;
                     } else {
                         x += true;
@@ -46,13 +50,13 @@ function dragCanvas(canvas, elmnts) {
 
         if(x) return
 
-        document.querySelectorAll('.node-drag').forEach((elm2) => {
-            elm2.classList.remove('selected-node')
+        document.querySelectorAll(".node-drag").forEach((elm2) => {
+            elm2.classList.remove("selected-node")
             reset_editor_menu()
-            document.getElementById('del-selected').disabled = true // enable option for delete
+            document.getElementById("del-selected").disabled = true // enable option for delete
         }) // remove all node selection and disable node deletion button
 
-        document.querySelectorAll('.menu-container').forEach(elmnt => {
+        document.querySelectorAll(".menu-container").forEach(elmnt => {
             let box = elmnt.getBoundingClientRect()
             if(pos3 > box.x && pos3 < box.x + box.width &&
                 pos4 > box.y && pos4 < box.y + box.height){
@@ -64,13 +68,13 @@ function dragCanvas(canvas, elmnts) {
 
         // remove transition temporarily
         document.querySelectorAll(elmnts).forEach(elmnt => {
-            elmnt.classList.add('notransition')
+            elmnt.classList.add("notransition")
         });
         document.querySelectorAll(".crosshair").forEach(elmnt => {
-            elmnt.classList.add('notransition')
+            elmnt.classList.add("notransition")
         });
-        document.querySelectorAll('#main-canvas').forEach((elmnt) => {
-            elmnt.classList.add('notransition')
+        document.querySelectorAll("#main-canvas").forEach((elmnt) => {
+            elmnt.classList.add("notransition")
         })
 
         document.onmouseup = closeDragElement;
@@ -85,28 +89,28 @@ function dragCanvas(canvas, elmnts) {
         pos2 = pos4 - e.clientY;
         pos3 = e.clientX;
         pos4 = e.clientY;
-        // set the element's new position:
+        // set the element"s new position:
         document.querySelectorAll(elmnts).forEach(elmnt => {
             elmnt.style.top = (elmnt.offsetTop - pos2/zoom) + "px";
             elmnt.style.left = (elmnt.offsetLeft - pos1/zoom) + "px";
         });
 
         
-        document.querySelector('.crosshair').style.top = (document.querySelector('.crosshair').offsetTop - pos2/zoom) + "px";
-        document.querySelector('.crosshair').style.left = (document.querySelector('.crosshair').offsetLeft - pos1/zoom) + "px";
-        document.querySelector('.decorational-crosshair').style.top = (document.querySelector('.decorational-crosshair').offsetTop - pos2/zoom) + "px";
-        document.querySelector('.decorational-crosshair').style.left = (document.querySelector('.decorational-crosshair').offsetLeft - pos1/zoom) + "px";
+        document.querySelector(".crosshair").style.top = (document.querySelector(".crosshair").offsetTop - pos2/zoom) + "px";
+        document.querySelector(".crosshair").style.left = (document.querySelector(".crosshair").offsetLeft - pos1/zoom) + "px";
+        document.querySelector(".decorational-crosshair").style.top = (document.querySelector(".decorational-crosshair").offsetTop - pos2/zoom) + "px";
+        document.querySelector(".decorational-crosshair").style.left = (document.querySelector(".decorational-crosshair").offsetLeft - pos1/zoom) + "px";
 
         // move the background along
-        document.querySelector('#main-canvas').style.backgroundPositionY = document.querySelector('.crosshair').offsetTop
+        document.querySelector("#main-canvas").style.backgroundPositionY = document.querySelector(".crosshair").offsetTop
          - background_grid_size_y/2 + "px";
-        document.querySelector('#main-canvas').style.backgroundPositionX = document.querySelector('.crosshair').offsetLeft
+        document.querySelector("#main-canvas").style.backgroundPositionX = document.querySelector(".crosshair").offsetLeft
          - background_grid_size_x/2 + "px";
         
-        canvas_position_x -= pos1/zoom; //it's the opposite way around
-        canvas_position_y -= pos2/zoom; //it's the opposite way around
+        canvas_position_x -= pos1/zoom; //it"s the opposite way around
+        canvas_position_y -= pos2/zoom; //it"s the opposite way around
         // get string and apply
-        document.querySelector('#position_debug').innerHTML = Math.floor(canvas_position_x) + "," + Math.floor(canvas_position_y)
+        document.querySelector("#position_debug").innerHTML = Math.floor(canvas_position_x) + "," + Math.floor(canvas_position_y)
         
     }
 
@@ -117,58 +121,113 @@ function dragCanvas(canvas, elmnts) {
 
         // remove no ransition
         document.querySelectorAll(elmnts).forEach(elmnt => {
-            elmnt.classList.remove('notransition')
+            elmnt.classList.remove("notransition")
         });
         document.querySelectorAll(".crosshair").forEach(elmnt => {
-            elmnt.classList.remove('notransition')
+            elmnt.classList.remove("notransition")
         });
-        document.querySelectorAll('#main-canvas').forEach((e) => {
-            e.classList.remove('notransition')
+        document.querySelectorAll("#main-canvas").forEach((e) => {
+            e.classList.remove("notransition")
         })
 
         // move the background along
-        // document.querySelector('#main-canvas').style.backgroundPositionY = (document.querySelector('#functional-crosshair').offsetTop)
+        // document.querySelector("#main-canvas").style.backgroundPositionY = (document.querySelector("#functional-crosshair").offsetTop)
         // - background_grid_size_y/2 + "px";
-        // document.querySelector('#main-canvas').style.backgroundPositionX = (document.querySelector('#functional-crosshair').offsetLeft)
+        // document.querySelector("#main-canvas").style.backgroundPositionX = (document.querySelector("#functional-crosshair").offsetLeft)
         // - background_grid_size_x/2 + "px";
     }
 }
 
+function dragElement(elmnt) {
+    var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+
+    if (document.getElementById(elmnt.id + "header")) {
+        // if present, the header is where you move the DIV from:
+        document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
+    } else {
+        // otherwise, move the DIV from anywhere inside the DIV:
+        elmnt.onmousedown = dragMouseDown;
+    }
+
+    function dragMouseDown(e) {
+        if(is_selecting) return
+
+        e.preventDefault();
+        // get the mouse cursor position at startup:
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+
+        document.querySelectorAll('.node').forEach(elmnt => {
+            elmnt.classList.add('notransition')
+        });
+
+        document.onmouseup = closeDragElement;
+        // call a function whenever the cursor moves:
+        document.onmousemove = elementDrag;
+
+    }
+
+    function elementDrag(e) {
+        e.preventDefault();
+        // calculate the new cursor position:
+        pos1 = pos3 - e.clientX;
+        pos2 = pos4 - e.clientY;
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+        // set the element's new position:
+        elmnt.style.top = (elmnt.offsetTop - pos2/zoom) + "px";
+        elmnt.style.left = (elmnt.offsetLeft - pos1/zoom) + "px";
+
+        // update the node's edges too
+        update_non_temp_edges()
+    }
+
+    function closeDragElement() {
+        // stop moving when mouse button is released:
+        document.onmouseup = null;
+        document.onmousemove = null;
+        // add back transition
+        document.querySelectorAll('.node').forEach(elmnt => {
+            elmnt.classList.remove('notransition')
+        });
+    }
+}
+
 // reset canvas position
-document.getElementById('reset-canvas').addEventListener('click', async (e) => {
-    document.querySelectorAll('.node').forEach((e) => {
-        e.classList.remove('notransition')
+document.getElementById("reset-canvas").addEventListener("click", async (e) => {
+    document.querySelectorAll(".node").forEach((e) => {
+        e.classList.remove("notransition")
     })
-    document.querySelectorAll('.crosshair').forEach((e) => {
-        e.classList.remove('notransition')
+    document.querySelectorAll(".crosshair").forEach((e) => {
+        e.classList.remove("notransition")
     })
-    document.querySelectorAll('#main-canvas').forEach((e) => {
-        e.classList.remove('notransition')
+    document.querySelectorAll("#main-canvas").forEach((e) => {
+        e.classList.remove("notransition")
     })
 
-    document.querySelectorAll('.node').forEach((e) => {
+    document.querySelectorAll(".node").forEach((e) => {
         e.style.top = (e.offsetTop - canvas_position_y) + "px";
         e.style.left = (e.offsetLeft - canvas_position_x) + "px";
     })
 
-    document.querySelectorAll('.crosshair').forEach((e) => {
+    document.querySelectorAll(".crosshair").forEach((e) => {
         e.style.top = (e.offsetTop - canvas_position_y) + "px";
         e.style.left = (e.offsetLeft - canvas_position_x) + "px";
     })
 
     // move the background along
-    document.querySelector('#main-canvas').style.backgroundPositionY = (document.querySelector('#functional-crosshair').offsetTop)
+    document.querySelector("#main-canvas").style.backgroundPositionY = (document.querySelector("#functional-crosshair").offsetTop)
     - background_grid_size_y/2 + "px";
-    document.querySelector('#main-canvas').style.backgroundPositionX = (document.querySelector('#functional-crosshair').offsetLeft)
+    document.querySelector("#main-canvas").style.backgroundPositionX = (document.querySelector("#functional-crosshair").offsetLeft)
     - background_grid_size_x/2 + "px";
     
     canvas_position_y = 0
     canvas_position_x = 0
-    document.querySelector('#position_debug').innerHTML = canvas_position_x + "," + canvas_position_y
+    document.querySelector("#position_debug").innerHTML = canvas_position_x + "," + canvas_position_y
 })
 
 // add zoom functionality
-document.getElementById('zoom-in').addEventListener('click', (e) => {
+document.getElementById("zoom-in").addEventListener("click", (e) => {
     zoom += CLICK_ZOOM_SPEED
     if(zoom > 3){
         zoom = 3        
@@ -177,7 +236,7 @@ document.getElementById('zoom-in').addEventListener('click', (e) => {
     update_zoom_text()
 })
 
-document.getElementById('zoom-out').addEventListener('click', (e) => {
+document.getElementById("zoom-out").addEventListener("click", (e) => {
     zoom -= CLICK_ZOOM_SPEED
     if(zoom < 0.2){
         zoom = 0.2        
@@ -186,7 +245,7 @@ document.getElementById('zoom-out').addEventListener('click', (e) => {
     update_zoom_text()
 })
 
-document.getElementById('zoom-res').addEventListener('click', (e) => {
+document.getElementById("zoom-res").addEventListener("click", (e) => {
     canvas.style.transform = `scale(${zoom = 1})`;  
     update_zoom_text()
 })
@@ -194,7 +253,7 @@ document.getElementById('zoom-res').addEventListener('click', (e) => {
 document.addEventListener("wheel", function(e) { 
     // check if not in menus
     let x = false
-    document.querySelectorAll('.menu-container').forEach(elmnt => {
+    document.querySelectorAll(".menu-container").forEach(elmnt => {
         let box = elmnt.getBoundingClientRect()
         if(e.x > box.x && e.x < box.x + box.width &&
             e.y > box.y && e.y < box.y + box.height){
@@ -215,7 +274,7 @@ document.addEventListener("wheel", function(e) {
 });
 
 function update_zoom_text(){
-    document.getElementById('zoom-scale').innerHTML = Math.floor(zoom*100) + "%"
+    document.getElementById("zoom-scale").innerHTML = Math.floor(zoom*100) + "%"
 }
 
 // field input related
@@ -244,8 +303,8 @@ document.querySelectorAll(".number-box").forEach((e) => { // add all input field
     }); // prevent unorthodox number entering
     
     e.addEventListener("focusout", (evt) => {
-        if(document.getElementById(e.id + '-slider')){
-            let slider = document.getElementById(e.id + '-slider')
+        if(document.getElementById(e.id + "-slider")){
+            let slider = document.getElementById(e.id + "-slider")
             let max_val = slider.max
             let min_val = slider.min
             if (Number(e.value) > max_val){
@@ -257,8 +316,8 @@ document.querySelectorAll(".number-box").forEach((e) => { // add all input field
         }
     })
 
-    if(document.getElementById(e.id + '-slider')){
-        e.value = document.getElementById(e.id + '-slider').value;
+    if(document.getElementById(e.id + "-slider")){
+        e.value = document.getElementById(e.id + "-slider").value;
     }
 })
 
@@ -267,9 +326,9 @@ function add_input_menu_events(){
     let e = document.getElementById("input-upload")
     if(e === null) return
         
-    document.querySelector('#input-file').onchange = () => {
+    document.querySelector("#input-file").onchange = () => {
         // read csv file from the upload button
-        let file = document.querySelector('#input-file').files[0], read = new FileReader()
+        let file = document.querySelector("#input-file").files[0], read = new FileReader()
         let file_name = file.name
         read.readAsBinaryString(file); // convert to String
         read.onloadend = function(){
@@ -277,8 +336,8 @@ function add_input_menu_events(){
         }
     }
 
-    document.getElementById('input-upload').addEventListener('click', (evt) => {
-        document.getElementById('input-file').click()
+    document.getElementById("input-upload").addEventListener("click", (evt) => {
+        document.getElementById("input-file").click()
     })
 }
 
@@ -287,9 +346,9 @@ function add_output_menu_events(){
     let e = document.getElementById("output-upload")
     if(e === null) return
         
-    document.querySelector('#output-file').onchange = () => {
+    document.querySelector("#output-file").onchange = () => {
         // read csv file from the upload button
-        let file = document.querySelector('#output-file').files[0], read = new FileReader()
+        let file = document.querySelector("#output-file").files[0], read = new FileReader()
         let file_name = file.name
         read.readAsBinaryString(file); // convert to String
         read.onloadend = function(){
@@ -297,8 +356,8 @@ function add_output_menu_events(){
         }
     }
 
-    document.getElementById('output-upload').addEventListener('click', (evt) => {
-        document.getElementById('output-file').click()
+    document.getElementById("output-upload").addEventListener("click", (evt) => {
+        document.getElementById("output-file").click()
     })
 }
 
@@ -306,7 +365,33 @@ function add_drop_menu_events(uuid){
     update_menu_slider(uuid, "prob", "Chance", data_affix="%")
 }
 
-// Update menu sliders to the node's display value. This is for SLIDER ELEMENTS in the menu ONLY!!!
+// TODO: come back later and add multi selection
+
+// function update_shortcuts(e){
+//     is_selecting = true
+//     document.getElementById("selection").classList.add("hovering-subtle-btn")
+// }
+// function reset_shortcuts(e){
+//     is_selecting = false
+//     document.getElementById("selection").classList.remove("hovering-subtle-btn")
+// }
+
+// window.addEventListener ? document.addEventListener('keydown', update_shortcuts) : document.attachEvent('keydown', update_shortcuts);
+// window.addEventListener ? document.addEventListener('keyup', reset_shortcuts) : document.attachEvent('keydown', reset_shortcuts);
+
+// button events related
+
+// TODO: come back later and add multi selection. This is that button responsible for triggering it.
+// document.getElementById("selection").addEventListener("click", e=>{ // for updating selection button
+//     is_selecting = !is_selecting;
+//     if(is_selecting){
+//         document.getElementById("selection").classList.add("hovering-subtle-btn")
+//     } else {
+//         document.getElementById("selection").classList.remove("hovering-subtle-btn")
+//     }
+// })
+
+// Update menu sliders to the node"s display value. This is for SLIDER ELEMENTS in the menu ONLY!!!
 // Note: INFO name is the SAME as the DATA name!!!
 function update_menu_slider(uuid, data_name, display_name, data_affix=""){
     { // ADDING INPUT FIELD EVENTS
@@ -315,7 +400,7 @@ function update_menu_slider(uuid, data_name, display_name, data_affix=""){
         if(e === null) return
         
         // if the slider indeed exists, then set its current value
-        document.getElementById(e.id + '-slider').value = JSON.parse(
+        document.getElementById(e.id + "-slider").value = JSON.parse(
             localStorage.getItem(
                 JSON.parse(localStorage.getItem(uuid)).data
             )
@@ -332,8 +417,8 @@ function update_menu_slider(uuid, data_name, display_name, data_affix=""){
         }); // prevent unorthodox number entering
         
         e.addEventListener("focusout", (evt) => {
-            if(document.getElementById(e.id + '-slider')){
-                let slider = document.getElementById(e.id + '-slider')
+            if(document.getElementById(e.id + "-slider")){
+                let slider = document.getElementById(e.id + "-slider")
                 let max_val = slider.max
                 let min_val = slider.min
                 if (Number(e.value) > max_val){
@@ -346,8 +431,8 @@ function update_menu_slider(uuid, data_name, display_name, data_affix=""){
             }
         })
     
-        if(document.getElementById(e.id + '-slider')){
-            e.value = document.getElementById(e.id + '-slider').value;
+        if(document.getElementById(e.id + "-slider")){
+            e.value = document.getElementById(e.id + "-slider").value;
         }
     } { // ADDING SLIDER EVENTS
         let e = document.getElementById(`${uuid}${data_name}-slider`)
@@ -402,14 +487,22 @@ function update_menu_toggle(uuid, data_name, display_name){
 
 // CSV to json
 function CSVToJSON(csvData) {
-    let jsonFormat = "{\n"
+    let jsonFormat = "["
     let i = 0
-    csvData.split('\n').forEach(s => {
-        jsonFormat += "\t\"" + i + "\":[" + s + "]" + (csvData.split('\n').length-1 != i ? ",\n" : "\n")
-        i += 1
+    csvData.split("\n").forEach(s => {
+        jsonFormat += "[" + s + "]" + (csvData.split("\n").length-1 != i ? "," : "")
+        i++
     });
-    jsonFormat += "}"
+    jsonFormat += "]"
     return jsonFormat 
+}
+
+function detectDim(jsonData) { // recursive algorithm to determine the data dimensions
+    console.log(jsonData.length)
+    if(jsonData.length == undefined){ // base case
+        return [1]
+    }
+    return [jsonData.length].concat(detectDim(jsonData[0]))
 }
 
 // extracting dom values

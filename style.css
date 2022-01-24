@@ -128,7 +128,8 @@ button:disabled:hover{
     border-radius: clamp(0.1rem, min(0.7vw, 0.7vh), 1.7rem);
     transition: all 230ms cubic-bezier(0.260, 0.050, 0.250, 1.000); /* custom */
     box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.248), -5px 5px 20px 0px rgba(0, 0, 0, 0.17);
-    border: 1px solid #373c3c
+    border: 1px solid #373c3c;
+    margin:1vh 1vw 0 0;
 }
 
 .subtle-btn{
@@ -137,22 +138,22 @@ button:disabled:hover{
     justify-content: center;
 
     border:none;
-    margin:0px 0.3vw 0px 0.3vw;
+    margin:0px 0.1rem 0px 0.1rem;
     background-color: transparent;
     padding:0;
-    border-radius: calc(clamp(0.5rem, min(4.5vh, 4.5vw), 5rem) / 5);
-    width: clamp(0.5rem, min(4.5vh, 4.5vw), 5rem);
-    height: clamp(0.5rem, min(4.5vh, 4.5vw), 5rem);
+    border-radius: 0.6rem;
+    width: 2.5rem;
+    height: 2.5rem;
     transition: background-color 230ms cubic-bezier(0.260, 0.050, 0.250, 1.000); /* custom */
     z-index: 10;
 }
-
 .subtle-btn:hover{
-    /* background-color: #0e0f0f; */
-    width: clamp(0.5rem, min(4.5vh, 4.5vw), 5rem);
-    height: clamp(0.5rem, min(4.5vh, 4.5vw), 5rem);
     padding:0;
-    background-color: rgba(255, 255, 255, 0.158);
+    background-color: rgba(255, 255, 255, 0.075);
+}
+.hovering-subtle-btn, .hovering-subtle-btn:hover{
+    padding:0;
+    background-color: rgba(255, 255, 255, 0.24);
 }
 
 /* TEXT STYLE STUFF */
@@ -440,7 +441,7 @@ hr{
 
 .vr{
     width:1px;
-    margin: 0 0.5vw 0 0.5vw;
+    margin: 0 0.5rem 0 0.5rem;
     background-color: rgba(255, 255, 255, 0.062);
     z-index: 10;
     background-color:#ffffff3d

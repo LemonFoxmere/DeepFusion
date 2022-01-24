@@ -382,8 +382,8 @@ function train_net(){
 
     // check if training length and label length match
     
-    if(Object.keys(training_full).length !== Object.keys(label_full).length){
-        dflog(warningmsg, `IO length mismatch! InputLength: ${Object.keys(training_full).length}; OutputLength: ${Object.keys(label_full).length}`)
+    if(training_full.length !== label_full.length){
+        dflog(warningmsg, `IO length mismatch! InputLength: ${training_full}; OutputLength: ${label_full.length}`)
         document.querySelector("#train-net").disabled = false
         document.querySelector("#train-net").classList.remove('disable')
         document.querySelector("#test-net").disabled = false
@@ -395,11 +395,11 @@ function train_net(){
     dflog(successmsg, "No errors found in IO files")
     
     // start partition
-    let split_index = Math.floor(Object.keys(training_full).length * (document.getElementById('test-part-slider').value / 100))
+    let split_index = Math.floor(training_full.length * (document.getElementById('test-part-slider').value / 100))
     dflog(debugmsg, `${split_index} testing data`)
-    dflog(debugmsg, `${Object.keys(training_full).length-split_index} training data`)
+    dflog(debugmsg, `${training_full.length-split_index} training data`)
     
-    for (let i = 0; i < Object.keys(training_full).length-1; i++){
+    for (let i = 0; i < training_full.length-1; i++){
         if (i < split_index){
             kX.push(training_full[i])
             ky.push(label_full[i])

@@ -1,15 +1,15 @@
 // ===================== SET NODES MENUS =====================
 function create_menu_container(){
     // create the menu html
-    let htmlObject = document.createElement('div');
-    htmlObject.classList.add('node-menu-container');
+    let htmlObject = document.createElement("div");
+    htmlObject.classList.add("node-menu-container");
     return htmlObject
 }
 
 function set_menu(htmlObject){
     // console.log(htmlObject.innerHTML)
     // remove previous menu containers
-    node_menu.removeChild(document.querySelector('.node-menu-container'));
+    node_menu.removeChild(document.querySelector(".node-menu-container"));
     // add new html
     node_menu.appendChild(htmlObject)
 }
@@ -17,7 +17,7 @@ function set_menu(htmlObject){
 // ===================== DYNAMIC UPDATE NODE APPEARANCE INFO =====================
 function update_node_data(uuid, info_name, new_value, appearance_value, name="Value", affix=""){
     // update the appearance value
-    document.getElementById(uuid+'info-'+info_name).innerHTML = `${name}: ${appearance_value}${affix}` // get the element and set info text
+    document.getElementById(uuid+"info-"+info_name).innerHTML = `${name}: ${appearance_value}${affix}` // get the element and set info text
 
     let data_uuid = JSON.parse(localStorage.getItem(uuid)).data //get local storage 
     let new_data = JSON.parse(localStorage.getItem(data_uuid))
@@ -35,12 +35,22 @@ function set_input_menu(uuid, data){
     add_input_menu_events()
 }
 function update_input_data(name, value){
-    document.getElementById('inputinfo').innerHTML = `File: \"${name}\"`
-    document.getElementById('inputmenuname').innerHTML = `${name}`
+    document.getElementById("inputinfo").innerHTML = `File: \"${name}\"`
+    document.getElementById("inputmenuname").innerHTML = `${name}`
 
     let new_data = JSON.parse(localStorage.getItem(INPUT_DAT_UUID))
     new_data.name = name
     new_data.data = value
+    // get the dimension of the data and style it
+    dim = detectDim(JSON.parse(new_data.data))
+    let displaydim = ""
+    dim.forEach(e => {
+        displaydim += e + " × "
+    })
+
+    // update the menu items
+    document.getElementById("inputmenudim").innerHTML=displaydim.substring(0,displaydim.length-2)
+
     localStorage.setItem(INPUT_DAT_UUID, JSON.stringify(new_data))
 }
 
@@ -54,8 +64,8 @@ function set_output_menu(uuid, data){
     add_output_menu_events()
 }
 function update_output_data(name, value){
-    document.getElementById('outputinfo').innerHTML = `File: \"${name}\"`
-    document.getElementById('outputmenuname').innerHTML = `${name}`
+    document.getElementById("outputinfo").innerHTML = `File: \"${name}\"`
+    document.getElementById("outputmenuname").innerHTML = `${name}`
 
     let new_data = JSON.parse(localStorage.getItem(OUTPUT_DAT_UUID))
     new_data.name = name
