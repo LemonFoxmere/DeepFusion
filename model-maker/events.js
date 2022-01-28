@@ -9,14 +9,27 @@ let zoom = 1;
 const WHEEL_ZOOM_SPEED = 0.1;
 const CLICK_ZOOM_SPEED = 0.25;
 
-let is_selecting = false
-
-dragCanvas(document.querySelector("#canvas-drag"), ".node"); // add 
-let shifted = false;
+let prev_window_width = window.innerWidth;
+let prev_window_height = window.innerHeight;
 
 // get background grid size, and turn them into numbers
 let background_grid_size_x = extract_value(document.getElementById("main-canvas").style.backgroundSize.split(" ")[0])
 let background_grid_size_y = extract_value(document.getElementById("main-canvas").style.backgroundSize.split(" ")[1])
+
+let is_selecting = false
+
+dragCanvas(document.querySelector("#canvas-drag"), ".node"); // add canvas drag event
+let shifted = false;
+
+document.querySelectorAll(".crosshair").forEach((e) => { // setup the position of the crosshairs
+    e.style.top = e.offsetTop + "px";
+    e.style.left = e.offsetLeft + "px";
+})
+
+document.querySelector("#main-canvas").style.backgroundPositionY = document.querySelector(".crosshair").offsetTop // setup background grid positions
+    - background_grid_size_y/2 + "px";
+document.querySelector("#main-canvas").style.backgroundPositionX = document.querySelector(".crosshair").offsetLeft
+    - background_grid_size_x/2 + "px";
 
 function dragCanvas(canvas, elmnts) {
     var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
@@ -102,6 +115,7 @@ function dragCanvas(canvas, elmnts) {
         document.querySelector(".decorational-crosshair").style.left = (document.querySelector(".decorational-crosshair").offsetLeft - pos1/zoom) + "px";
 
         // move the background along
+        console.log(document.querySelector("#main-canvas").style.backgroundPositionY)
         document.querySelector("#main-canvas").style.backgroundPositionY = document.querySelector(".crosshair").offsetTop
          - background_grid_size_y/2 + "px";
         document.querySelector("#main-canvas").style.backgroundPositionX = document.querySelector(".crosshair").offsetLeft
@@ -119,13 +133,13 @@ function dragCanvas(canvas, elmnts) {
         document.onmouseup = null;
         document.onmousemove = null;
 
-        // remove no ransition
-        document.querySelectorAll(elmnts).forEach(elmnt => {
-            elmnt.classList.remove("notransition")
-        });
-        document.querySelectorAll(".crosshair").forEach(elmnt => {
-            elmnt.classList.remove("notransition")
-        });
+        // add no ransition
+        document.querySelectorAll(".node").forEach((e) => {
+            e.classList.remove("notransition")
+        })
+        document.querySelectorAll(".crosshair").forEach((e) => {
+            e.classList.remove("notransition")
+        })
         document.querySelectorAll("#main-canvas").forEach((e) => {
             e.classList.remove("notransition")
         })
@@ -193,6 +207,41 @@ function dragElement(elmnt) {
     }
 }
 
+// On window resize. This is used to compensate the error that CSS brings to the canvas, which shifts the canvas and grid in an incorrect direction.
+window.addEventListener("resize", e => {
+
+    document.querySelectorAll(".node").forEach((e) => {
+        e.classList.add("notransition")
+    })
+    document.querySelectorAll(".crosshair").forEach((e) => {
+        e.classList.add("notransition")
+    })
+    document.querySelectorAll("#main-canvas").forEach((e) => {
+        e.classList.add("notransition")
+    })
+
+    let offset_y = 2*(window.innerHeight-prev_window_height)
+    let offset_x = 2*(window.innerWidth-prev_window_width)
+
+    console.log(prev_window_height, window.innerHeight, offset_y)
+
+    document.querySelectorAll(".crosshair").forEach((e) => {
+        console.log(e.style.left, e.offsetLeft + offset_x + "px")
+        e.style.top = e.offsetTop + offset_y + "px";
+        e.style.left = e.offsetLeft + offset_x + "px";
+    })
+
+    // move background
+    document.querySelector("#main-canvas").style.backgroundPositionY = document.querySelector(".crosshair").offsetTop // setup background grid positions
+    - background_grid_size_y/2 + "px";
+    document.querySelector("#main-canvas").style.backgroundPositionX = document.querySelector(".crosshair").offsetLeft
+    - background_grid_size_x/2 + "px";
+
+    // update the previous window sizes
+    prev_window_height = window.innerHeight
+    prev_window_width = window.innerWidth
+})
+
 // reset canvas position
 document.getElementById("reset-canvas").addEventListener("click", async (e) => {
     document.querySelectorAll(".node").forEach((e) => {
@@ -228,6 +277,16 @@ document.getElementById("reset-canvas").addEventListener("click", async (e) => {
 
 // add zoom functionality
 document.getElementById("zoom-in").addEventListener("click", (e) => {
+    document.querySelectorAll(".node").forEach((e) => {
+        e.classList.remove("notransition")
+    })
+    document.querySelectorAll(".crosshair").forEach((e) => {
+        e.classList.remove("notransition")
+    })
+    document.querySelectorAll("#main-canvas").forEach((e) => {
+        e.classList.remove("notransition")
+    })
+
     zoom += CLICK_ZOOM_SPEED
     if(zoom > 3){
         zoom = 3        
@@ -237,6 +296,16 @@ document.getElementById("zoom-in").addEventListener("click", (e) => {
 })
 
 document.getElementById("zoom-out").addEventListener("click", (e) => {
+    document.querySelectorAll(".node").forEach((e) => {
+        e.classList.remove("notransition")
+    })
+    document.querySelectorAll(".crosshair").forEach((e) => {
+        e.classList.remove("notransition")
+    })
+    document.querySelectorAll("#main-canvas").forEach((e) => {
+        e.classList.remove("notransition")
+    })
+
     zoom -= CLICK_ZOOM_SPEED
     if(zoom < 0.2){
         zoom = 0.2        
@@ -261,6 +330,16 @@ document.addEventListener("wheel", function(e) {
         }
     });
     if(x) return
+
+    document.querySelectorAll(".node").forEach((e) => {
+        e.classList.remove("notransition")
+    })
+    document.querySelectorAll(".crosshair").forEach((e) => {
+        e.classList.remove("notransition")
+    })
+    document.querySelectorAll("#main-canvas").forEach((e) => {
+        e.classList.remove("notransition")
+    })
 
     if(e.deltaY > 0){ 
         if(zoom < 3){ 

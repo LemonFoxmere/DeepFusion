@@ -11,15 +11,15 @@
 //     return 'Leaving this site WILL result in your work permanatly erased. But your IO data will be kept. Are you sure?';
 // };
 
-name_p1 = ["Colossal", "Decisive", "Marked", "Jaded", "Petite", "Handsome", "Tiny", "Giant", "Likeable", "Exotic", "Big","Small","Long","Special","Bland","Strange","Beautiful",
-"Cynical","Sociopathic","Amazing"]
-name_p2 = ["Theory", "Cat", "Rice", "Point", "Bean", "Space", "Lemon", "Kitten", "Oil", "Orange","Computer","Apple","Rice","Dog","Water","Brick","Hypothesis","Clue","Television",
-"RandomNumber","Cow","Paper","Conference","Wire","Tablet"]
-name_p3 = ["Analyser", "Generator", "Picker", "Debugger", "Creator", "Sorter", "Performer", "Manipulater", "Analyser", "Calculator","Finder","Editor","Helper","Selector"]
+name_p1 = ["Imaginary", "Jaded", "Petite", "Tiny", "Giant", "Likeable", "Exotic", "Big","Small","Long","Special","Bland","Strange","Beautiful", "Advanced",
+"Cynical","Amazing"]
+name_p2 = ["Theory", "Nhilist", "Cat", "Rice", "Point", "Bean", "Space", "Lemon", "Kitten", "Oil", "Orange","Computer","Apple","Rice","Dog","Water","Brick","Science",
+"Clue","TV","Rock","Cow","Paper","Soda","Wire","Tablet"]
+name_p3 = ["Analyser", "Generator", "Picker", "Debugger", "Creator", "Sorter", "Performer", "Classifier", "Analyser", "Calculator","Finder","Editor","Helper","Selector"]
 
 // set bottom menu height automatically
 setInterval(() => {
-    document.getElementById("networkname").style.width = `calc(50vw - clamp(1rem, 15vw, 17rem) - 4vh - ${
+    document.getElementById("networkname").style.width = `calc(50vw - 15rem - 4rem - ${
         document.getElementById("canvas-ctrl").getBoundingClientRect().width/2
     }px)`
 }, 10);

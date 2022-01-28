@@ -6,8 +6,9 @@
 
 .logo{
     color:rgb(119, 119, 119);
+    transition: color 10ms cubic-bezier(0.260, 0.050, 0.250, 1.000), color 330ms cubic-bezier(0.260, 0.050, 0.250, 1.000); /* custom */
 } .logo:hover{
-    color:rgb(177, 177, 177);
+    color:rgb(220, 220, 220);
 }
 
 body{
@@ -22,11 +23,8 @@ button, .buttonlike{
     border-radius: 100vh;
     color:white;
 
-    padding: 0.5vh 7% 0.5vh 7%;
-    margin-left: 0.5vw;
-    margin-right: 0.5vw;
-    margin-top: 0.5vh;
-    margin-bottom: 0.5vh;
+    padding: 0.5rem 0.7rem 0.5rem 0.7rem;
+    margin:0.3rem;
     background-color: transparent;
     z-index: 10;
 
@@ -78,8 +76,8 @@ button, .buttonlike{
 
 .absolute-btn{
     width:auto;
-    padding-left: 1vw;
-    padding-right: 1vw;
+    padding-left: 1rem;
+    padding-right: 1rem;
 }
 
 button:disabled{
@@ -96,9 +94,6 @@ button:disabled:hover{
 }
 
 .del-btn{
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-
     background-color:transparent;
     border-color:red;
     color:red
@@ -124,12 +119,12 @@ button:disabled:hover{
     -webkit-backdrop-filter: blur(6px);
 
     background-color: #181a1b7b;
-    padding: 0.5vh 0.7vw 0.5vh 0.7vw;
-    border-radius: clamp(0.1rem, min(0.7vw, 0.7vh), 1.7rem);
+    padding: 0.3rem 0.5rem 0.3rem 0.5rem;
+    border-radius: 0.4rem;
     transition: all 230ms cubic-bezier(0.260, 0.050, 0.250, 1.000); /* custom */
     box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.248), -5px 5px 20px 0px rgba(0, 0, 0, 0.17);
     border: 1px solid #373c3c;
-    margin:1vh 1vw 0 0;
+    margin:1rem 1rem 0 0;
 }
 
 .subtle-btn{
@@ -161,7 +156,7 @@ button:disabled:hover{
 p{
     cursor: default;
     font-weight: 400;
-    font-size: clamp(0.05rem, min(1.7vh, 1vw), 1rem);
+    font-size: 0.75rem;
     margin:0;
     z-index: 10;
 }
@@ -172,7 +167,7 @@ p{
 h1{
     cursor: default;
     font-weight: 300;
-    font-size: clamp(0.5rem, min(7vh, 5vw), 7rem);
+    font-size: 3rem;
     letter-spacing: 5px;
     margin:0;
     z-index: 10;
@@ -184,17 +179,19 @@ h1{
 h2{
     cursor: default;
     font-weight: 300;
-    font-size: clamp(0.5rem, min(4vh, 4vw), 4rem);
+    font-size: 2rem;
+    font-family: Montserrat;
     letter-spacing: 5px;
     margin:0;
     z-index: 10;
+    transition: color 10ms cubic-bezier(0.260, 0.050, 0.250, 1.000), color 330ms cubic-bezier(0.260, 0.050, 0.250, 1.000); /* custom */
 }
 .legal h2{
     font-size: 2rem;
 }
 
 h3{
-    font-size: clamp(0.3rem, min(2.5vh, 2.5vw), 3rem);
+    font-size: 1.5rem;
     font-weight: 400;
     margin:0;
     z-index: 10;
@@ -204,7 +201,7 @@ h3{
 }
 
 h4{
-    font-size: clamp(0.2rem, min(2vh, 1.3vw), 2.5rem);
+    font-size: 1rem;
     font-weight: 500;
     margin:0;
     z-index: 10;
@@ -281,8 +278,8 @@ button:hover, .buttonlike:hover{
 }
 
 .absolute-btn.disable:hover{
-    padding-left: 1vw;
-    padding-right: 1vw;
+    padding-left: 1rem;
+    padding-right: 1rem;
 }
 
 .absolute-btn.disable p{
@@ -342,7 +339,8 @@ button p{
 }
 
 .menu-container{
-    background-color: rgb(24, 26, 27);
+    /* background-color: rgb(119, 0, 0); */
+    background-color: #181a1b;
     position:absolute;
     transition: background-color 150ms cubic-bezier(0.260, 0.050, 0.250, 1.000); /* custom */
     z-index: 3;
@@ -360,7 +358,6 @@ button p{
 
 .terminal{
     width:100%;
-    height:90%;
     overflow:auto;
     display:flex;
     flex-direction:column;
@@ -368,14 +365,16 @@ button p{
     border: 1px solid #333737;
     border-bottom: 1px solid rgba(255, 255, 255, 0.145);
     padding: 0.3vw 0.5vh 0.3vw 0.5rem;
-    border-radius:1.4vh 1.4vh 0 0;
+    border-radius: 0.7rem 0.7rem 0 0;
     color:#b3b3b3;
     word-wrap: break-word;
+    margin:0;
 
     /* hide scrollbar */
     -ms-overflow-style: none;  /* Internet Explorer 10+ */
     scrollbar-width:none;  /* Firefox */
 }
+
 .terminal::-webkit-scrollbar{
     /* Hide scrollbar for Chrome, Safari and Opera */
     display: none;
@@ -383,19 +382,19 @@ button p{
 
 .terminal-in{
     width:100%;
-    height:100%;
+    height:1.7rem;
     display:flex;
     flex-direction:column;
     justify-content:center;
     text-align: left;
     background-color: #0f1011;
     border: 1px solid #333737;
-    padding:1vh 0.5vw 0.5vh 0.5vw;
-    border-radius:0 0 1.4vh 1.4vh;
+    padding:0.5rem;
+    border-radius:0 0 0.7rem 0.7rem;
     border-top: none;
     color:#ffffff;
     word-wrap: break-word;
-    font-size: clamp(0.075rem, min(1.3vh, 1.3vw), 1.3rem);
+    font-size: 0.7rem;
     letter-spacing: -0.3px;
 }
 
@@ -404,10 +403,10 @@ button p{
 }
 
 .terminal span{
-    margin-top:2vh;
-    line-height:2vh;
+    margin-top:1rem;
+    line-height:1rem;
     font-family: 'Courier New', Courier, monospace;
-    font-size: clamp(0.075rem, min(1.5vh, 1.5vw), 0.75rem);
+    font-size: 0.7rem;
     cursor:text;
 }
 
@@ -429,7 +428,8 @@ p.section-text{
 }
 
 hr{
-    opacity: 0.4;
+    opacity: 0.3;
+    
 }
 
 .hr{
@@ -531,9 +531,11 @@ hr{
     align-items: center;
     justify-content: flex-start;
     flex-direction: column;
-    height: 100%;
+    min-height: 10rem;
+    height:calc(100vh - 21rem);
     width:100%;
-    padding-top: 5%
+    padding-top: 1rem;
+    padding-bottom: 10rem;
 }
 
 #default-node-menu{
@@ -547,32 +549,42 @@ hr{
     -webkit-appearance: none;
     appearance: none;
     background: #2d3031;
-    height: 0.4vh;
+    height: 0.25rem;
     border-radius: 100vw;
     width: 70%;
     outline: none;
 }
 
-.slider::-webkit-slider-thumb {
+.slider::-webkit-slider-thumb{
     -webkit-appearance: none;
     appearance: none;
-    width: clamp(0.2rem, min(1.5vw, 1.5vh), 2.5rem);
-    height: clamp(0.2rem, min(1.5vw, 1.5vh), 2.5rem);
+    width: 0.7rem;
+    height: 0.7rem;
     border-radius: 50%;
-    background: #8d8d8d;
-    border:none;
+    background: #2d3031;
+    border: 0.225rem solid #bdbdbd;
     cursor: pointer;
-    transition: all 230ms cubic-bezier(0.260, 0.050, 0.250, 1.000)/* custom */
+    transition: all 170ms cubic-bezier(0.260, 0.050, 0.250, 1.000)/* custom */
+}
+.slider::-moz-range-thumb{
+    -webkit-appearance: none;
+    appearance: none;
+    width: 0.3rem;
+    height: 0.3rem;
+    border-radius: 50%;
+    background: #2d3031;
+    border: 0.27rem solid #bdbdbd;
+    cursor: pointer;
+    transition: all 170ms cubic-bezier(0.260, 0.050, 0.250, 1.000)/* custom */
 }
 
-.slider::-moz-range-thumb {
-    width: clamp(0.2rem, min(1.5vw, 1.5vh), 2.5rem);
-    height: clamp(0.2rem, min(1.5vw, 1.5vh), 2.5rem);
-    border-radius: 50%;
-    background: #8d8d8d;
-    border:none;
-    cursor: pointer;
-    transition: all 50ms cubic-bezier(0.260, 0.050, 0.250, 1.000)/* custom */
+.slider::-webkit-slider-thumb:hover{
+    border-width: 0.4rem;
+    width: 1.2rem;
+    height: 1.2rem;
+}
+.slider::-moz-range-thumb:hover {
+    border-width: 0.5rem;
 }
 
 .slider::-webkit-slider-thumb:disabled {
@@ -583,7 +595,9 @@ hr{
     border:none;
     cursor: pointer;
 }
-.slider::-moz-range-thumb:disabled {
+.slider::-moz-range-thumb:disabled{
+    -webkit-appearance: none;
+    appearance: none;
     border-radius: 50%;
     background: #404040;
     border:none;
@@ -595,47 +609,48 @@ hr{
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin:0.3vh
+    margin:0.1rem;
 }
 
 .input-parent-container{
-    width:90%;
+    width:87%;
 }
 
 .input-parent-container p{
     font-weight: 500;
-    font-size: clamp(0.1rem, min(1.5vh, 1vw), 1.5rem);
-    margin-top: 0.5vh
+    font-size: 0.7rem;
+    margin-top: 0rem
 }
 
 /* number input */
 .number-box{
-    width: 23%;
-    padding: 0.2vh 0 0.2vh 0;
+    width: 3.25rem;
+    padding: 0.2rem 0 0.2rem 0;
     border: 1px solid #ffffff52;
     border-radius: 100vh;
     text-align: center;
     background-color: transparent;
     color:white;
     outline: none;
-    font-size: clamp(0.15rem, min(1.5vh, 1vw), 1.5rem);
+    font-size: 0.75rem;
 }
 
 .number-box:disabled{
     color:gray;
 }
 
-input[type=text]:focus{
+/* Make the terminal prompt outline red when clicked */
+/* input[type=text]:focus{
     border-top: 1px solid #be1a00;
     border-color: #be1a00;
-}
+} */
 
 #networkname{
     background-color: transparent;
     z-index:100;
     color:rgb(236, 236, 236);
     font-family: poppins;
-    font-size: clamp(0.3rem, min(2.5vh, 2.5vw), 3rem);
+    font-size: 1.3rem;
     outline: none;
     border:none;
     font-weight: 600;
@@ -657,8 +672,8 @@ input::-webkit-inner-spin-button {
  .switch {
     position: relative;
     display: inline-block;
-    width: calc(min(1.5vw, 2.5vh) * 1.8);
-    height: min(1.5vw, 2.5vh);
+    width: 2.4rem;
+    height: 1.5rem;
     margin:0;
 }
   
@@ -688,11 +703,11 @@ input::-webkit-inner-spin-button {
 .checkbox-slider:before {
     position: absolute;
     content: "";
-    height: min(1.3vw, 2.3vh);
-    width: min(1.3vw, 2.3vh);
+    height: 1.3rem;
+    width: 1.3rem;
 
-    left:calc((min(1.5vw, 2.5vh) - min(1.3vw, 2.3vh)) / 4);
-    top:calc((min(1.5vw, 2.5vh) - min(1.3vw, 2.3vh)) / 4);
+    left: 0rem;
+    top:0.025rem;
 
     background-color: white;
     -webkit-transition: .2s;
@@ -711,7 +726,7 @@ input::-webkit-inner-spin-button {
 .custom-checkbox:checked + .checkbox-slider:before {
     -webkit-transform: translateX(calc(calc(min(1.5vw, 2.5vh) * 1.8) - 100% - calc((min(1.5vw, 2.5vh) - min(1.3vw, 2.3vh)) / 4)));
     -ms-transform: translateX(calc(calc(min(1.5vw, 2.5vh) * 1.8) - 100% - calc((min(1.5vw, 2.5vh) - min(1.3vw, 2.3vh)) / 4)));
-    transform: translateX(calc(calc(min(1.5vw, 2.5vh) * 1.8) - 100% - calc((min(1.5vw, 2.5vh) - min(1.3vw, 2.3vh)) / 4)));
+    transform: translateX(1rem);
 }
   
   /* Rounded sliders */
@@ -754,8 +769,8 @@ select{
     border: 1px solid rgba(255, 255, 255, 0.349);
     color:white;
     border-radius: 100vh;
-    padding: 0.35vh 0 0.35vh 0.6vw;
-    font-size: clamp(0.3rem, min(1.7vh, 1.7vw), 2.3rem);
+    padding: 0.35rem 0 0.35rem 0.6vw;
+    font-size: 0.75rem;
     margin:0;
     cursor: pointer;
     outline:none;

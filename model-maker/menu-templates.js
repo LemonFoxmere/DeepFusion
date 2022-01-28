@@ -16,14 +16,16 @@ const INPUT_NODE_MENU = [ // file_name
         "style" : "display:none",  
     },{
         "<>" : "section",
-        "style" : "width: 85%; display:flex; alight-items:flex-start; flex-direction:column",
+        "style" : "width: 85%; display:flex; align-items:flex-start; flex-direction:column",
         "html" : [
             {
                 "<>" : "button",
-                "class" : "absolute-btn",
                 "id" : "input-upload",
-                "style" : "margin-top:2%; margin-bottom:8%",
-                "text" : "Upload File"
+                "style" : "margin: 0.5rem auto 0.75rem auto",
+                "html":[{
+                    "<>":"p",
+                    "text":"Upload File"
+                }]
             },
             // name
             {
@@ -66,14 +68,16 @@ const OUTPUT_NODE_MENU = [ // file_name
         "style" : "display:none",
     },{
         "<>" : "section",
-        "style" : "width: 85%; display:flex; alight-items:flex-start; flex-direction:column",
+        "style" : "width: 85%; display:flex; align-items:flex-start; flex-direction:column",
         "html" : [
             {
                 "<>" : "button",
-                "class" : "absolute-btn",
                 "id" : "output-upload",
-                "style" : "margin-top:2%; margin-bottom:8%",
-                "text" : "Upload File"
+                "style" : "margin: 0.5rem auto 0.75rem auto",
+                "html":[{
+                    "<>":"p",
+                    "text":"Upload File"
+                }]
             },
             // name
             {
