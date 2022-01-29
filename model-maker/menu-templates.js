@@ -108,7 +108,7 @@ const OUTPUT_NODE_MENU = [ // file_name
 const DENSE_NODE_MENU = [ // uuid, neuronct
     {
         "<>" : "h3",
-        "style" : "margin-bottom:1%",
+        "style" : "margin-bottom:1%;",
         "html" : "Dense Layer"
     },{
         "<>" : "hr",
@@ -121,7 +121,7 @@ const DENSE_NODE_MENU = [ // uuid, neuronct
             {
                 "<>" : "p",
                 "class" : "unselectable section-text",
-                "text" : "Neuron Count:",
+                "text" : "Neurons:",
             },{ // slider 1
                 "<>" : "section",
                 "class" : "slider-container",
@@ -152,7 +152,7 @@ const DENSE_NODE_MENU = [ // uuid, neuronct
                 "<>" : "select",
                 "id" : "${uuid}activation",
                 "class" : "actiavtion-selector",
-                "style" : "margin-top:3%",
+                "style" : "margin-top:0.3rem",
                 "html" : [ // all the options
                     {
                         "<>" : "option",
@@ -184,9 +184,170 @@ const DENSE_NODE_MENU = [ // uuid, neuronct
                         "text" : "Elu", 
                     },
                 ],
-            },{
+            },
+            
+            // initializer and regulator settings
+            { 
                 "<>" : "hr",
-                "style" : "width: 100%; height:1px; opacity:0.1; color: white; margin:7% 0 4% 0",
+                "style" : "width: 100%; height:1px; opacity:0.1; color: white; margin:0.75rem 0 0.75rem 0",
+            },
+
+            // Kernel Initializer Selection
+            {
+                "<>" : "p",
+                "class" : "unselectable section-text",
+                "style" : "margin-top:0.5rem",
+                "text" : "Kernel Initializer:",
+            },{
+                "<>" : "select",
+                "id" : "${uuid}kernelinit",
+                "class" : "actiavtion-selector",
+                "style" : "margin-top:0.3rem",
+                "html" : [ // all the options
+                    {
+                        "<>" : "option",
+                        "value" : "glu",
+                        "text" : "Glorot Uniform (default)", 
+                    },{
+                        "<>" : "option",
+                        "value" : "gln",
+                        "text" : "Glorot Normal", 
+                    },{
+                        "<>" : "option",
+                        "value" : "con",
+                        "text" : "Constant", 
+                    },{
+                        "<>" : "option",
+                        "value" : "hen",
+                        "text" : "He-Normal", 
+                    },{
+                        "<>" : "option",
+                        "value" : "heu",
+                        "text" : "He-Uniform", 
+                    },{
+                        "<>" : "option",
+                        "value" : "ide",
+                        "text" : "Identity", 
+                    },{
+                        "<>" : "option",
+                        "value" : "lec",
+                        "text" : "LeCun Normal", 
+                    },{
+                        "<>" : "option",
+                        "value" : "leu",
+                        "text" : "LeCun Uniform", 
+                    },{
+                        "<>" : "option",
+                        "value" : "one",
+                        "text" : "Ones", 
+                    },{
+                        "<>" : "option",
+                        "value" : "zer",
+                        "text" : "Zeros", 
+                    },{
+                        "<>" : "option",
+                        "value" : "ort",
+                        "text" : "Orthogonal", 
+                    },{
+                        "<>" : "option",
+                        "value" : "ran",
+                        "text" : "Random Normal", 
+                    },{
+                        "<>" : "option",
+                        "value" : "rau",
+                        "text" : "Random Uniform", 
+                    },{
+                        "<>" : "option",
+                        "value" : "trn",
+                        "text" : "Truncated Normal", 
+                    },{
+                        "<>" : "option",
+                        "value" : "var",
+                        "text" : "Varience Scaling", 
+                    }
+                ],
+            },
+            
+            // Bias initializer selection
+            {
+                "<>" : "p",
+                "class" : "unselectable section-text",
+                "style" : "margin-top:0.75rem",
+                "text" : "Bias Initializer:",
+            },{
+                "<>" : "select",
+                "id" : "${uuid}biasinit",
+                "class" : "actiavtion-selector",
+                "style" : "margin-top:0.3rem",
+                "html" : [ // all the options
+                    {
+                        "<>" : "option",
+                        "value" : "glu",
+                        "text" : "Glorot Uniform (default)", 
+                    },{
+                        "<>" : "option",
+                        "value" : "gln",
+                        "text" : "Glorot Normal", 
+                    },{
+                        "<>" : "option",
+                        "value" : "con",
+                        "text" : "Constant", 
+                    },{
+                        "<>" : "option",
+                        "value" : "hen",
+                        "text" : "He-Normal", 
+                    },{
+                        "<>" : "option",
+                        "value" : "heu",
+                        "text" : "He-Uniform", 
+                    },{
+                        "<>" : "option",
+                        "value" : "ide",
+                        "text" : "Identity", 
+                    },{
+                        "<>" : "option",
+                        "value" : "lec",
+                        "text" : "LeCun Normal", 
+                    },{
+                        "<>" : "option",
+                        "value" : "leu",
+                        "text" : "LeCun Uniform", 
+                    },{
+                        "<>" : "option",
+                        "value" : "one",
+                        "text" : "Ones", 
+                    },{
+                        "<>" : "option",
+                        "value" : "zer",
+                        "text" : "Zeros", 
+                    },{
+                        "<>" : "option",
+                        "value" : "ort",
+                        "text" : "Orthogonal", 
+                    },{
+                        "<>" : "option",
+                        "value" : "ran",
+                        "text" : "Random Normal", 
+                    },{
+                        "<>" : "option",
+                        "value" : "rau",
+                        "text" : "Random Uniform", 
+                    },{
+                        "<>" : "option",
+                        "value" : "trn",
+                        "text" : "Truncated Normal", 
+                    },{
+                        "<>" : "option",
+                        "value" : "var",
+                        "text" : "Varience Scaling", 
+                    }
+                ],
+            }
+            
+            // Training settings
+            ,{
+                "<>" : "hr",
+                "style" : "width: 100%; height:1px; opacity:0.1; color: white; margin:0.75rem 0 0.75rem 0",
             },{ //checkbox for using bias
                 "<>" : "section",
                 "class" : "slider-container",
@@ -214,6 +375,39 @@ const DENSE_NODE_MENU = [ // uuid, neuronct
                         ]
                     }
                 ],
+            },{ //checkbox for trainable
+                "<>" : "section",
+                "class" : "slider-container",
+                "style" : "justify-content: space-between; margin-top:0.25rem",
+                "html" : [
+                    {
+                        "<>" : "p",
+                        "class" : "unselectable section-text",
+                        "text" : "Trainable",
+                    },{
+                        "<>" : "label",
+                        "style" : "margin-left:5%; margin-top:2%",
+                        "class" : "switch",
+                        "html" : [
+                            {
+                                "<>" : "input",
+                                "type" : "checkbox",
+                                "id" : "${uuid}trainable",
+                                "class" : "custom-checkbox",
+                                "checked" : ""
+                            },{
+                                "<>" : "span",
+                                "class" : "checkbox-slider round",
+                            }
+                        ]
+                    }
+                ],
+            },
+
+            // bottom padding
+            {
+                "<>" : "section",
+                "style" : "width:100%; height:1.5rem;"
             }
         ],
     },

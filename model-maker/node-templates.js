@@ -154,14 +154,26 @@ const DENSE_NODE = [
                 "<>" : "p",
                 "id" : "${id_tag}info-activation",
                 "class" : "unselectable node-text",
-                "style" : "cursor:move; margin-top:5%",
+                "style" : "cursor:move; margin-top:0.2rem",
                 "text" : "Activation: Linear"
             }, { // display node info 3
                 "<>" : "p",
                 "id" : "${id_tag}info-usebias",
                 "class" : "unselectable node-text",
-                "style" : "cursor:move; margin-top:5%",
+                "style" : "cursor:move; margin-top:0.2rem",
                 "text" : "Using Bias: Yes"
+            }, { // display node info 4
+                "<>" : "p",
+                "id" : "${id_tag}info-kernelinit",
+                "class" : "unselectable node-text",
+                "style" : "cursor:move; margin-top:0.2rem",
+                "text" : "Kernel Init Glorot Uniform"
+            }, { // display node info 5
+                "<>" : "p",
+                "id" : "${id_tag}info-biasinit",
+                "class" : "unselectable node-text",
+                "style" : "cursor:move; margin-top:0.2rem",
+                "text" : "Bias Init: Glorot Uniform"
             }, { // horizontal line
                 "<>" : "hr"
             }, { // status

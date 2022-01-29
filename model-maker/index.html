@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <title>
-        DeepFusion
+        DeepFusion Beta
     </title>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -11,6 +11,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet"> 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet"> 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet"> 
 
     <link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
 </head>
@@ -21,8 +24,8 @@
     <div class="pagecontainer" style="display:flex;  justify-content: center; align-items: center;">
         <!-- return -->
         <a href='../'>
-            <div class='menu-container logo' style='width:17rem; height:3rem; top:0; left:0; display:flex; align-items: center; justify-content: center'>
-                <h2 class='unselectable' style='font-size: 1.5rem; letter-spacing:0.05rem; cursor:pointer; font-weight: 500;'>
+            <div class='menu-container logo' style='width:17rem; height:3.2rem; top:0; left:0; display:flex; align-items: center; justify-content: center'>
+                <h2 class='unselectable' style='font-size: 1.5rem; letter-spacing:0.05rem; cursor:pointer; font-weight: 500; padding: 0.5rem 0 0.5rem 0;'>
                     DeepFusion
                 </h2>
             </div>
@@ -60,7 +63,7 @@
         <div class='menu-container' style='width:17rem; height: 100vh; top:0; right:0;
             display:flex; align-items: center; justify-content: flex-start; flex-direction: column; overflow: auto;'>
             <section id='node-editor' style="display:flex; align-items: center; justify-content: center; width:100%; height:fit-content; min-height: 10rem;
-            overflow: auto; position:relative">
+            overflow: auto; position:relative; flex-direction: column; padding-right:0.2rem">
                 <div class='node-menu-container' id='default-node-menu'>
                     <p>
                         Click on a node to edit it
@@ -106,11 +109,11 @@
 
         <!-- left menu -->
         <div class='menu-container'
-                style='width:17rem; height:calc(100vh - 3rem); bottom:0; left:0;
-            display:flex; align-items: center; justify-content: flex-start; padding-top:0.2rem; flex-direction: column; overflow: auto;'>
+                style='width:17rem; height:calc(100vh - 3.2rem); bottom:0; left:0;
+            display:flex; align-items: center; justify-content: flex-start; padding:0.2rem 0.8rem 0 0.8rem; flex-direction: column; overflow: auto;'>
 
             <section style="width:95%; height: fit-content">
-                <div class='terminal' style="min-height:10rem; height:calc(100vh - 23rem)" id='dfterm'>
+                <div class='terminal' style="min-height:10rem; height:calc(100vh - 24rem)" id='dfterm'>
                     <span style='margin:0.5vh 0 0 0'>Welcome to DeepFusion <span style='color:greenyellow'>3.0</span>.</span>
                     <span>If you want to you can support this project on 
                         <a style='color:rgb(0, 153, 255); font-weight: 600;' href='https://github.com/LemonOrangeWasTaken/DeepFusion'>GitHub</a>
@@ -126,7 +129,7 @@
     
                 <section style='display:flex; width:100%; height:auto;'>
                     <input type="text" class='terminal-in' id='term-input'
-                        style="font-family: 'Courier New', 'Courier', 'monospace';" placeholder=">>>">
+                        style="font-family: 'Source Code Pro'; font-size: 0.75rem;" placeholder=">>>">
                     </input>
                 </section>
             </section>
@@ -183,14 +186,14 @@
                 display:flex; flex-direction: row; justify-content: center; align-items: center; background: #181a1bd3;
                 border-radius: 0.7rem;
                 -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); 
-                box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.248), -5px 5px 20px 0px rgba(0, 0, 0, 0.17); border: 1px solid #373c3c;
+                box-shadow: 0px 0px 20px 5px rgba(0, 0, 0, 0.507); border: 1px solid #373c3c;
                 padding:0.2rem 0.4rem 0.2rem 0.4rem'>
 
                 <button id='reset-canvas' class='subtle-btn' title="Recenter Canvas">
                     <!-- recenter -->
                     <img style="width:40%; height:auto;" src="../re-center.svg" alt="Center">
                 </button>
-                
+
                 <div class='vr' style='height: 1.5rem; position: relative; background-color: rgba(255, 255, 255, 0.205); z-index: 10; width:1px'></div>
 
                 <button id='zoom-in' class='subtle-btn' title="Zoom In">
@@ -235,6 +238,9 @@
             <input id="networkname" maxlength="50" type="text" style="font-size: 1.2rem;" placeholder="untitled-network">
             </input>
         </section>
+
+        <!-- version watermark -->
+        <p style="position: absolute; bottom:7.5rem; font-size: 0.9rem; font-family: Montserrat; opacity: 0.4;">Public Beta 1.0</p>
         
         <!-- canvas area -->
         <section id='canvas-drag' style='position:absolute; display:flex; justify-content: center; align-items:center;

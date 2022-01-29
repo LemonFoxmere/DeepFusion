@@ -90,7 +90,7 @@ document.body.addEventListener('mouseup', (e) => {
 
 function createLineElement(x, y, length, angle, id, type) {
     var line = document.createElement("div");
-    var styles = 'border: 1px solid #7e7e7f; '
+    var styles = 'border: 1px solid #f0f0f0; '
                + 'width: ' + length + 'px; '
                + 'height: 0px; '
                + '-moz-transform: rotate(' + angle + 'rad); '
@@ -100,7 +100,7 @@ function createLineElement(x, y, length, angle, id, type) {
                + 'position: absolute; '
                + 'top: ' + y + 'px; '
                + 'left: ' + x + 'px; '
-               + 'z-index: 1;'
+               + 'z-index: 2;'
                + 'pointer-events: none;';
     line.setAttribute('style', styles);  
     line.classList.add('node')
@@ -155,6 +155,11 @@ function create_node(uuid, template, node_type, set_node_template=null, default_
     // create html element
     let html = create_node_element(template, uuid)
     main_canvas.appendChild(html)
+
+    // set its left and top properties for resizing
+    document.getElementById(uuid).style.top = (document.getElementById(uuid).offsetTop) + "px";
+    document.getElementById(uuid).style.left = (document.getElementById(uuid).offsetLeft) + "px";
+
     dragElement(document.getElementById(uuid)); // add element drag
 
     // add file name updating
@@ -197,6 +202,10 @@ function create_node(uuid, template, node_type, set_node_template=null, default_
     
             let outnode = document.getElementById(`${uuid}`)
             let outnodesq = document.getElementById(`${uuid}out`)
+
+            document.querySelectorAll('.node-drag').forEach(elmnt => {
+                elmnt.classList.add('node-edge-dragging')
+            })
     
             main_canvas.appendChild(createLine(
                 outnode.offsetLeft + (outnode.getBoundingClientRect().width/2)/zoom,
@@ -226,6 +235,10 @@ function create_node(uuid, template, node_type, set_node_template=null, default_
             let outnode = document.getElementById(`${node_data.from}`)
             let outnodesq = document.getElementById(`${node_data.from}out`)
     
+            document.querySelectorAll('.node-drag').forEach(elmnt => {
+                elmnt.classList.add('node-edge-dragging')
+            })
+
             main_canvas.appendChild(createLine(
                 outnode.offsetLeft + (outnode.getBoundingClientRect().width/2)/zoom,
                 outnode.offsetTop + (outnode.getBoundingClientRect().height-outnodesq.getBoundingClientRect().height/2)/zoom,
@@ -436,6 +449,11 @@ function update_non_temp_edges(){
 
 // delete cursor edge and create connection if cursor release/drop detected
 document.body.onmouseup = (e) => {
+    // remove dragging style
+    document.querySelectorAll('.node-drag').forEach(elmnt => {
+        elmnt.classList.remove('node-edge-dragging')
+    })
+
     // see if it exists
     if(document.getElementById('temp_edge') !== null){
         // if it exist remove all traces of it

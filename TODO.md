@@ -1,10 +1,5 @@
-1. node menu reflect internally
-2. training IO working
-3. move training param to proper place
-4. add simple console
-5. Tensorflow parse internal network structure
-6. Train model
-7. Test model
-
-
-todo: slider revise
+1. Add IO shape display
+2. ~~Add more features to Dense layer~~
+3. Improve internal storage efficiency
+4. Create export functionality
+5. Revise the activation layer node

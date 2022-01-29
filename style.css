@@ -156,12 +156,12 @@ button:disabled:hover{
 p{
     cursor: default;
     font-weight: 400;
-    font-size: 0.75rem;
+    font-size: 0.85rem;
     margin:0;
     z-index: 10;
 }
 .legal p{
-    font-size: 0.75rem;
+    font-size: 0.85rem;
 }
 
 h1{
@@ -201,7 +201,7 @@ h3{
 }
 
 h4{
-    font-size: 1rem;
+    font-size: 1.25rem;
     font-weight: 500;
     margin:0;
     z-index: 10;
@@ -364,7 +364,7 @@ button p{
     background-color: #0f1011;
     border: 1px solid #333737;
     border-bottom: 1px solid rgba(255, 255, 255, 0.145);
-    padding: 0.3vw 0.5vh 0.3vw 0.5rem;
+    padding: 0.5rem 0.5rem 0.5rem 0.5rem;
     border-radius: 0.7rem 0.7rem 0 0;
     color:#b3b3b3;
     word-wrap: break-word;
@@ -382,20 +382,21 @@ button p{
 
 .terminal-in{
     width:100%;
-    height:1.7rem;
+    min-height:1.8rem;
     display:flex;
     flex-direction:column;
     justify-content:center;
     text-align: left;
     background-color: #0f1011;
     border: 1px solid #333737;
-    padding:0.5rem;
+    padding: 0rem 0.75rem 0rem 0.75rem;
     border-radius:0 0 0.7rem 0.7rem;
     border-top: none;
     color:#ffffff;
-    word-wrap: break-word;
+    word-wrap: wrap;
     font-size: 0.7rem;
     letter-spacing: -0.3px;
+    font-family: 'Source Code Pro';
 }
 
 .terminal-in:focus {
@@ -405,8 +406,8 @@ button p{
 .terminal span{
     margin-top:1rem;
     line-height:1rem;
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 0.7rem;
+    font-family: 'Source Code Pro';
+    font-size: 0.75rem;
     cursor:text;
 }
 
@@ -470,15 +471,29 @@ hr{
     cursor: move;
     background-color: #2e2e2e;
     border-radius: 15px;
-    padding:10px;
-    box-shadow: -5px 5px 20px -10px black, 0px 0px 20px -10px black;
+    padding: 0.5rem 1rem 0.5rem 1rem;
+    box-shadow: -0.1rem 0.1rem 20px 5px rgba(0, 0, 0, 0.576), 0rem 0rem 10px 2px rgba(0, 0, 0, 0.151);
     border: 1.5px solid;
     border-color: #424242;
-    transition: opacity 300ms cubic-bezier(0.355, 0.010, 0.200, 1.010); /* custom */
+    transition: all 300ms cubic-bezier(0.355, 0.010, 0.200, 1.010); /* custom */
 }
 
-.node-drag:hover{
-    opacity:0.
+.node-dragging{
+    opacity:0.7 !important
+}
+.node-edge-dragging:hover{
+    background-color: #424242 !important;
+    border-color: #666666 !important;
+
+    /* animation-name: node-blink;
+    animation-duration: 0.4s;
+    animation-delay: 4s;
+    animation-iteration-count: infinite; */
+}
+@keyframes node-blink {
+    from {filter: brightness(1);}
+    50%  {filter: brightness(0.8);} /* ignored */
+    to   {filter: brightness(1);}
 }
 
 .selected-node{
@@ -492,7 +507,8 @@ hr{
     width:8px;
     height:8px;
     margin-top:5px;
-    border-radius: 1.5px
+    border-radius: 1.5px;
+    z-index: 3;
 }
 
 .node-in{
@@ -507,16 +523,15 @@ hr{
 }
 
 .node-title{
-    font-size: clamp(0.2rem, min(2vh, 2vw), 2rem);
+    font-size: 1rem;
     font-weight: 500;
     margin:0;
-    z-index: 2;
     font-family: 'Montserrat'
 }
 
 .node-text{
     color:lightgray;
-    font-size: clamp(0.1rem, min(1.5vh, 1.5vw), 1.5rem);
+    font-size: 0.8rem;
     font-weight: 400;
     margin:0;
     z-index: 2;
@@ -535,7 +550,6 @@ hr{
     height:calc(100vh - 21rem);
     width:100%;
     padding-top: 1rem;
-    padding-bottom: 10rem;
 }
 
 #default-node-menu{
@@ -632,7 +646,7 @@ hr{
     background-color: transparent;
     color:white;
     outline: none;
-    font-size: 0.75rem;
+    font-size: 0.85rem;
 }
 
 .number-box:disabled{
@@ -755,7 +769,8 @@ input[type=number]:focus{
 }
 
 #temp_edge{
-    opacity:0.5
+    opacity:0.5;
+    z-index: 2;
 }
 
 
@@ -770,7 +785,7 @@ select{
     color:white;
     border-radius: 100vh;
     padding: 0.35rem 0 0.35rem 0.6vw;
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     margin:0;
     cursor: pointer;
     outline:none;

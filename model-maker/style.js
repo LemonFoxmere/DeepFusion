@@ -11,10 +11,12 @@
 //     return 'Leaving this site WILL result in your work permanatly erased. But your IO data will be kept. Are you sure?';
 // };
 
-name_p1 = ["Imaginary", "Jaded", "Petite", "Tiny", "Giant", "Likeable", "Exotic", "Big","Small","Long","Special","Bland","Strange","Beautiful", "Advanced",
-"Cynical","Amazing"]
+document.getElementById("del-selected").disabled = true // disable the delete button in case if it is enabled from a previous session
+
+name_p1 = ["Imaginary", "Wholesome", "Chaotic", "Tiny", "Giant", "Majestic", "Exotic", "Big","Small","Long","Special","Powerful","Strange","Beautiful", "Advanced",
+"Fierce","Fancy"]
 name_p2 = ["Theory", "Nhilist", "Cat", "Rice", "Point", "Bean", "Space", "Lemon", "Kitten", "Oil", "Orange","Computer","Apple","Rice","Dog","Water","Brick","Science",
-"Clue","TV","Rock","Cow","Paper","Soda","Wire","Tablet"]
+"Clue","TV","Rock","Cow","Paper","Soda","Wire","Potato"]
 name_p3 = ["Analyser", "Generator", "Picker", "Debugger", "Creator", "Sorter", "Performer", "Classifier", "Analyser", "Calculator","Finder","Editor","Helper","Selector"]
 
 // set bottom menu height automatically

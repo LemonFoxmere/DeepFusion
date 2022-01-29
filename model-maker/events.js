@@ -21,6 +21,9 @@ let is_selecting = false
 dragCanvas(document.querySelector("#canvas-drag"), ".node"); // add canvas drag event
 let shifted = false;
 
+document.querySelector(".decorational-crosshair").style.top = (document.querySelector(".decorational-crosshair").offsetTop) + "px"; // separately setup the decorational crosshair
+document.querySelector(".decorational-crosshair").style.left = (document.querySelector(".decorational-crosshair").offsetLeft) + "px";
+
 document.querySelectorAll(".crosshair").forEach((e) => { // setup the position of the crosshairs
     e.style.top = e.offsetTop + "px";
     e.style.left = e.offsetLeft + "px";
@@ -166,6 +169,8 @@ function dragElement(elmnt) {
     function dragMouseDown(e) {
         if(is_selecting) return
 
+        document.getElementById(elmnt.id + "header").classList.add("node-dragging") // add the node draggin style, which shows what is under this current node
+
         e.preventDefault();
         // get the mouse cursor position at startup:
         pos3 = e.clientX;
@@ -173,7 +178,9 @@ function dragElement(elmnt) {
 
         document.querySelectorAll('.node').forEach(elmnt => {
             elmnt.classList.add('notransition')
+            elmnt.style.zIndex = 1;
         });
+        document.getElementById(elmnt.id).style.zIndex=2 // add the node draggin style, which shows what is under this current node
 
         document.onmouseup = closeDragElement;
         // call a function whenever the cursor moves:
@@ -204,6 +211,8 @@ function dragElement(elmnt) {
         document.querySelectorAll('.node').forEach(elmnt => {
             elmnt.classList.remove('notransition')
         });
+
+        document.getElementById(elmnt.id + "header").classList.remove("node-dragging")
     }
 }
 
@@ -236,6 +245,12 @@ window.addEventListener("resize", e => {
     - background_grid_size_y/2 + "px";
     document.querySelector("#main-canvas").style.backgroundPositionX = document.querySelector(".crosshair").offsetLeft
     - background_grid_size_x/2 + "px";
+
+    // move nodes
+    document.querySelectorAll(".node").forEach(elmnt => {
+        elmnt.style.top = (elmnt.offsetTop + offset_y) + "px";
+        elmnt.style.left = (elmnt.offsetLeft + offset_x) + "px";
+    });
 
     // update the previous window sizes
     prev_window_height = window.innerHeight
