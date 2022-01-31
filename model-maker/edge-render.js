@@ -100,7 +100,7 @@ function createLineElement(x, y, length, angle, id, type) {
                + 'position: absolute; '
                + 'top: ' + y + 'px; '
                + 'left: ' + x + 'px; '
-               + 'z-index: 2;'
+               + 'z-index: 1;'
                + 'pointer-events: none;';
     line.setAttribute('style', styles);  
     line.classList.add('node')

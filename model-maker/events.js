@@ -21,13 +21,14 @@ let is_selecting = false
 dragCanvas(document.querySelector("#canvas-drag"), ".node"); // add canvas drag event
 let shifted = false;
 
-document.querySelector(".decorational-crosshair").style.top = (document.querySelector(".decorational-crosshair").offsetTop) + "px"; // separately setup the decorational crosshair
-document.querySelector(".decorational-crosshair").style.left = (document.querySelector(".decorational-crosshair").offsetLeft) + "px";
+// document.querySelector(".decorational-crosshair").style.top = (document.querySelector(".decorational-crosshair").offsetTop) + "px"; // separately setup the decorational crosshair
+// document.querySelector(".decorational-crosshair").style.left = (document.querySelector(".decorational-crosshair").offsetLeft) + "px";
 
-document.querySelectorAll(".crosshair").forEach((e) => { // setup the position of the crosshairs
-    e.style.top = e.offsetTop + "px";
-    e.style.left = e.offsetLeft + "px";
-})
+
+// document.querySelectorAll(".crosshair").forEach((e) => { // setup the position of the crosshairs
+//     e.style.top = e.offsetTop + "px";
+//     e.style.left = e.offsetLeft + "px";
+// })
 
 document.querySelector("#main-canvas").style.backgroundPositionY = document.querySelector(".crosshair").offsetTop // setup background grid positions
     - background_grid_size_y/2 + "px";
