@@ -27,6 +27,8 @@ button, .buttonlike{
     margin:0.3rem;
     background-color: transparent;
     z-index: 10;
+    overflow-x: hidden;
+    white-space: nowrap;
 
     width:80%;
 
@@ -106,8 +108,53 @@ button:disabled:hover{
     color:red;
 }
 
+.default-upload{
+    width:2.5rem;
+    transition: all 400ms cubic-bezier(0.665, 0.005, 0.080, 1.000); /* custom */
+    transition-delay: 75ms;
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+    padding-top:0rem;
+    padding-bottom:0rem;
+    padding-left:0.6rem;
+    align-items: center;
+}
+.node-selection-menu-expander{
+    width:2.2rem;
+}
+.default-upload:hover{
+    width:21rem;
+}
+.smaller-default-upload:hover{
+    width:13.25rem;
+}
+.smallest-default-upload:hover{
+    width:8.25rem;
+}
+
+.default-upload-decor{
+    margin:0;
+    line-height:0;
+    font-weight: 700;
+    transform:rotate(90deg);
+    
+    /*
+        Firefox gecko overrides. Because apparently their center of a text is on the top instead of the center.
+        Thanks Mozzila for this convinient feature that everyone loves and no body hates. I swear to god it's one
+        of those things where it can be convinient in some niche places, but is really shit in others. I don't
+        understand why they have to make it so that an object's center is at the HECCING TOP. LIKE HOW DOES THAT
+        EVEN MAKE SENSE? Every single other heccing object has their center to be the actual center, but texts
+        are somehow different isn't it? This just proves that webkit is the best rendering engine. Shame that
+        There's no good browsers for it on linux; can't wait for Orion to build their crap and port it on Linux.
+        If that happens I can finally kiss this mozzila bullshit goodbye forever. God I hate gecko's quirks. It's
+        like Apple's design, but just in a less fun and functional way.
+    */
+    -moz-transform: rotate(90deg) translate(0.05rem, -0.1rem) !important;
+}
+
 .subtle-txt{
-    font-family: 'Montserrat';
+    font-family: "Montserrat";
     margin:0;
     padding:0;
     text-align:center;
@@ -311,7 +358,7 @@ button p{
 }
 
 .copyrightmsg{
-    font-size: clamp(0.075rem, min(1.5vh, 1.5vw), 1.3rem);
+    font-size: 0.8rem;
 }
 
 #node-menu:before{
@@ -396,7 +443,7 @@ button p{
     word-wrap: wrap;
     font-size: 0.7rem;
     letter-spacing: -0.3px;
-    font-family: 'Source Code Pro';
+    font-family: "Source Code Pro";
 }
 
 .terminal-in:focus {
@@ -406,7 +453,7 @@ button p{
 .terminal span{
     margin-top:1rem;
     line-height:1rem;
-    font-family: 'Source Code Pro';
+    font-family: "Source Code Pro";
     font-size: 0.75rem;
     cursor:text;
 }
@@ -526,7 +573,7 @@ hr{
     font-size: 1rem;
     font-weight: 500;
     margin:0;
-    font-family: 'Montserrat'
+    font-family: "Montserrat"
 }
 
 .node-text{
@@ -535,7 +582,7 @@ hr{
     font-weight: 400;
     margin:0;
     z-index: 2;
-    font-family: 'Montserrat';
+    font-family: "Montserrat";
     white-space: nowrap;
 }
 
@@ -761,10 +808,6 @@ input[type=number]:focus{
 }
 
 .node-selection{
-    /* padding-top:clamp(0.2rem, min(1vw, 1vh), 1rem);
-    padding-bottom:clamp(0.2rem, min(1vw, 1vh), 1rem);
-    padding-left:clamp(0.3rem, min(1.5vw, 1.5vh), 1.5rem);
-    padding-right:clamp(0.3rem, min(1.5vw, 1.5vh), 1.5rem); */
     text-decoration: none;
 }
 
@@ -779,7 +822,6 @@ input[type=number]:focus{
  /* The container must be positioned relative: */
 
 select{
-    background-color: #181a1b;
     background:url("selectarrow.svg");
     border: 1px solid rgba(255, 255, 255, 0.349);
     color:white;

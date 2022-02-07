@@ -19,19 +19,39 @@ const INPUT_NODE_MENU = [ // file_name
         "style" : "width: 85%; display:flex; align-items:flex-start; flex-direction:column",
         "html" : [
             {
-                "<>" : "button",
-                "id" : "input-upload",
-                "style" : "margin: 0.5rem auto 0.75rem auto",
-                "html":[{
-                    "<>":"p",
-                    "text":"Upload File"
-                }]
+                "<>" : "section",
+                "style" : "width:100%; height:fit-content; display:flex; flex-direction:row",
+                "html": [{
+                    "<>" : "button",
+                    "id" : "input-upload",
+                    "style" : "width:100%",
+                    "html":[{
+                        "<>":"p",
+                        "text":"Upload"
+                    }]
+                },{
+                    "<>" : "button",
+                    "id" : "default-input-upload",
+                    "class" : "default-upload",
+                    "html":[{
+                        "<>":"p",
+                        "id":"",
+                        "class":"default-upload-decor",
+                        "text":"···"
+                    },{
+                        "<>":"p",
+                        "id":"default-upload-text",
+                        "style":"margin-left:0.65rem",
+                        "text":"use default"
+                    }]
+                }],
             },
+            
             // name
             {
                 "<>" : "p",
-                "style" : "font-weight:300",
-                "text" : "Current File:",
+                "style" : "font-weight:300; width:100%",
+                "text" : "File Name:",
             }, {
                 "<>" : "p",
                 "id" : "inputmenuname",
@@ -71,14 +91,34 @@ const OUTPUT_NODE_MENU = [ // file_name
         "style" : "width: 85%; display:flex; align-items:flex-start; flex-direction:column",
         "html" : [
             {
-                "<>" : "button",
-                "id" : "output-upload",
-                "style" : "margin: 0.5rem auto 0.75rem auto",
-                "html":[{
-                    "<>":"p",
-                    "text":"Upload File"
-                }]
+                "<>" : "section",
+                "style" : "width:100%; height:fit-content; display:flex; flex-direction:row",
+                "html": [{
+                    "<>" : "button",
+                    "id" : "output-upload",
+                    "style" : "width:100%",
+                    "html":[{
+                        "<>":"p",
+                        "text":"Upload"
+                    }]
+                },{
+                    "<>" : "button",
+                    "id" : "default-output-upload",
+                    "class" : "default-upload",
+                    "html":[{
+                        "<>":"p",
+                        "id":"",
+                        "class":"default-upload-decor",
+                        "text":"···"
+                    },{
+                        "<>":"p",
+                        "id":"default-upload-text",
+                        "style":"margin-left:0.65rem",
+                        "text":"use default"
+                    }]
+                }],
             },
+
             // name
             {
                 "<>" : "p",
@@ -97,7 +137,7 @@ const OUTPUT_NODE_MENU = [ // file_name
                 "text" : "Dimension:",
             }, {
                 "<>" : "p",
-                "id" : "inputmenuname",
+                "id" : "outputmenudim",
                 "style" : "font-weight:500; opacity:0.6",
                 "text" : "${dimension}",
             }
@@ -206,12 +246,12 @@ const DENSE_NODE_MENU = [ // uuid, neuronct
                 "html" : [ // all the options
                     {
                         "<>" : "option",
-                        "value" : "glu",
-                        "text" : "Glorot Uniform (default)", 
+                        "value" : "gln",
+                        "text" : "Glorot Normal (default)", 
                     },{
                         "<>" : "option",
-                        "value" : "gln",
-                        "text" : "Glorot Normal", 
+                        "value" : "glu",
+                        "text" : "Glorot Uniform", 
                     },{
                         "<>" : "option",
                         "value" : "con",
@@ -282,8 +322,12 @@ const DENSE_NODE_MENU = [ // uuid, neuronct
                 "html" : [ // all the options
                     {
                         "<>" : "option",
-                        "value" : "glu",
-                        "text" : "Glorot Uniform (default)", 
+                        "value" : "zer",
+                        "text" : "Zeros (default)", 
+                    },{
+                        "<>" : "option",
+                        "value" : "zer",
+                        "text" : "Glorot Uniform", 
                     },{
                         "<>" : "option",
                         "value" : "gln",
@@ -316,10 +360,6 @@ const DENSE_NODE_MENU = [ // uuid, neuronct
                         "<>" : "option",
                         "value" : "one",
                         "text" : "Ones", 
-                    },{
-                        "<>" : "option",
-                        "value" : "zer",
-                        "text" : "Zeros", 
                     },{
                         "<>" : "option",
                         "value" : "ort",

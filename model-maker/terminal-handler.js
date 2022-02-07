@@ -15,7 +15,9 @@ const ALL_CMDS = {
                 dflog(blankmsg, 'Model must be valid and trained.', pref='&emsp;Prerequisites: ')
             } else if(value[0] === 'exportnet'){
                 dflog(supportmsg, 'Export the current model to a TensorFlow model for external usage.', null)
-                dflog(blankmsg, 'This is still a WIP, and will not work at the moment.', pref='&emsp;Note: ')
+                dflog(blankmsg, 'Model must be compiled or trained.', pref='&emsp;Note: ')
+            } else if(value[0] === 'compnet'){
+                dflog(supportmsg, 'Export the current model to a TensorFlow model for external usage.', null)
             } else if(value[0] === 'delnode'){
                 dflog(supportmsg, 'Deletes the currently selected node.', null)
             }
@@ -32,6 +34,7 @@ const ALL_CMDS = {
             dflog(blankmsg, 'Test the current model', pref='testnet: ')
             
             dflog(blankmsg, 'Export the current model', pref='exportnet: ')
+            dflog(blankmsg, 'Compile the current model for export', pref='compnet: ')
             dflog(blankmsg, 'Delete the selected node', pref='delnode: ')
         }
     },
@@ -56,8 +59,9 @@ const ALL_CMDS = {
     },
     'exportnet' : ()=>{
         export_net()
-    },
-    'delnode':()=>{
+    },'compnet' : ()=>{
+        compile_net()
+    },'delnode':()=>{
         dflog(blankmsg, '<span style="color:#39ff14">OK</span>')
         delete_selected_node()
     }

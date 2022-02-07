@@ -21,19 +21,17 @@ let is_selecting = false
 dragCanvas(document.querySelector("#canvas-drag"), ".node"); // add canvas drag event
 let shifted = false;
 
-// document.querySelector(".decorational-crosshair").style.top = (document.querySelector(".decorational-crosshair").offsetTop) + "px"; // separately setup the decorational crosshair
-// document.querySelector(".decorational-crosshair").style.left = (document.querySelector(".decorational-crosshair").offsetLeft) + "px";
-
-
-// document.querySelectorAll(".crosshair").forEach((e) => { // setup the position of the crosshairs
-//     e.style.top = e.offsetTop + "px";
-//     e.style.left = e.offsetLeft + "px";
-// })
-
-document.querySelector("#main-canvas").style.backgroundPositionY = document.querySelector(".crosshair").offsetTop // setup background grid positions
+window.onpageshow = () => {
+    document.querySelector("#main-canvas").style.backgroundPositionY = document.querySelector("#functional-crosshair").offsetTop // setup background grid positions
     - background_grid_size_y/2 + "px";
-document.querySelector("#main-canvas").style.backgroundPositionX = document.querySelector(".crosshair").offsetLeft
+    document.querySelector("#main-canvas").style.backgroundPositionX = document.querySelector("#functional-crosshair").offsetLeft
     - background_grid_size_x/2 + "px";
+
+    document.querySelector(".decorational-crosshair").style.top = (document.querySelector("#functional-crosshair").offsetTop) -
+    document.querySelector(".decorational-crosshair").getBoundingClientRect().height/2 + "px";  // separately setup the decorational crosshair
+    document.querySelector(".decorational-crosshair").style.left = (document.querySelector("#functional-crosshair").offsetLeft) -
+    document.querySelector(".decorational-crosshair").getBoundingClientRect().width/2 + "px"; 
+}
 
 function dragCanvas(canvas, elmnts) {
     var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
@@ -119,7 +117,6 @@ function dragCanvas(canvas, elmnts) {
         document.querySelector(".decorational-crosshair").style.left = (document.querySelector(".decorational-crosshair").offsetLeft - pos1/zoom) + "px";
 
         // move the background along
-        console.log(document.querySelector("#main-canvas").style.backgroundPositionY)
         document.querySelector("#main-canvas").style.backgroundPositionY = document.querySelector(".crosshair").offsetTop
          - background_grid_size_y/2 + "px";
         document.querySelector("#main-canvas").style.backgroundPositionX = document.querySelector(".crosshair").offsetLeft
@@ -177,8 +174,8 @@ function dragElement(elmnt) {
         pos3 = e.clientX;
         pos4 = e.clientY;
 
-        document.querySelectorAll('.node').forEach(elmnt => {
-            elmnt.classList.add('notransition')
+        document.querySelectorAll(".node").forEach(elmnt => {
+            elmnt.classList.add("notransition")
             elmnt.style.zIndex = 1;
         });
         document.getElementById(elmnt.id).style.zIndex=2 // add the node draggin style, which shows what is under this current node
@@ -196,11 +193,11 @@ function dragElement(elmnt) {
         pos2 = pos4 - e.clientY;
         pos3 = e.clientX;
         pos4 = e.clientY;
-        // set the element's new position:
+        // set the element"s new position:
         elmnt.style.top = (elmnt.offsetTop - pos2/zoom) + "px";
         elmnt.style.left = (elmnt.offsetLeft - pos1/zoom) + "px";
 
-        // update the node's edges too
+        // update the node"s edges too
         update_non_temp_edges()
     }
 
@@ -209,8 +206,8 @@ function dragElement(elmnt) {
         document.onmouseup = null;
         document.onmousemove = null;
         // add back transition
-        document.querySelectorAll('.node').forEach(elmnt => {
-            elmnt.classList.remove('notransition')
+        document.querySelectorAll(".node").forEach(elmnt => {
+            elmnt.classList.remove("notransition")
         });
 
         document.getElementById(elmnt.id + "header").classList.remove("node-dragging")
@@ -233,10 +230,10 @@ window.addEventListener("resize", e => {
     let offset_y = 2*(window.innerHeight-prev_window_height)
     let offset_x = 2*(window.innerWidth-prev_window_width)
 
-    console.log(prev_window_height, window.innerHeight, offset_y)
+    // console.log(prev_window_height, window.innerHeight, offset_y)
 
     document.querySelectorAll(".crosshair").forEach((e) => {
-        console.log(e.style.left, e.offsetLeft + offset_x + "px")
+        // console.log(e.style.left, e.offsetLeft + offset_x + "px")
         e.style.top = e.offsetTop + offset_y + "px";
         e.style.left = e.offsetLeft + offset_x + "px";
     })
@@ -427,12 +424,22 @@ function add_input_menu_events(){
         let file_name = file.name
         read.readAsBinaryString(file); // convert to String
         read.onloadend = function(){
-            update_input_data(file_name, CSVToJSON(read.result)) // update values
+            let data = CSVToJSON(read.result)
+            let dim = detectDim(data)
+            update_input_data(file_name, data, dim) // update values
         }
     }
 
     document.getElementById("input-upload").addEventListener("click", (evt) => {
         document.getElementById("input-file").click()
+    })
+    document.getElementById("default-input-upload").addEventListener("click", (evt) => { // upload default data
+        fetch("../x.csv").then(res => res.text()).then(rawdat => {
+            let data = CSVToJSON(rawdat) // fetch from local
+            let dim = detectDim(data)
+            // console.log(data)
+            update_input_data("RGB-inputs.csv", data, dim) // update values
+        })
     })
 }
 
@@ -447,12 +454,23 @@ function add_output_menu_events(){
         let file_name = file.name
         read.readAsBinaryString(file); // convert to String
         read.onloadend = function(){
-            update_output_data(file_name, CSVToJSON(read.result)) // update values
+            let data = CSVToJSON(read.result)
+            let dim = detectDim(data)
+            // console.log(data)
+            update_output_data(file_name, data, dim) // update values
         }
     }
 
-    document.getElementById("output-upload").addEventListener("click", (evt) => {
+    document.getElementById("output-upload").addEventListener("click", (evt) => { // user selects their own data
         document.getElementById("output-file").click()
+    })
+    document.getElementById("default-output-upload").addEventListener("click", (evt) => { // upload default data
+        fetch("../Y.csv").then(res => res.text()).then(rawdat => {
+            let data = CSVToJSON(rawdat) // fetch from local
+            let dim = detectDim(data)
+            // console.log(data)
+            update_output_data("predictions.csv", data, dim) // update values
+        })
     })
 }
 
@@ -471,8 +489,8 @@ function add_drop_menu_events(uuid){
 //     document.getElementById("selection").classList.remove("hovering-subtle-btn")
 // }
 
-// window.addEventListener ? document.addEventListener('keydown', update_shortcuts) : document.attachEvent('keydown', update_shortcuts);
-// window.addEventListener ? document.addEventListener('keyup', reset_shortcuts) : document.attachEvent('keydown', reset_shortcuts);
+// window.addEventListener ? document.addEventListener("keydown", update_shortcuts) : document.attachEvent("keydown", update_shortcuts);
+// window.addEventListener ? document.addEventListener("keyup", reset_shortcuts) : document.attachEvent("keydown", reset_shortcuts);
 
 // button events related
 
@@ -486,100 +504,6 @@ function add_drop_menu_events(uuid){
 //     }
 // })
 
-// Update menu sliders to the node"s display value. This is for SLIDER ELEMENTS in the menu ONLY!!!
-// Note: INFO name is the SAME as the DATA name!!!
-function update_menu_slider(uuid, data_name, display_name, data_affix=""){
-    { // ADDING INPUT FIELD EVENTS
-        // add input field listender
-        let e = document.getElementById(`${uuid}${data_name}`) //check is the dataname that is being updated even exist
-        if(e === null) return
-        
-        // if the slider indeed exists, then set its current value
-        document.getElementById(e.id + "-slider").value = JSON.parse(
-            localStorage.getItem(
-                JSON.parse(localStorage.getItem(uuid)).data
-            )
-        )[data_name]
-
-        e.addEventListener("keypress", function (evt) {
-            if (evt.which < 48 || evt.which > 57){
-                evt.preventDefault();
-            }
-    
-            if (evt.which === 13){
-                e.blur()
-            }
-        }); // prevent unorthodox number entering
-        
-        e.addEventListener("focusout", (evt) => {
-            if(document.getElementById(e.id + "-slider")){
-                let slider = document.getElementById(e.id + "-slider")
-                let max_val = slider.max
-                let min_val = slider.min
-                if (Number(e.value) > max_val){
-                    e.value = max_val;
-                } else if (Number(e.value) < min_val){
-                    e.value = min_val;
-                }
-                slider.value = e.value
-                update_node_data(e.id.substring(0,e.id.length-data_name.length), data_name, e.value, e.value, name=display_name, affix=data_affix)
-            }
-        })
-    
-        if(document.getElementById(e.id + "-slider")){
-            e.value = document.getElementById(e.id + "-slider").value;
-        }
-    } { // ADDING SLIDER EVENTS
-        let e = document.getElementById(`${uuid}${data_name}-slider`)
-        e.onmousedown = (evt) => {
-            e.onmousemove = (evt2) => {
-                let slider_value = e.value
-                if(document.getElementById(e.id.substring(0,e.id.length-7))){
-                    document.getElementById(e.id.substring(0,e.id.length-7)).value = slider_value;
-                }
-                update_node_data(e.id.substring(0,e.id.length-data_name.length-7), data_name, e.value, e.value, name=display_name, affix=data_affix)
-            }
-        }
-        e.onmouseup = (evt) => {
-            e.onmousemove = null
-        }
-    }
-}
-
-function update_menu_dropdown(uuid, data_name, display_name){
-    let e = document.getElementById(`${uuid}${data_name}`) // check that is the dataname exists
-    if(e === null) return
-
-    // if the slider indeed exists, then set its current value
-    document.getElementById(e.id).value = JSON.parse(
-        localStorage.getItem(
-            JSON.parse(localStorage.getItem(uuid)).data
-        )
-    )[data_name]
-
-    e.onchange = (evt) => { // add the event listener
-        update_node_data(e.id.substring(0,e.id.length-data_name.length), data_name, e.value, activation_name_std[e.value],
-            name=display_name)
-    }
-}
-
-function update_menu_toggle(uuid, data_name, display_name){
-    let e = document.getElementById(`${uuid}${data_name}`) // check that is the dataname exists
-    if(e === null) return
-
-    // if the slider indeed exists, then set its current value
-    document.getElementById(e.id).checked = JSON.parse(
-        localStorage.getItem(
-            JSON.parse(localStorage.getItem(uuid)).data
-        )
-    )[data_name] ? true : false
-
-    e.onchange = (evt) => { // add the event listener
-        update_node_data(e.id.substring(0,e.id.length-data_name.length), data_name, e.checked, e.checked?"Yes":"No",
-            name=display_name)
-    }
-}
-
 // CSV to json
 function CSVToJSON(csvData) {
     let jsonFormat = "["
@@ -589,11 +513,11 @@ function CSVToJSON(csvData) {
         i++
     });
     jsonFormat += "]"
-    return jsonFormat 
+    return JSON.parse(jsonFormat) 
 }
 
 function detectDim(jsonData) { // recursive algorithm to determine the data dimensions
-    console.log(jsonData.length)
+    // console.log(jsonData.length)
     if(jsonData.length == undefined){ // base case
         return [1]
     }

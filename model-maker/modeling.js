@@ -109,15 +109,15 @@ const defaultinput = [
     }
 ]
 
-let terminal = document.getElementById('dfterm')
+let terminal = document.getElementById("dfterm")
 
 function dflog(template, msg, pref=null, indent=0){
-    let htmlObject = document.createElement('span');
+    let htmlObject = document.createElement("span");
     htmlObject.style.margin = `0.2vh 0 0 ${indent}`;
     if(pref !== null){
-        htmlObject.innerHTML = json2html.render({'msg' : msg, 'pref' : pref}, template);
+        htmlObject.innerHTML = json2html.render({"msg" : msg, "pref" : pref}, template);
     } else {
-        htmlObject.innerHTML = json2html.render({'msg' : msg}, template);
+        htmlObject.innerHTML = json2html.render({"msg" : msg}, template);
     }
     terminal.appendChild(htmlObject);
 
@@ -125,13 +125,13 @@ function dflog(template, msg, pref=null, indent=0){
 }
 
 function dfnl(){
-    let htmlObject = document.createElement('div');
+    let htmlObject = document.createElement("div");
     htmlObject.innerHTML = json2html.render({}, separator);
     terminal.appendChild(htmlObject);
 }
 
 // check validity of neural network
-function check_network(){
+function check_network(need_io){
     let valid = true
 
     // start by checking if input and output neuron exist
@@ -139,22 +139,19 @@ function check_network(){
         dflog(warningmsg, "Missing input node.")
         valid = false
     }
-    if(document.getElementById(OUTPUT_UUID) === null){
-        
-        dflog(warningmsg, "Missing output node.")
-        valid = false
-    }
-
     // check if input and output data is null
     if(JSON.parse(localStorage.getItem(INPUT_DAT_UUID)).data === null){ // CHANGE
         dflog(warningmsg, "Missing input file.")
+        valid = false
+    }
+    if(document.getElementById(OUTPUT_UUID) === null){ // check output node       
+        dflog(warningmsg, "Missing output node.")
         valid = false
     }
     if(JSON.parse(localStorage.getItem(OUTPUT_DAT_UUID)).data === null){ // CHANGE
         dflog(warningmsg, "Missing output file.")
         valid = false
     }
-
     if(!valid){
         dflog(errormsg, "Too many IO errors. Check failed.")
         return -1
@@ -166,14 +163,15 @@ function check_network(){
     let last_neuron_ct = -1
     while(current_uuid !== OUTPUT_UUID){
         let next_uuid = JSON.parse(localStorage.getItem(current_uuid)).dest
-        
+
         if(next_uuid === null){
             dflog(warningmsg, "Broken network chain.")
             valid = false
+            break // to prevent trying to access null pointer in the next iteration
         }
 
         if(JSON.parse(localStorage.getItem(current_uuid)).from === INPUT_UUID){
-            if(JSON.parse(localStorage.getItem(current_uuid)).type === 'ac'){
+            if(JSON.parse(localStorage.getItem(current_uuid)).type === "ac"){
                 dflog(warningmsg, "First layer cannot be an activation!")
                 valid = false
             }
@@ -181,14 +179,14 @@ function check_network(){
 
         // update last neuron count
         // console.log(current_uuid, next_uuid)
-        if(JSON.parse(localStorage.getItem(current_uuid)).type === 'de'){
+        if(JSON.parse(localStorage.getItem(current_uuid)).type === "de"){
             last_neuron_ct = JSON.parse(localStorage.getItem(JSON.parse(localStorage.getItem(current_uuid)).data)).neuron
             // console.log(last_neuron_ct)
         }
 
         // check for repeating activations
-        if(JSON.parse(localStorage.getItem(current_uuid)).type === 'ac' && 
-                JSON.parse(localStorage.getItem(JSON.parse(localStorage.getItem(current_uuid)).from)).type === 'ac'){
+        if(JSON.parse(localStorage.getItem(current_uuid)).type === "ac" && 
+                JSON.parse(localStorage.getItem(JSON.parse(localStorage.getItem(current_uuid)).from)).type === "ac"){
             dflog(warningmsg, "Cannot have 2 or more activation in a row.")
             valid = false
         }
@@ -211,15 +209,38 @@ function check_network(){
         return -1
     }
 
-    dflog(successmsg, "Check complete. No errors found.")
+    if(need_io){
+        dflog(successmsg, "Check complete. No structural errors found. There may still be value errors.")
+    } else {
+        dflog(successmsg, "Check complete. No structural errors found.")
+    }
     return last_neuron_ct
 }
 
-document.getElementById('check-net').addEventListener('click', (evt) => {
+document.getElementById("check-net").addEventListener("click", (evt) => {
     dflog(defaultinput, "checknet")
-    check_network()
+    check_network(true)
+})
 
+function compile_net(){
+    if(check_network(false) === -1){ // check the network first to see if it will work for compilation
+        dflog(errormsg, "Compilation aborted.")
+        return
+    }
     
+    // get the input dimensions based on file. The check will ensure that this exists.
+    let input_dim = JSON.parse(localStorage.getItem(INPUT_DAT_UUID)).dimension
+    
+    create_model(input_dim[1])
+    
+    console.log("Compiled network structure by TensorFlow backend:")
+    model.summary()
+    dflog(successmsg, "Compilation done. You can validate the network by pressing [F12] > Console.")
+}
+
+document.getElementById("compile-net").addEventListener("click", (evt) => { // for model compilation
+    dflog(defaultinput, "compnet")
+    compile_net()
 })
 
 let trained = false
@@ -230,40 +251,7 @@ let tXarr = null; let tyarr = null;
 let model = null
 let lr = 0.001
 
-/*
-node type standard
-in = input
-ou = output
-de = dense
-ac = activation
-do = dropout
-
-activation type standard
-li = linear
-si = sigmoid
-re = relu
-se = selu
-so = softmax
-ta = tanh
-el = elu
-
-commands
-00 = show help
-*/
-
-// function get_activation(current_uuid){
-//     let current_data = JSON.parse(localStorage.getItem(current_uuid))
-//     let next_node_data = JSON.parse(localStorage.getItem(current_data.dest))
-
-//     // check if it is activation node
-//     if(next_node_data.type !== 'ac') return "linear"
-
-//     // if it is, check the data of it
-//     let next_node_value = JSON.parse(localStorage.getItem(next_node_data.data)).value
-//     return activation_code_std[next_node_value]
-// }
-
-function create_model(){
+function create_model(custom_input_size){
     model = null // clear model first
     model = tf.sequential()
 
@@ -278,27 +266,33 @@ function create_model(){
         // detect current node type
         current_node_data = JSON.parse(localStorage.getItem(current_uuid))
 
-        if(current_node_data.type === 'de'){ // if current layer is a dense layer
+        if(current_node_data.type === "de"){ // if current layer is a dense layer
             // add dense layer with correct neuron count
             let layer_data = JSON.parse(localStorage.getItem(current_node_data.data))
             if(current_node_data.from === INPUT_UUID){ // check if it is the first node
                 model.add(tf.layers.dense({
                     units: Number(layer_data.neuron),
-                    inputShape: [X.shape[1]],
-                    useBias: Boolean(layer_data.useBias),
-                    activation: activation_code_std[layer_data.activation]
+                    inputShape: custom_input_size === null ? [X.shape[1]] : custom_input_size, // see if it should use the given or custom input size
+                    useBias: layer_data.useBias,
+                    activation: activation_code_std[layer_data.activation],
+                    kernelInitializer: kernel_bias_init_code_std[layer_data.kernelinit],
+                    biasInitializer: kernel_bias_init_code_std[layer_data.biasinit],
+                    trainable: layer_data.trainable,
                 }))
             } else { // if not, add it like normal
                 model.add(tf.layers.dense({
                     units: Number(layer_data.neuron),
                     useBias: Boolean(layer_data.useBias),
-                    activation: activation_code_std[layer_data.activation]
+                    activation: activation_code_std[layer_data.activation],
+                    kernelInitializer: kernel_bias_init_code_std[layer_data.kernelinit],
+                    biasInitializer: kernel_bias_init_code_std[layer_data.biasinit],
+                    trainable: layer_data.trainable,
                 }));
             }
         }
 
 
-        if(current_node_data.type === 'do'){ // if current layer is a dropout layer
+        if(current_node_data.type === "do"){ // if current layer is a dropout layer
             let layer_data = JSON.parse(localStorage.getItem(current_node_data.data))
             drop_rate = Number(layer_data.prob) / 100 // must convert to a percentage scale
 
@@ -318,7 +312,7 @@ function create_model(){
     }
 }
 
-document.getElementById('test-net').addEventListener('click', (evt) => {
+document.getElementById("test-net").addEventListener("click", (evt) => {
     dflog(defaultinput, "test")
     test_net_random()
 })
@@ -353,8 +347,7 @@ function test_net_random(){
     dflog(debugmsg, `Answer: ${tyarr[index]}`)
 }
 
-
-document.getElementById('train-net').addEventListener('click', (evt) => {
+document.getElementById("train-net").addEventListener("click", (evt) => {
     dflog(defaultinput, "trainnet")
     train_net()
 })
@@ -362,32 +355,32 @@ function train_net(){
     dflog(msg, "Attemping to train...")
     // disable btns
     document.querySelector("#train-net").disabled = true
-    document.querySelector("#train-net").classList.add('disable')
+    document.querySelector("#train-net").classList.add("disable")
     document.querySelector("#test-net").disabled = true
-    document.querySelector("#test-net").classList.add('disable')
+    document.querySelector("#test-net").classList.add("disable")
 
-    let last_neuron_ct = check_network()
+    let last_neuron_ct = check_network(true)
     if(last_neuron_ct === -1){ // complete check first
         dflog(errormsg, "Training aborted.")
         document.querySelector("#train-net").disabled = false
-        document.querySelector("#train-net").classList.remove('disable')
+        document.querySelector("#train-net").classList.remove("disable")
         document.querySelector("#test-net").disabled = false
-        document.querySelector("#test-net").classList.remove('disable')
+        document.querySelector("#test-net").classList.remove("disable")
         return
     }
     
     // partition data
-    let training_full = JSON.parse(JSON.parse(localStorage.getItem(INPUT_DAT_UUID)).data)
-    let label_full = JSON.parse(JSON.parse(localStorage.getItem(OUTPUT_DAT_UUID)).data)
+    let training_full = JSON.parse(localStorage.getItem(INPUT_DAT_UUID)).data
+    let label_full = JSON.parse(localStorage.getItem(OUTPUT_DAT_UUID)).data
 
     // check if training length and label length match
     
     if(training_full.length !== label_full.length){
         dflog(warningmsg, `IO length mismatch! InputLength: ${training_full}; OutputLength: ${label_full.length}`)
         document.querySelector("#train-net").disabled = false
-        document.querySelector("#train-net").classList.remove('disable')
+        document.querySelector("#train-net").classList.remove("disable")
         document.querySelector("#test-net").disabled = false
-        document.querySelector("#test-net").classList.remove('disable')
+        document.querySelector("#test-net").classList.remove("disable")
         dflog(errormsg, `Training aborted.`)
         return
     }
@@ -395,7 +388,7 @@ function train_net(){
     dflog(successmsg, "No errors found in IO files")
     
     // start partition
-    let split_index = Math.floor(training_full.length * (document.getElementById('test-part-slider').value / 100))
+    let split_index = Math.floor(training_full.length * (document.getElementById("test-part-slider").value / 100))
     dflog(debugmsg, `${split_index} testing data`)
     dflog(debugmsg, `${training_full.length-split_index} training data`)
     
@@ -417,20 +410,20 @@ function train_net(){
     tXarr = tX.arraySync()
     tyarr = ty.arraySync()
  
-    // check last node's validity
+    // check last node"s validity
     // console.log(last_neuron_ct)
     if(Number(last_neuron_ct) !== Number(y.shape[1])){
         dflog(warningmsg, `Invalid output layer shape! Requires: [${y.shape[1]}]; recieved: [${last_neuron_ct}]`)
         document.querySelector("#train-net").disabled = false
-        document.querySelector("#train-net").classList.remove('disable')
+        document.querySelector("#train-net").classList.remove("disable")
         document.querySelector("#test-net").disabled = false
-        document.querySelector("#test-net").classList.remove('disable')
+        document.querySelector("#test-net").classList.remove("disable")
         dflog(errormsg, `Training aborted.`)
         return 
     }
 
     create_model()
-    console.log("Compiled: network structure:")
+    console.log("Compiled network structure by TensorFlow backend:")
     model.summary()
     dflog(successmsg, "Successfully built the network. If you would like to verify the strucutre, press [F12] > Console.")
 
@@ -447,23 +440,33 @@ function train_net(){
     }
     model.compile(config)
     dflog(successmsg, "Network compiled without error. Starting Training process:")
-    train(model, epoch, b_size, X, y, document.getElementById('test-part-slider').value / 100).then(() => dflog(successmsg, "Model Trained Successfully")) // start async function of training network
+    train(model, epoch, b_size, X, y, document.getElementById("test-part-slider").value / 100).then(() => dflog(successmsg, "Model Trained Successfully")) // start async function of training network
 }
 
-
-document.getElementById('export-net').addEventListener('click', (evt) => {
+document.getElementById("export-net").addEventListener("click", (evt) => {
     dflog(defaultinput, "exportnet")
     export_net()
 })
 function export_net(){
-    dflog(supportmsg, "This feature is currently in development. If you would like you to you can support the development on my GitHub!")
+    if(model === null){
+        dflog(errormsg, "Model untrained/uncompiled. Cannot export.")
+        return
+    }
+
+    let file_name = document.getElementById("networkname").value || document.getElementById("networkname").placeholder
+
+    dflog(debugmsg, `Exporting structure file as: "${file_name}.json"`)
+    dflog(debugmsg, `Exporting weights file: "${file_name}.weights.bin"`)
+
+    model["createdBy"] = "DeepFusion-Beta-1.0"
+    model.save(`downloads://${file_name}`)
 }
 
-document.getElementById('term-input').addEventListener('keydown', (evt) => { // TERMINAL HANDLERS
+document.getElementById("term-input").addEventListener("keydown", (evt) => { // TERMINAL HANDLERS
     if(evt.keyCode === 13){
-        let original_command = document.getElementById('term-input').value
+        let original_command = document.getElementById("term-input").value
         let full_command = parse_cmd(original_command) // parse the command
-        document.getElementById('term-input').value = '' // clear command
+        document.getElementById("term-input").value = "" // clear command
 
         // check if execution is null
         let execute = full_command[0]
@@ -500,9 +503,9 @@ async function train(model, epoch, b_size, X, y, valSplit) {
         dflog(msg, `-- Loss ${loss}`)
     }
     document.querySelector("#train-net").disabled = false
-    document.querySelector("#train-net").classList.remove('disable')
+    document.querySelector("#train-net").classList.remove("disable")
     document.querySelector("#test-net").disabled = false
-    document.querySelector("#test-net").classList.remove('disable')
+    document.querySelector("#test-net").classList.remove("disable")
 
     dfnl()
 }

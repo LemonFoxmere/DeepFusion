@@ -18,53 +18,60 @@
     <link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
 </head>
 
-<body id='base-canvas' style="display:flex; align-items: center; justify-content: center; height:100vh; flex-direction: column">
+<body id="base-canvas" style="display:flex; align-items: center; justify-content: center; height:100vh; flex-direction: column">
     
     <!-- to warn users about enabling js -->
     <div class="pagecontainer" style="display:flex;  justify-content: center; align-items: center;">
         <!-- return -->
-        <a href='../'>
-            <div class='menu-container logo' style='width:17rem; height:3.2rem; top:0; left:0; display:flex; align-items: center; justify-content: center'>
-                <h2 class='unselectable' style='font-size: 1.5rem; letter-spacing:0.05rem; cursor:pointer; font-weight: 500; padding: 0.5rem 0 0.5rem 0;'>
+        <a href="../">
+            <div class="menu-container logo" style="width:17rem; height:3.2rem; top:0; left:0; display:flex; align-items: center; justify-content: center">
+                <h2 class="unselectable" style="font-size: 1.5rem; letter-spacing:0.05rem; cursor:pointer; font-weight: 500; padding: 0.5rem 0 0.5rem 0;">
                     DeepFusion
                 </h2>
             </div>
         </a>
 
         <!-- bottom menu -->
-        <div class='menu-container' style='
+        <div class="menu-container" style="
             width:calc(100vw - 17rem * 2); padding-bottom: 0.5rem; height:7rem; bottom:0; right:17rem;
-            display:flex; align-items: center; justify-content: center; flex-direction: column;' id="node-menu">
-                <section style='margin-top:1.2rem'>
-                    <h4 style='margin:0'>Add Layers:</h4>
+            display:flex; align-items: center; justify-content: center; flex-direction: column;" id="node-menu">
+                <section style="margin-top:1.2rem; z-index: 2; white-space: nowrap;">
+                    <h4 style="margin:0">Add Layers:</h4>
                 </section>
 
-                <section style='margin-top:0.7rem; margin-bottom:0.5rem; display:flex; flex-direction: row'>
-                    <button class='absolute-btn node-selection' id='input_node_add'>
+                <section style="margin-top:0.7rem; margin-bottom:0.5rem; display:flex; flex-direction: row; align-items: center;">
+                    <button class="absolute-btn node-selection" id="input_node_add">
                         <p>Input</p>
                     </button>
-                    <button class='absolute-btn node-selection' id='output_node_add'>
+                    <button class="absolute-btn node-selection" id="output_node_add">
                         <p>Output</p>
                     </button>
-                    <div class="vr"></div>
-                    <button class='absolute-btn node-selection' id='dense_node_add'>
+                    <div class="vr" style="height:70%"></div>
+                    <button class="absolute-btn node-selection" id="dense_node_add">
                         <p>Dense</p>
                     </button>
-                    <button class='absolute-btn node-selection' id='act_node_add'>
+                    <!-- maybe in the future -->
+                    <!-- <button class="absolute-btn node-selection" id="act_node_add">
                         <p>Activation</p>
-                    </button>
-                    <button class='absolute-btn node-selection' id='drop_node_add'>
+                    </button> -->
+                    <button class="absolute-btn node-selection" id="drop_node_add">
                         <p>Dropout</p>
                     </button>
+                    <div class="vr" style="height:70%"></div>
+                    <a class="default-upload smallest-default-upload node-selection node-selection-menu-expander buttonlike"
+                            style="height:80%;" id="drop_node_add" href="https://github.com/LemonOrangeWasTaken/DeepFusion/discussions/new" target="_blank">
+                        <p class="default-upload-decor" style="cursor: pointer;">···</p>
+                        <p style="margin-left:0.65rem; cursor: pointer;">Suggestions?</p>
+                    </a>
                 </section>
         </div>
 
         <!-- right menu -->
-        <div class='menu-container' style='width:17rem; height: 100vh; top:0; right:0;
-            display:flex; align-items: center; justify-content: flex-start; flex-direction: column; overflow: auto;'>
-            <section id='node-editor' style="display:flex; align-items: center; justify-content: center; width:100%; height:fit-content; min-height: 10rem;
+        <div class="menu-container" style="width:17rem; height: 100vh; top:0; right:0;
+            display:flex; align-items: center; justify-content: flex-start; flex-direction: column; overflow: auto;">
+            <section id="node-editor" style="display:flex; align-items: center; justify-content: center; width:100%; height:fit-content; min-height: 10rem;
             overflow: auto; position:relative; flex-direction: column; padding-right:0.2rem">
-                <div class='node-menu-container' id='default-node-menu'>
+                <div class="node-menu-container" id="default-node-menu">
                     <p>
                         Click on a node to edit it
                     </p>
@@ -75,7 +82,7 @@
                 <section style="width:100%; height:2rem; position: absolute; top:-2rem; bottom:0; background: rgb(24,26,27);
                 background: linear-gradient(0deg, rgba(24,26,27,1) 20%, rgba(24,26,27,0) 70%); pointer-events: none; z-index: 90;"></section>
     
-                <button id='del-selected' style="margin: 0.5rem 0 1.5rem 0" class='del-btn disable'
+                <button id="del-selected" style="margin: 0.5rem 0 1.5rem 0" class="del-btn disable"
                         onClick = "delete_selected_node();" disabled>
                     <p>
                         Delete Node
@@ -87,48 +94,54 @@
                     Training Controls
                 </h4>
                 
-                <hr style='width:90%; margin: 0.7rem 0 0.9rem 0'>
+                <hr style="width:90%; margin: 0.7rem 0 0.9rem 0">
     
-                <button id='check-net'>
-                    <p>Check Network</p>
-                </button>
+                <section style="width:84%; height:fit-content; display:flex; flex-direction: row;">
+                    <button id="check-net" style="width:100%">
+                        <p>Check Network</p>
+                    </button>
+                    <button id="compile-net" class='default-upload smaller-default-upload'>
+                        <p class="default-upload-decor">···</p>
+                        <p style="margin-left:0.65rem">Compile</p>
+                    </button>
+                </section>
     
-                <button id='train-net' style="margin-top:1rem">
+                <button id="train-net" style="margin-top:1rem">
                     <p>Train Network</p>
                 </button>
     
-                <button id='test-net'>
+                <button id="test-net">
                     <p>Test Network</p>
                 </button>
     
-                <button id='export-net' style="margin-top:1rem">
+                <button id="export-net" style="margin-top:1rem">
                     <p>Export Network</p>
                 </button>
             </section>
         </div>
 
         <!-- left menu -->
-        <div class='menu-container'
-                style='width:17rem; height:calc(100vh - 3.2rem); bottom:0; left:0;
-            display:flex; align-items: center; justify-content: flex-start; padding:0.2rem 0.8rem 0 0.8rem; flex-direction: column; overflow: auto;'>
+        <div class="menu-container"
+                style="width:17rem; height:calc(100vh - 3.2rem); bottom:0; left:0;
+            display:flex; align-items: center; justify-content: flex-start; padding:0.2rem 0.8rem 0 0.8rem; flex-direction: column; overflow: auto;">
 
             <section style="width:95%; height: fit-content">
-                <div class='terminal' style="min-height:10rem; height:calc(100vh - 24rem)" id='dfterm'>
-                    <span style='margin:0.5vh 0 0 0'>Welcome to DeepFusion <span style='color:greenyellow'>Beta 1.0</span>.</span>
+                <div class="terminal" style="min-height:10rem; height:calc(100vh - 24rem)" id="dfterm">
+                    <span style="margin:0.5vh 0 0 0">Welcome to DeepFusion <span style="color:greenyellow">Beta 1.0</span>.</span>
                     <span>If you want to you can support this project on 
-                        <a style='color:rgb(0, 153, 255); font-weight: 600;' href='https://github.com/LemonOrangeWasTaken/DeepFusion'>GitHub</a>
+                        <a style="color:rgb(0, 153, 255); font-weight: 600;" href="https://github.com/LemonOrangeWasTaken/DeepFusion">GitHub</a>
                         , or subscribe to my 
-                        <a style='color:rgb(255, 68, 68); font-weight: 600;' href='https://www.youtube.com/channel/UCut2xeBl7HcPEPatqpEUoQw'>YouTube</a>.
+                        <a style="color:rgb(255, 68, 68); font-weight: 600;" href="https://www.youtube.com/channel/UCut2xeBl7HcPEPatqpEUoQw">YouTube</a>.
                         Yes you can scroll on this makeshift terminal when it overflows.
                     </span>
-                    <span style='margin:0'>---</span>
-                    <span class='info'>Type "help", "about", or "license" for more information</span>
+                    <span style="margin:0">---</span>
+                    <span class="info">Type "help", "about", or "license" for more information</span>
                 </div>
     
                 <!-- terminal input section -->
     
-                <section style='display:flex; width:100%; height:auto;'>
-                    <input type="text" class='terminal-in' id='term-input'
+                <section style="display:flex; width:100%; height:auto;">
+                    <input type="text" class="terminal-in" id="term-input"
                         style="font-family: 'Source Code Pro'; font-size: 0.75rem;" placeholder=">>>">
                     </input>
                 </section>
@@ -138,35 +151,35 @@
                 Training Parameters
             </h4>
 
-            <hr style='width:90%; margin: 0.7rem 0 0.9rem 0'>
+            <hr style="width:90%; margin: 0.7rem 0 0.9rem 0">
 
-            <section class='input-parent-container'>
-                <p class='unselectable section-text'>Validation Part (%):</p>
-                <section class='slider-container'>
+            <section class="input-parent-container">
+                <p class="unselectable section-text">Validation Part (%):</p>
+                <section class="slider-container">
                     <input type="range" min="0" max="10" value="5" class="slider" id="val-part-slider">
                     <input type="number" class="number-box" id="val-part"> </input>
                 </section>
             </section>
 
-            <section class='input-parent-container'>
-                <p class='unselectable section-text'>Testing Part (%):</p>
-                <section class='slider-container'>
+            <section class="input-parent-container">
+                <p class="unselectable section-text">Testing Part (%):</p>
+                <section class="slider-container">
                     <input type="range" min="0" max="5" value="2" class="slider" id="test-part-slider">
                     <input type="number" class="number-box" id="test-part"> </input>
                 </section>
             </section>
 
-            <section class='input-parent-container' style="margin-top: 1rem;">
-                <p class='unselectable section-text'>Batch Size:</p>
-                <section class='slider-container'>
+            <section class="input-parent-container" style="margin-top: 1rem;">
+                <p class="unselectable section-text">Batch Size:</p>
+                <section class="slider-container">
                     <input type="range" min="1" max="100" value="25" class="slider" id="batch-part-slider">
                     <input type="number" class="number-box" id="batch-part"> </input>
                 </section>
             </section>
 
-            <section class='input-parent-container'>
-                <p class='unselectable section-text'>Epoch Size:</p>
-                <section class='slider-container'>
+            <section class="input-parent-container">
+                <p class="unselectable section-text">Epoch Size:</p>
+                <section class="slider-container">
                     <input type="range" min="1" max="1500" value="150" class="slider" id="epoch-part-slider">
                     <input type="number" class="number-box" id="epoch-part"> </input>
                 </section>
@@ -174,67 +187,67 @@
         </div>
 
         <!-- help btn -->
-        <!-- <button class='subtle-btn' style='position:absolute; top:1vh; right:calc(clamp(1rem, 17vw, 19rem)  1vh);'>
-            <h3 class='unselectable' style='cursor:pointer'>
+        <!-- <button class="subtle-btn" style="position:absolute; top:1vh; right:calc(clamp(1rem, 17vw, 19rem)  1vh);">
+            <h3 class="unselectable" style="cursor:pointer">
                 ?
             </h3>
         </button> -->
 
         <!-- zoom control -->
-        <section id="canvas-ctrl" style='position:absolute; top:1rem; display:flex; justify-content: center; align-items:center; flex-direction: column; z-index: 10;'>
-            <section style='
+        <section id="canvas-ctrl" style="position:absolute; top:1rem; display:flex; justify-content: center; align-items:center; flex-direction: column; z-index: 10;">
+            <section style="
                 display:flex; flex-direction: row; justify-content: center; align-items: center; background: #181a1bd3;
                 border-radius: 0.7rem;
                 -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); 
                 box-shadow: 0px 0px 20px 5px rgba(0, 0, 0, 0.507); border: 1px solid #373c3c;
-                padding:0.2rem 0.4rem 0.2rem 0.4rem'>
+                padding:0.2rem 0.4rem 0.2rem 0.4rem">
 
-                <button id='reset-canvas' class='subtle-btn' title="Recenter Canvas">
+                <button id="reset-canvas" class="subtle-btn" title="Recenter Canvas">
                     <!-- recenter -->
                     <img style="width:40%; height:auto;" src="../re-center.svg" alt="Center">
                 </button>
 
-                <div class='vr' style='height: 1.5rem; position: relative; background-color: rgba(255, 255, 255, 0.205); z-index: 10; width:1px'></div>
+                <div class="vr" style="height: 1.5rem; position: relative; background-color: rgba(255, 255, 255, 0.205); z-index: 10; width:1px"></div>
 
-                <button id='zoom-in' class='subtle-btn' title="Zoom In">
+                <button id="zoom-in" class="subtle-btn" title="Zoom In">
                     <!-- zoon in -->
                     <img style="width:40%; height:auto;" src="../zoom-in.svg" alt="Zoom In">
                 </button>
                 
-                <button id='zoom-out' class='subtle-btn' title="Zoom Out">
+                <button id="zoom-out" class="subtle-btn" title="Zoom Out">
                     <!-- zoon out -->
                     <img style="width:40%; height:auto;" src="../zoom-out.svg" alt="Zoom Out">
                 </button>
 
-                <button id='zoom-res' class='subtle-btn' title="Reset Zoom">
+                <button id="zoom-res" class="subtle-btn" title="Reset Zoom">
                     <!-- zoon reset -->
                     <img style="width:40%; height:auto;" src="../zoom-reset.svg" alt="Reset Zoom">
                 </button>
 
-                <!-- <div class='vr' style='height: 1.5rem; position: relative; background-color: rgba(255, 255, 255, 0.205); z-index: 10; width:1px'></div>
+                <!-- <div class="vr" style="height: 1.5rem; position: relative; background-color: rgba(255, 255, 255, 0.205); z-index: 10; width:1px"></div>
 
-                <button id='selection' class='subtle-btn' title="Selection">
+                <button id="selection" class="subtle-btn" title="Selection">
                     <img style="width:40%; height:auto;" src="../selection.svg" alt="Selection">
                 </button> -->
 
             </section>
-            <p id='zoom-scale' class='unselectable' style='color:white; opacity:1; margin-top:0.5vh; font-family: Montserrat'>
+            <p id="zoom-scale" class="unselectable" style="color:white; opacity:1; margin-top:0.5vh; font-family: Montserrat">
                 100%
             </p>
         </section>
 
         <!-- position debug -->
-        <section style='position: absolute; top: 0; right:17rem; margin-top:0.5rem; margin-right:0.5rem;
-                display:flex; flex-direction: row; align-items:center'>
+        <section style="position: absolute; top: 0; right:17rem; margin-top:0.5rem; margin-right:0.5rem;
+                display:flex; flex-direction: row; align-items:center">
             <!-- location thing -->
-            <p id='position_debug' class='unselectable' style='color:white; opacity:1; font-family: Montserrat; margin-left:0vw; font-size: 0.9rem;'>
+            <p id="position_debug" class="unselectable" style="color:white; opacity:1; font-family: Montserrat; margin-left:0vw; font-size: 0.9rem;">
                 0,0
             </p>
         </section>
 
         <!-- network name -->
-        <section style='position: absolute; top: 0; left:17rem; margin-top:1.5rem; margin-left:1rem;
-        display:flex; flex-direction: row; align-items:center'>
+        <section style="position: absolute; top: 0; left:17rem; margin-top:1.5rem; margin-left:1rem;
+        display:flex; flex-direction: row; align-items:center">
             <input id="networkname" maxlength="50" type="text" style="font-size: 1.2rem;" placeholder="untitled-network">
             </input>
         </section>
@@ -243,26 +256,26 @@
         <p style="position: absolute; bottom:7.5rem; font-size: 0.9rem; font-family: Montserrat; opacity: 0.4;">Public Beta 1.0</p>
         
         <!-- canvas area -->
-        <section id='canvas-drag' style='position:absolute; display:flex; justify-content: center; align-items:center;
+        <section id="canvas-drag" style="position:absolute; display:flex; justify-content: center; align-items:center;
         width:calc(100vw - 17rem * 2); left:17rem;
-        height:calc(100vh - clamp(1rem, 10vh, 6rem)); top:0; border-radius: 1rem;'>
+        height:calc(100vh - clamp(1rem, 10vh, 6rem)); top:0; border-radius: 1rem;">
 
-            <section id='main-canvas' style='position:absolute; display:flex; justify-content: center; align-items:center;
+            <section id="main-canvas" style="position:absolute; display:flex; justify-content: center; align-items:center;
                     width:400%;
                     height:400%; 
                     transition: transform 240ms cubic-bezier(0.260, 0.050, 0.250, 1.000),
                                 background-position 500ms cubic-bezier(0.260, 0.050, 0.250, 1.000); border-radius: 1rem;
                     
                     background:url(../grid.svg);
-                    background-position: 50% 50%; background-size: 50px 50px;'>
+                    background-position: 50% 50%; background-size: 50px 50px;">
                 
                 <!-- for canvas tracking -->
-                <div class='crosshair' id="functional-crosshair"></div>
+                <div class="crosshair" id="functional-crosshair"></div>
                 
-                <div class='crosshair decorational-crosshair'
-                        style='pointer-events: none; transition: all 500ms cubic-bezier(0.355, 0.010, 0.200, 1.010); z-index:1'>
+                <div class="crosshair decorational-crosshair"
+                        style="pointer-events: none; transition: all 500ms cubic-bezier(0.355, 0.010, 0.200, 1.010); z-index:1">
                     <img src="../icon.svg" alt="DeepFusion" width="auto", height="auto",
-                    style='opacity: 1; height: 10rem'>
+                    style="opacity: 1; height: 10rem">
                 </div>
                 
             </section>
@@ -279,7 +292,7 @@
                 ( ._.)
             </h1>
             <h2 style="letter-spacing:0; font-weight: 500; font-size: 2rem; cursor: text; z-index: 1000;">
-                You don't seem to have Javascript enabled...
+                You don"t seem to have Javascript enabled...
             </h2>
             <h4 style="text-align:center; margin-top:1vh; font-weight: 400; font-size: 1rem; z-index: 1000; margin-top:1rem">
                 This site needs Javascript to function properly.

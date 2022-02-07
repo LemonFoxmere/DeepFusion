@@ -7,11 +7,14 @@ function create_io_data(name, data, dim){
     }    
 }
 
-function create_dense_data(neuron_ct, activation, usebias){
+function create_dense_data(neuron_ct, activation, usebias, trainable, kernelinit, biasinit){
     return {
         "neuron" : neuron_ct,
         "activation" : activation,
-        "usebias" : usebias
+        "usebias" : usebias,
+        "trainable":trainable,
+        "kernelinit":kernelinit,
+        "biasinit":biasinit
     }    
 }
 
@@ -167,13 +170,13 @@ const DENSE_NODE = [
                 "id" : "${id_tag}info-kernelinit",
                 "class" : "unselectable node-text",
                 "style" : "cursor:move; margin-top:0.2rem",
-                "text" : "Kernel Init Glorot Uniform"
+                "text" : "Kernel Init: Glorot Normal"
             }, { // display node info 5
                 "<>" : "p",
                 "id" : "${id_tag}info-biasinit",
                 "class" : "unselectable node-text",
                 "style" : "cursor:move; margin-top:0.2rem",
-                "text" : "Bias Init: Glorot Uniform"
+                "text" : "Bias Init: Zeros"
             }, { // horizontal line
                 "<>" : "hr"
             }, { // status
