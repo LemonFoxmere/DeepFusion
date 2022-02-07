@@ -459,7 +459,9 @@ function export_net(){
     dflog(debugmsg, `Exporting weights file: "${file_name}.weights.bin"`)
 
     model["createdBy"] = "DeepFusion-Beta-1.0"
-    model.save(`downloads://${file_name}`)
+    model.save(`downloads://${file_name}`).then(prom => {
+        dflog(successmsg, "Network successfully exported.")
+    })
 }
 
 document.getElementById("term-input").addEventListener("keydown", (evt) => { // TERMINAL HANDLERS
