@@ -124,19 +124,20 @@ button:disabled:hover{
     width:2.2rem;
 }
 .default-upload:hover{
-    width:21rem;
+    width:21.5rem;
 }
 .smaller-default-upload:hover{
-    width:13.25rem;
+    width:14rem;
 }
 .smallest-default-upload:hover{
-    width:8.25rem;
+    width:8.75rem;
 }
 
 .default-upload-decor{
     margin:0;
     line-height:0;
     font-weight: 700;
+    margin-right:0.2rem;
     transform:rotate(90deg);
     
     /*
@@ -150,7 +151,7 @@ button:disabled:hover{
         If that happens I can finally kiss this mozzila bullshit goodbye forever. God I hate gecko's quirks. It's
         like Apple's design, but just in a less fun and functional way.
     */
-    -moz-transform: rotate(90deg) translate(0.05rem, -0.1rem) !important;
+    -moz-transform: rotate(90deg) translate(0.05rem, -0.125rem) !important;
 }
 
 .subtle-txt{
