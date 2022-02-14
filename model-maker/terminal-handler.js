@@ -1,9 +1,6 @@
 // list of known commands
 const ALL_CMDS = {
     'help' : (value)=>{
-
-        console.log(value)
-
         if(value.length === 1){
             if(value[0] === 'checknet'){
                 dflog(supportmsg, 'Check if the current model can be used for training, or have any errors.', null)
@@ -20,6 +17,8 @@ const ALL_CMDS = {
                 dflog(supportmsg, 'Export the current model to a TensorFlow model for external usage.', null)
             } else if(value[0] === 'delnode'){
                 dflog(supportmsg, 'Deletes the currently selected node.', null)
+            } else if(value[0] === 'clear'){
+                dflog(supportmsg, 'Clears the terminal.', null)
             }
 
             else{
@@ -36,6 +35,7 @@ const ALL_CMDS = {
             dflog(blankmsg, 'Export the current model', pref='exportnet: ')
             dflog(blankmsg, 'Compile the current model for export', pref='compnet: ')
             dflog(blankmsg, 'Delete the selected node', pref='delnode: ')
+            dflog(blankmsg, 'Clear the terminal', pref='clear: ')
         }
     },
     'about' : ()=>{
@@ -64,6 +64,10 @@ const ALL_CMDS = {
     },'delnode':()=>{
         dflog(blankmsg, '<span style="color:#39ff14">OK</span>')
         delete_selected_node()
+    },'clear':()=>{
+        // delete everything in terminal
+        terminal.innerHTML="";
+        update_term_scroll()
     }
 }
 
@@ -117,4 +121,17 @@ function update_term_scroll(){
     // quick little trick to set the terminal to always at the bottom
     var messageBody = document.querySelector('.terminal');
     messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
+}
+
+function dflog(template, msg, pref=null, indent=0){
+    let htmlObject = document.createElement("span");
+    htmlObject.style.margin = `0.2vh 0 0 ${indent}`;
+    if(pref !== null){
+        htmlObject.innerHTML = json2html.render({"msg" : msg, "pref" : pref}, template);
+    } else {
+        htmlObject.innerHTML = json2html.render({"msg" : msg}, template);
+    }
+    terminal.appendChild(htmlObject);
+
+    update_term_scroll()
 }

@@ -154,7 +154,7 @@ function set_input_menu(uuid, data){ // when a node is clicked, this runs
     add_input_menu_events()
 }
 function update_input_data(name, value, dim){ // this runs when the input data is changed
-    document.getElementById("inputinfo").innerHTML = `File: \"${name}\"`
+    document.getElementById("inputinfo").innerHTML = `File: ${name}`
     document.getElementById("inputmenuname").innerHTML = `${name}`
     // style and display dimension
     let displaydim = ""
@@ -193,7 +193,7 @@ function set_output_menu(uuid, data){
     add_output_menu_events()
 }
 function update_output_data(name, value, dim){
-    document.getElementById("outputinfo").innerHTML = `File: \"${name}\"`
+    document.getElementById("outputinfo").innerHTML = `File: ${name}`
     document.getElementById("outputmenuname").innerHTML = `${name}`
     // style and display dimension
     let displaydim = ""

@@ -1,5 +1,24 @@
 {
   "dependencies": {
     "express": "^4.17.1"
-  }
+  },
+  "name": "deepfusion",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LemonOrangeWasTaken/DeepFusion.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LemonOrangeWasTaken/DeepFusion/issues"
+  },
+  "homepage": "https://github.com/LemonOrangeWasTaken/DeepFusion#readme",
+  "description": ""
 }

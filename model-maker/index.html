@@ -7,6 +7,13 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://deepfusion.org/">
+    <meta property="og:title" content="DeepFusion - Graphical AI Development Environment">
+    <meta property="og:description" content="Create, train, and export custom neural networks without code or hassle.">
+    <meta property="og:image" content="https://deepfusion.org/img/banner.png">
+
     <link rel="stylesheet" href="../style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet"> 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,12 +26,10 @@
 </head>
 
 <body id="base-canvas" style="display:flex; align-items: center; justify-content: center; height:100vh; flex-direction: column">
-    
-    <!-- to warn users about enabling js -->
-    <div class="pagecontainer" style="display:flex;  justify-content: center; align-items: center;">
+    <div class="pagecontainer" style="display:flex; justify-content: center; align-items: center;">
         <!-- return -->
         <a href="../">
-            <div class="menu-container logo" style="width:17rem; height:3.2rem; top:0; left:0; display:flex; align-items: center; justify-content: center">
+            <div class="menu-container logo" style="width:17rem; height:3.2rem; top:0; left:0; display:flex; align-items: center; justify-content: center;">
                 <h2 class="unselectable" style="font-size: 1.5rem; letter-spacing:0.05rem; cursor:pointer; font-weight: 500; padding: 0.5rem 0 0.5rem 0;">
                     DeepFusion
                 </h2>
@@ -114,7 +119,7 @@
                     <p>Test Network</p>
                 </button>
     
-                <button id="export-net" style="margin-top:1rem; margin-bottom:2rem">
+                <button id="export-net" style="margin-top:1rem; margin-bottom:1.75rem">
                     <p>Export Network</p>
                 </button>
             </section>
@@ -138,12 +143,25 @@
                     <span class="info">Type "help", "about", or "license" for more information</span>
                 </div>
     
-                <!-- terminal input section -->
-    
-                <section style="display:flex; width:100%; height:auto;">
+                <!-- terminal input section. It will also contain the buttons for configuring the terminal. -->
+
+                <section style="display:flex; width:100%; height:auto; position: relative;">
                     <input type="text" class="terminal-in" id="term-input"
                         style="font-family: 'Source Code Pro'; font-size: 0.75rem;" placeholder=">>>">
                     </input>
+
+                    <!-- terminal control buttons -->
+                    <section id="terminal-ctrl"
+                            style="position: absolute; right:0.4rem; top:-3rem; display: flex; flex-direction: row; justify-content: flex-end; padding: 1rem 0 0 0; width:55%; pointer-events: none;">
+
+                        <button class="terminal-btn">
+                            <img style="width:0.75rem; height:auto; margin:0" src="../zoom-in.svg" alt="Zoom In Terminal">
+                        </button>
+                        <button class="terminal-btn">
+                            <img style="width:0.75rem; height:auto; margin:0" src="../zoom-out.svg" alt="Zoom Out Terminal">
+                        </button>
+
+                    </section>
                 </section>
             </section>
 
@@ -303,14 +321,14 @@
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.0.0/dist/tf.min.js"></script>
     <script src="../anime.min.js"></script>
     <script src="../json2html.min.js"></script>
+    <script src="terminal-handler.js"></script>
+    <script src="events.js"></script>
     <script src="style.js"></script>
     <script src="node-templates.js"></script>
     <script src="menu-templates.js"></script>
     <script src="menu-handler.js"></script>
-    <script src="events.js"></script>
     <script src="standards.js"></script>
     <script src="modeling.js"></script>
-    <script src="terminal-handler.js"></script>
     <script src="edge-render.js"></script>
+    </html>
 </body>
-</html>

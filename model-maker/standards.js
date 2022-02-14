@@ -23,6 +23,8 @@ ta = tanh
 el = elu
 */
 
+const supported_file_types=[]
+
 const recognized_node_code = ["in", "ou", "de", "ac", "do"]
 
 const activation_name_std = {

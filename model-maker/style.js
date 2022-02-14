@@ -1,15 +1,15 @@
 // show warning message before unloading
-window.onbeforeunload = function (e) {
-    e = e || window.event;
+// window.onbeforeunload = function (e) {
+//     e = e || window.event;
 
-    // For IE and Firefox prior to version 4
-    if (e) {
-        e.returnValue = "Leaving this site WILL result in your work permanatly erased. But your IO data will be kept. Are you sure?";
-    }
+//     // For IE and Firefox prior to version 4
+//     if (e) {
+//         e.returnValue = "Leaving this site WILL result in your work permanatly erased. But your IO data will be kept. Are you sure?";
+//     }
 
-    // For Safari
-    return "Leaving this site WILL result in your work permanatly erased. But your IO data will be kept. Are you sure?";
-};
+//     // For Safari
+//     return "Leaving this site WILL result in your work permanatly erased. But your IO data will be kept. Are you sure?";
+// };
 
 document.getElementById("del-selected").disabled = true // disable the delete button in case if it is enabled from a previous session
 
@@ -33,3 +33,5 @@ let p3 = name_p3[Math.floor(Math.random() * name_p3.length)];
 var networkname = p1+p2+p3
 
 document.getElementById("networkname").value = networkname
+
+// add event listeners for terminal customization

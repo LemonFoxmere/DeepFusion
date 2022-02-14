@@ -111,19 +111,6 @@ const defaultinput = [
 
 let terminal = document.getElementById("dfterm")
 
-function dflog(template, msg, pref=null, indent=0){
-    let htmlObject = document.createElement("span");
-    htmlObject.style.margin = `0.2vh 0 0 ${indent}`;
-    if(pref !== null){
-        htmlObject.innerHTML = json2html.render({"msg" : msg, "pref" : pref}, template);
-    } else {
-        htmlObject.innerHTML = json2html.render({"msg" : msg}, template);
-    }
-    terminal.appendChild(htmlObject);
-
-    update_term_scroll()
-}
-
 function dfnl(){
     let htmlObject = document.createElement("div");
     htmlObject.innerHTML = json2html.render({}, separator);
@@ -272,7 +259,7 @@ function create_model(custom_input_size){
             if(current_node_data.from === INPUT_UUID){ // check if it is the first node
                 model.add(tf.layers.dense({
                     units: Number(layer_data.neuron),
-                    inputShape: custom_input_size === null ? [X.shape[1]] : custom_input_size, // see if it should use the given or custom input size
+                    inputShape: typeof(custom_input_size) === 'undefined' ? [X.shape[1]] : custom_input_size, // see if it should use the given or custom input size
                     useBias: layer_data.useBias,
                     activation: activation_code_std[layer_data.activation],
                     kernelInitializer: kernel_bias_init_code_std[layer_data.kernelinit],

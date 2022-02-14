@@ -419,15 +419,20 @@ function add_input_menu_events(){
     if(e === null) return
         
     document.querySelector("#input-file").onchange = () => {
-        // read csv file from the upload button
         let file = document.querySelector("#input-file").files[0], read = new FileReader()
         let file_name = file.name
         read.readAsBinaryString(file); // convert to String
         read.onloadend = function(){
-            let data = CSVToJSON(read.result)
-            let dim = detectDim(data)
-            update_input_data(file_name, data, dim) // update values
+            // when uploading, lag stems from here. This needs to be shifted to a backend server for processing in the future.
+            // let data = CSVToJSON(read.result)
+            CSVToJSON(read.result).then(data => {
+                let dim = detectDim(data)
+                update_input_data(file_name, data, dim) // update values
+            }) .catch(err => {
+                return -1
+            })
         }
+
     }
 
     document.getElementById("input-upload").addEventListener("click", (evt) => {
@@ -435,10 +440,14 @@ function add_input_menu_events(){
     })
     document.getElementById("default-input-upload").addEventListener("click", (evt) => { // upload default data
         fetch("../x.csv").then(res => res.text()).then(rawdat => {
-            let data = CSVToJSON(rawdat) // fetch from local
-            let dim = detectDim(data)
-            // console.log(data)
-            update_input_data("RGB-inputs.csv", data, dim) // update values
+            CSVToJSON(rawdat).then(data => {
+                let dim = detectDim(data)
+                update_input_data("RGB-inputs.csv", data, dim) // update values
+            }) .catch(err => {
+                return -1
+            })
+        }).catch(err => {
+            dflog(errormsg, "An internal error has occured, and the default input dataset cannot be loaded. Please submit a bug report here.")
         })
     })
 }
@@ -454,10 +463,14 @@ function add_output_menu_events(){
         let file_name = file.name
         read.readAsBinaryString(file); // convert to String
         read.onloadend = function(){
-            let data = CSVToJSON(read.result)
-            let dim = detectDim(data)
-            // console.log(data)
-            update_output_data(file_name, data, dim) // update values
+            // when uploading, lag stems from here. This needs to be shifted to a backend server for processing in the future.
+            // let data = CSVToJSON(read.result)
+            CSVToJSON(read.result).then(data => {
+                let dim = detectDim(data)
+                update_output_data(file_name, data, dim) // update values
+            }) .catch(err => {
+                return -1
+            })
         }
     }
 
@@ -466,10 +479,14 @@ function add_output_menu_events(){
     })
     document.getElementById("default-output-upload").addEventListener("click", (evt) => { // upload default data
         fetch("../Y.csv").then(res => res.text()).then(rawdat => {
-            let data = CSVToJSON(rawdat) // fetch from local
-            let dim = detectDim(data)
-            // console.log(data)
-            update_output_data("predictions.csv", data, dim) // update values
+            CSVToJSON(rawdat).then(data => {
+                let dim = detectDim(data)
+                update_output_data("prediction.csv", data, dim) // update values
+            }) .catch(err => {
+                return -1
+            })
+        }).catch(err => {
+            dflog(errormsg, "An internal error has occured, and the default output dataset cannot be loaded. Please submit a bug report here.")
         })
     })
 }
@@ -505,15 +522,23 @@ function add_drop_menu_events(uuid){
 // })
 
 // CSV to json
-function CSVToJSON(csvData) {
-    let jsonFormat = "["
-    let i = 0
-    csvData.split("\n").forEach(s => {
-        jsonFormat += "[" + s + "]" + (csvData.split("\n").length-1 != i ? "," : "")
-        i++
-    });
-    jsonFormat += "]"
-    return JSON.parse(jsonFormat) 
+async function CSVToJSON (csvData) {
+    return new Promise((res, rej) => { // TODO: integrate with backend server for processing later
+         try {
+            let jsonFormat = "["
+            let i = 0
+            let splitted_data = csvData.split("\n")
+            for(let i = 0; i < splitted_data.length; i++){
+                jsonFormat += "[" + splitted_data[i] + "]" + (csvData.split("\n").length-1 != i ? "," : "")
+            }
+            jsonFormat += "]"
+            res(JSON.parse(jsonFormat)) // fulfill promise
+        } catch (error) {
+            dflog(errormsg, "An internal error occured while parsing file. Please check your data or, if you believe this is a system error, file a bug report <a style=\"cursor:pointer\" href=\"https://github.com/LemonOrangeWasTaken/DeepFusion/issues/new\" target=\"_blank\">here</a>.")
+            rej() // reject promise
+            return
+        }
+    })
 }
 
 function detectDim(jsonData) { // recursive algorithm to determine the data dimensions
