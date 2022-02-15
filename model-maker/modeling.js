@@ -190,7 +190,7 @@ function create_model(custom_input_size){
 }
 
 document.getElementById("test-net").addEventListener("click", (evt) => {
-    dflog(defaultinput, "test")
+    dflog(defaultinput, "testnet")
     test_net_random()
 })
 function test_net_random(){

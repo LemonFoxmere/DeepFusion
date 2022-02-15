@@ -254,10 +254,6 @@ const DENSE_NODE_MENU = [ // uuid, neuronct
                         "text" : "Glorot Uniform", 
                     },{
                         "<>" : "option",
-                        "value" : "con",
-                        "text" : "Constant", 
-                    },{
-                        "<>" : "option",
                         "value" : "hen",
                         "text" : "He-Normal", 
                     },{
@@ -296,10 +292,6 @@ const DENSE_NODE_MENU = [ // uuid, neuronct
                         "<>" : "option",
                         "value" : "trn",
                         "text" : "Truncated Normal", 
-                    },{
-                        "<>" : "option",
-                        "value" : "var",
-                        "text" : "Varience Scaling", 
                     }
                 ],
             },
@@ -322,16 +314,16 @@ const DENSE_NODE_MENU = [ // uuid, neuronct
                         "text" : "Zeros (default)", 
                     },{
                         "<>" : "option",
+                        "value" : "one",
+                        "text" : "Ones", 
+                    },{
+                        "<>" : "option",
                         "value" : "zer",
                         "text" : "Glorot Uniform", 
                     },{
                         "<>" : "option",
                         "value" : "gln",
                         "text" : "Glorot Normal", 
-                    },{
-                        "<>" : "option",
-                        "value" : "con",
-                        "text" : "Constant", 
                     },{
                         "<>" : "option",
                         "value" : "hen",
@@ -350,14 +342,6 @@ const DENSE_NODE_MENU = [ // uuid, neuronct
                         "text" : "LeCun Uniform", 
                     },{
                         "<>" : "option",
-                        "value" : "one",
-                        "text" : "Ones", 
-                    },{
-                        "<>" : "option",
-                        "value" : "ort",
-                        "text" : "Orthogonal", 
-                    },{
-                        "<>" : "option",
                         "value" : "ran",
                         "text" : "Random Normal", 
                     },{
@@ -368,10 +352,6 @@ const DENSE_NODE_MENU = [ // uuid, neuronct
                         "<>" : "option",
                         "value" : "trn",
                         "text" : "Truncated Normal", 
-                    },{
-                        "<>" : "option",
-                        "value" : "var",
-                        "text" : "Varience Scaling", 
                     }
                 ],
             }

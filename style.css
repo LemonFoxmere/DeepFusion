@@ -13,9 +13,16 @@
 
 body{
     background-color: #1f2323ff;
+    /* background-color: rgb(86, 92, 92); */
     overflow: hidden;
     color:white;
     font-family:Poppins; 
+}
+body > canvas{
+    position: fixed;
+    width:100vw;
+    height:50vh;
+    z-index: 1;
 }
 
 button, .buttonlike{
