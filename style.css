@@ -23,7 +23,12 @@ button, .buttonlike{
     border-radius: 100vh;
     color:white;
 
-    padding: 0.5rem 0.7rem 0.5rem 0.7rem;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0rem 0.75rem 0rem 0.75rem;
+    height:2.25rem;
     margin:0.3rem;
     background-color: transparent;
     z-index: 10;
@@ -124,57 +129,39 @@ button:disabled:hover{
 .terminal-btn:hover{
     background-color: #798287e2;
 }
-#terminal-ctrl{
-    opacity: 0;
-    transition: all 230ms cubic-bezier(0.260, 0.050, 0.250, 1.000); /* custom */
-}#terminal-ctrl:hover{
-    opacity: 1;
-}
 
 .default-upload{
-    width:2.5rem;
+    min-width:2.25rem;
+    width:2.25rem;
+    height:2.25rem;
     transition: all 400ms cubic-bezier(0.665, 0.005, 0.080, 1.000); /* custom */
-    transition-delay: 75ms;
+    transition-delay: 125ms;
     display: flex;
     flex-direction: row;
     text-align: center;
-    padding-top:0rem;
-    padding-bottom:0rem;
-    padding-left:0.6rem;
+    padding:0;
     align-items: center;
-}
-.node-selection-menu-expander{
-    width:2.2rem;
+    justify-content: flex-start;
+    overflow: hidden;
 }
 .default-upload:hover{
-    width:21.5rem;
-}
-.smaller-default-upload:hover{
-    width:14rem;
-}
-.smallest-default-upload:hover{
-    width:8.75rem;
+    width:27rem;
 }
 
 .default-upload-decor{
-    margin:0;
     line-height:0;
     font-weight: 700;
-    margin-right:0.2rem;
-    transform:rotate(90deg);
+
+    transform: rotate(90deg) translate(0rem, 0.0775rem) !important;
+    -moz-transform:rotate(90deg) translate(0rem, -0.03875rem) !important;
     
-    /*
-        Firefox gecko overrides. Because apparently their center of a text is on the top instead of the center.
-        Thanks Mozzila for this convinient feature that everyone loves and no body hates. I swear to god it's one
-        of those things where it can be convinient in some niche places, but is really shit in others. I don't
-        understand why they have to make it so that an object's center is at the HECCING TOP. LIKE HOW DOES THAT
-        EVEN MAKE SENSE? Every single other heccing object has their center to be the actual center, but texts
-        are somehow different isn't it? This just proves that webkit is the best rendering engine. Shame that
-        There's no good browsers for it on linux; can't wait for Orion to build their crap and port it on Linux.
-        If that happens I can finally kiss this mozzila bullshit goodbye forever. God I hate gecko's quirks. It's
-        like Apple's design, but just in a less fun and functional way.
-    */
-    -moz-transform: rotate(90deg) translate(0.05rem, -0.125rem) !important;
+    min-width:2.25rem;
+    width:2.25rem;
+    height:2.25rem;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .subtle-txt{
@@ -210,12 +197,12 @@ button:disabled:hover{
     border-radius: 0.6rem;
     width: 2.5rem;
     height: 2.5rem;
-    transition: background-color 230ms cubic-bezier(0.260, 0.050, 0.250, 1.000); /* custom */
+    transition: background-color 200ms cubic-bezier(0.260, 0.050, 0.250, 1.000); /* custom */
     z-index: 10;
 }
 .subtle-btn:hover{
     padding:0;
-    background-color: rgba(255, 255, 255, 0.075);
+    background-color: rgba(255, 255, 255, 0.2);
 }
 .hovering-subtle-btn, .hovering-subtle-btn:hover{
     padding:0;
@@ -451,6 +438,19 @@ button p{
     display: none;
 }
 
+.terminal:hover ~ #terminal-ctrl{
+    opacity: 1;
+}
+#terminal-ctrl{
+    opacity: 0;
+    transition: all 230ms cubic-bezier(0.260, 0.050, 0.250, 1.000);
+    overflow: none;
+    padding:0;
+}
+#terminal-ctrl:hover{
+    opacity: 1;
+}
+
 .terminal-in{
     width:100%;
     min-height:1.8rem;
@@ -475,7 +475,7 @@ button p{
 }
 
 .terminal span{
-    margin-top:1rem;
+    margin-top:0.75rem;
     line-height:1rem;
     font-family: "Source Code Pro";
     font-size: 0.75rem;

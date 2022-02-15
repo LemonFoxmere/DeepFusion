@@ -1,114 +1,3 @@
-const separator = [
-    { // node in triangle
-        "<>" : "span",
-        "text" : "==="
-    }
-]
-
-const msg = [
-    { // node in triangle
-        "<>" : "span",
-        "text" : "[Fusion] ${msg}"
-    }
-]
-
-const successmsg = [
-    { // node in triangle
-        "<>" : "span",
-        "text" : "["
-    },{ // node in triangle
-        "<>" : "span",
-        "style" : "color: greenyellow; margin:0",
-        "text" : "Success"
-    },{ // node in triangle
-        "<>" : "span",
-        "html" : "] ${msg}"
-    }
-]
-
-const debugmsg = [
-    { // node in triangle
-        "<>" : "span",
-        "text" : "["
-    },{ // node in triangle
-        "<>" : "span",
-        "style" : "color: #247cff",
-        "text" : "Debug"
-    },{ // node in triangle
-        "<>" : "span",
-        "html" : "] ${msg}"
-    }
-]
-
-const warningmsg = [
-    { // node in triangle
-        "<>" : "span",
-        "text" : "["
-    },{ // node in triangle
-        "<>" : "span",
-        "style" : "color: #ffb300",
-        "text" : "Warning"
-    },{ // node in triangle
-        "<>" : "span",
-        "html" : "] ${msg}"
-    }
-]
-
-const errormsg = [
-    { // node in triangle
-        "<>" : "span",
-        "text" : "["
-    },{ // node in triangle
-        "<>" : "span",
-        "style" : "color: rgb(255, 68, 68); margin:0",
-        "text" : "Error"
-    },{ // node in triangle
-        "<>" : "span",
-        "style" : "margin:0; line-height:0",
-        "html" : "] ${msg}"
-    }
-]
-
-const supportmsg = [
-    { // node in triangle
-        "<>" : "span",
-        "text" : "["
-    },{ // node in triangle
-        "<>" : "span",
-        "style" : "color: #e60ef9; margin:0",
-        "text" : "Fusion"
-    },{ // node in triangle
-        "<>" : "span",
-        "style" : "margin:0; line-height:0",
-        "html" : "] ${msg}"
-    }
-]
-
-const blankmsg = [
-    { // node in triangle
-        "<>" : "span",
-        "style" : "font-weight:600; margin:0",
-        "html" : "${pref}"
-    },{
-        "<>" : "span",
-        "style" : "margin:1vh 0 0 0; line-height:0",
-        "html" : "${msg}"
-    }
-]
-
-// user input msgs
-const defaultinput = [
-    { // node in triangle
-        "<>" : "span",
-        "style":"font-weight:400; color:#fff",
-        "text" : ">>> "
-    },{ // node in triangle
-        "<>" : "span",
-        "style" : "margin:0; line-height:0; font-weight:400; color:#fff",
-        "text" : "${msg}"
-    }
-]
-
 let terminal = document.getElementById("dfterm")
 
 function dfnl(){
@@ -123,7 +12,7 @@ function check_network(need_io){
 
     // start by checking if input and output neuron exist
     if(document.getElementById(INPUT_UUID) === null){
-        dflog(warningmsg, "Missing input node.")
+        dflog(warningmsg, "Missing input layer.")
         valid = false
     }
     // check if input and output data is null
@@ -132,7 +21,7 @@ function check_network(need_io){
         valid = false
     }
     if(document.getElementById(OUTPUT_UUID) === null){ // check output node       
-        dflog(warningmsg, "Missing output node.")
+        dflog(warningmsg, "Missing output layer.")
         valid = false
     }
     if(JSON.parse(localStorage.getItem(OUTPUT_DAT_UUID)).data === null){ // CHANGE
@@ -197,7 +86,7 @@ function check_network(need_io){
     }
 
     if(need_io){
-        dflog(successmsg, "Check complete. No structural errors found. There may still be value errors.")
+        dflog(successmsg, "Check complete. No structural errors found. Please do note that there may still be value errors.")
     } else {
         dflog(successmsg, "Check complete. No structural errors found.")
     }
@@ -210,6 +99,7 @@ document.getElementById("check-net").addEventListener("click", (evt) => {
 })
 
 function compile_net(){
+    trained = false
     if(check_network(false) === -1){ // check the network first to see if it will work for compilation
         dflog(errormsg, "Compilation aborted.")
         return
@@ -304,7 +194,7 @@ document.getElementById("test-net").addEventListener("click", (evt) => {
     test_net_random()
 })
 function test_net_random(){
-    if(model == null) {
+    if(model == null || !trained) {
         dflog(warningmsg, "You must train before you can test!")
         dflog(errormsg, "Testing aborted.")
         return
@@ -325,7 +215,7 @@ function test_net_random(){
         
     })
     
-    for(let i = 0; i < pred[0].length; i++){
+    for(let i = 0; i < pred[0].length; i++){train
         pred[0][i] = Math.round(pred[0][i]*1000)/1000
     }
 
@@ -401,6 +291,7 @@ function train_net(){
     // console.log(last_neuron_ct)
     if(Number(last_neuron_ct) !== Number(y.shape[1])){
         dflog(warningmsg, `Invalid output layer shape! Requires: [${y.shape[1]}]; recieved: [${last_neuron_ct}]`)
+        dflog(blankmsg, `This usually means that your last layer has the wrong amount of neurons / dimension. It HAS to match up to the dimension specified above!`)
         document.querySelector("#train-net").disabled = false
         document.querySelector("#train-net").classList.remove("disable")
         document.querySelector("#test-net").disabled = false
@@ -495,6 +386,7 @@ async function train(model, epoch, b_size, X, y, valSplit) {
     document.querySelector("#train-net").classList.remove("disable")
     document.querySelector("#test-net").disabled = false
     document.querySelector("#test-net").classList.remove("disable")
+    trained = true
 
     dfnl()
 }

@@ -13,9 +13,8 @@
 8. ~~Create export functionality~~
 9. ~~Add meta previews~~
 10. ~~Fix the bug for training failure~~
-11. Add file type detection
-12. Test all features
-13. Improve home page
-14. Add analytics
-15. Fuck you
-16. write a basic *README*
+11. ~~Add file type detection~~
+12. ~~Test all features~~
+13. ~~Improve home page~~
+14. ~~Add analytics~~
+15. write a basic *README*

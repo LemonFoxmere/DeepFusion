@@ -1,15 +1,17 @@
 // show warning message before unloading
-// window.onbeforeunload = function (e) {
-//     e = e || window.event;
+window.onbeforeunload = function (e) {
+    e = e || window.event;
 
-//     // For IE and Firefox prior to version 4
-//     if (e) {
-//         e.returnValue = "Leaving this site WILL result in your work permanatly erased. But your IO data will be kept. Are you sure?";
-//     }
+    // For IE and Firefox prior to version 4
+    if (e) {
+        e.returnValue = "Leaving this site WILL result in your work permanatly erased. But your IO data will be kept. Are you sure?";
+    }
 
-//     // For Safari
-//     return "Leaving this site WILL result in your work permanatly erased. But your IO data will be kept. Are you sure?";
-// };
+    // For Safari
+    return "Leaving this site WILL result in your work permanatly erased. But your IO data will be kept. Are you sure?";
+};
+
+let font_size = 0.75 // This is for the terminal. unit: rem
 
 document.getElementById("del-selected").disabled = true // disable the delete button in case if it is enabled from a previous session
 
@@ -35,3 +37,20 @@ var networkname = p1+p2+p3
 document.getElementById("networkname").value = networkname
 
 // add event listeners for terminal customization
+document.getElementById("zoom-in-term").addEventListener("click", e => {
+    font_size += 0.1;
+    update_terminal_font()
+})
+document.getElementById("zoom-out-term").addEventListener("click", e => {
+    if(font_size - 0.1 > 0){ // to prevent it from going negative
+        font_size -= 0.1;
+        update_terminal_font()
+    }
+})
+
+function update_terminal_font(){
+    document.querySelectorAll("span").forEach(e => {
+        e.style.fontSize = font_size + "rem";
+        e.style.lineHeight = (font_size+0.25) + "rem";
+    })
+}

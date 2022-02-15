@@ -421,6 +421,14 @@ function add_input_menu_events(){
     document.querySelector("#input-file").onchange = () => {
         let file = document.querySelector("#input-file").files[0], read = new FileReader()
         let file_name = file.name
+
+        // check file type
+        if(file.type !== "text/csv"){
+            dflog(errormsg, "Upload failed: Only CSV files are supported for now!")
+            dflog(blankmsg, "Or if you don't have a CSV file, you can click the <strong>⋮</strong> next to the upload button for a sample dataset.")
+            return;
+        }
+
         read.readAsBinaryString(file); // convert to String
         read.onloadend = function(){
             // when uploading, lag stems from here. This needs to be shifted to a backend server for processing in the future.
@@ -461,6 +469,14 @@ function add_output_menu_events(){
         // read csv file from the upload button
         let file = document.querySelector("#output-file").files[0], read = new FileReader()
         let file_name = file.name
+        
+        // check file type
+        if(file.type !== "text/csv"){
+            dflog(errormsg, "Upload failed: Only CSV files are supported for now!")
+            dflog(blankmsg, "Or if you don't have a CSV file, you can click the <strong>⋮</strong> next to the upload button for a sample dataset.")
+            return;
+        }
+
         read.readAsBinaryString(file); // convert to String
         read.onloadend = function(){
             // when uploading, lag stems from here. This needs to be shifted to a backend server for processing in the future.

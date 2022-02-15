@@ -20,11 +20,11 @@ const INPUT_NODE_MENU = [ // file_name
         "html" : [
             {
                 "<>" : "section",
-                "style" : "width:100%; height:fit-content; display:flex; flex-direction:row",
+                "style" : "width:100%; height:fit-content; display:flex; flex-direction:row;",
                 "html": [{
                     "<>" : "button",
                     "id" : "input-upload",
-                    "style" : "width:100%",
+                    "style" : "width:calc(100% - 0rem)",
                     "html":[{
                         "<>":"p",
                         "text":"Upload"
@@ -41,7 +41,7 @@ const INPUT_NODE_MENU = [ // file_name
                     },{
                         "<>":"p",
                         "id":"default-upload-text",
-                        "style":"margin-left:0.65rem",
+                        "style":"margin-left:0.1rem",
                         "text":"use default"
                     }]
                 }],
@@ -113,7 +113,7 @@ const OUTPUT_NODE_MENU = [ // file_name
                     },{
                         "<>":"p",
                         "id":"default-upload-text",
-                        "style":"margin-left:0.65rem",
+                        "style":"margin-left:0.1rem",
                         "text":"use default"
                     }]
                 }],
@@ -170,7 +170,7 @@ const DENSE_NODE_MENU = [ // uuid, neuronct
                         "<>" : "input",
                         "type" : "range",
                         "min" : "1",
-                        "max" : "200",
+                        "max" : "1000",
                         "value" : "${neuronct}",
                         "class" : "slider",
                         "id" : "${uuid}neuron-slider",
@@ -266,10 +266,6 @@ const DENSE_NODE_MENU = [ // uuid, neuronct
                         "text" : "He-Uniform", 
                     },{
                         "<>" : "option",
-                        "value" : "ide",
-                        "text" : "Identity", 
-                    },{
-                        "<>" : "option",
                         "value" : "lec",
                         "text" : "LeCun Normal", 
                     },{
@@ -344,10 +340,6 @@ const DENSE_NODE_MENU = [ // uuid, neuronct
                         "<>" : "option",
                         "value" : "heu",
                         "text" : "He-Uniform", 
-                    },{
-                        "<>" : "option",
-                        "value" : "ide",
-                        "text" : "Identity", 
                     },{
                         "<>" : "option",
                         "value" : "lec",
@@ -534,7 +526,7 @@ const DROP_NODE_MENU = [ // uuid, neuronct
                         "<>" : "input",
                         "type" : "range",
                         "min" : "0",
-                        "max" : "100",
+                        "max" : "90",
                         "value" : "${chance}",
                         "class" : "slider",
                         "id" : "${uuid}prob-slider",

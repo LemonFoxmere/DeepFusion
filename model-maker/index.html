@@ -63,10 +63,8 @@
                         <p>Dropout</p>
                     </button>
                     <div class="vr" style="height:70%"></div>
-                    <a class="default-upload smallest-default-upload node-selection node-selection-menu-expander buttonlike"
-                            style="height:80%;" id="drop_node_add" href="https://github.com/LemonOrangeWasTaken/DeepFusion/discussions/new" target="_blank">
-                        <p class="default-upload-decor" style="cursor: pointer;">···</p>
-                        <p style="margin-left:0.65rem; cursor: pointer;">Suggestions?</p>
+                    <a class="buttonlike node-selection" style="width: fit-content" id="drop_node_add" href="https://github.com/LemonOrangeWasTaken/DeepFusion/discussions/categories/feature-requests" target="_blank">
+                        <p style="cursor: pointer;">Suggestions?</p>
                     </a>
                 </section>
         </div>
@@ -105,9 +103,8 @@
                     <button id="check-net" style="width:100%">
                         <p>Check Network</p>
                     </button>
-                    <button id="compile-net" class='default-upload smaller-default-upload'>
-                        <p class="default-upload-decor">···</p>
-                        <p style="margin-left:0.65rem">Compile</p>
+                    <button id="compile-net" style="padding:0; width:70%">
+                        <p>Compile</p>
                     </button>
                 </section>
     
@@ -130,9 +127,9 @@
                 style="width:17rem; height:calc(100vh - 3.2rem); bottom:0; left:0;
             display:flex; align-items: center; justify-content: flex-start; padding:0.2rem 0.8rem 0 0.8rem; flex-direction: column; overflow: auto;">
 
-            <section style="width:95%; height: fit-content">
-                <div class="terminal" style="min-height:10rem; height:calc(100vh - 24rem)" id="dfterm">
-                    <span style="margin:0.5vh 0 0 0">Welcome to DeepFusion <span style="color:greenyellow">Beta 1.0</span>.</span>
+            <section style="width:95%; height: fit-content; position:relative">
+                <div class="terminal" style="min-height:10rem; height:calc(100vh - 24rem); position: relative;" id="dfterm">
+                    <span style="margin:0.5vh 0 0 0">Welcome to DeepFusion <span style="color:greenyellow">Beta 1.1</span>.</span>
                     <span>If you want to you can support this project on 
                         <a style="color:rgb(0, 153, 255); font-weight: 600;" href="https://github.com/LemonOrangeWasTaken/DeepFusion">GitHub</a>
                         , or subscribe to my 
@@ -140,28 +137,30 @@
                         Yes you can scroll on this makeshift terminal when it overflows.
                     </span>
                     <span style="margin:0">---</span>
-                    <span class="info">Type "help", "about", or "license" for more information</span>
+                    <span class="info">Type "help", "whatsnew", or "license" for more information</span>
+                    
                 </div>
-    
+
+                <!-- terminal control buttons -->
+                <section id="terminal-ctrl"
+                        style="position: absolute; right:0.4rem; bottom:2.45rem; display: flex; flex-direction: row; justify-content: flex-end;
+                        padding: 0; width:fit-content">
+
+                    <button class="terminal-btn" id="zoom-in-term" title="Zoom In Terminal">
+                        <img style="width:auto; height:0.5rem; margin:0" src="../zoom-in.svg" alt="Zoom In Terminal">
+                    </button>
+                    <button class="terminal-btn" id="zoom-out-term" title="Zoom Out Terminal">
+                        <img style="width:0.5rem; height:auto; margin:0" src="../zoom-out.svg" alt="Zoom Out Terminal">
+                    </button>
+
+                </section>
+                
                 <!-- terminal input section. It will also contain the buttons for configuring the terminal. -->
 
-                <section style="display:flex; width:100%; height:auto; position: relative;">
+                <section id="term-input-container" style="display:flex; width:100%; height:auto; position: relative;">
                     <input type="text" class="terminal-in" id="term-input"
                         style="font-family: 'Source Code Pro'; font-size: 0.75rem;" placeholder=">>>">
                     </input>
-
-                    <!-- terminal control buttons -->
-                    <section id="terminal-ctrl"
-                            style="position: absolute; right:0.4rem; top:-3rem; display: flex; flex-direction: row; justify-content: flex-end; padding: 1rem 0 0 0; width:55%; pointer-events: none;">
-
-                        <button class="terminal-btn">
-                            <img style="width:0.75rem; height:auto; margin:0" src="../zoom-in.svg" alt="Zoom In Terminal">
-                        </button>
-                        <button class="terminal-btn">
-                            <img style="width:0.75rem; height:auto; margin:0" src="../zoom-out.svg" alt="Zoom Out Terminal">
-                        </button>
-
-                    </section>
                 </section>
             </section>
 
@@ -271,7 +270,7 @@
         </section>
 
         <!-- version watermark -->
-        <p style="position: absolute; bottom:8rem; font-size: 0.9rem; font-family: Montserrat; opacity: 0.4;">Public Beta 1.0</p>
+        <p style="position: absolute; bottom:8rem; font-size: 0.9rem; font-family: Montserrat; opacity: 0.4;">Public Beta 1.1</p>
         
         <!-- canvas area -->
         <section id="canvas-drag" style="position:absolute; display:flex; justify-content: center; align-items:center;
@@ -305,12 +304,12 @@
             .pagecontainer {display:none;}
         </style>
         <div class="noscriptmsg" style="z-index:999; position:absolute; width:100%; height:100%; top:0; left:0; display:flex; flex-direction: column;
-        align-items: center; justify-content: center; background-color: #00000083; backdrop-filter: blur(5px);">
+        align-items: center; justify-content: center; background-color: #00000065; backdrop-filter: blur(5px);">
             <h1 style="font-family: arial; text-align: center; margin-bottom:2rem; cursor: text; z-index: 1000;">
                 ( ._.)
             </h1>
             <h2 style="letter-spacing:0; font-weight: 500; font-size: 2rem; cursor: text; z-index: 1000;">
-                You don"t seem to have Javascript enabled...
+                You don't seem to have Javascript enabled...
             </h2>
             <h4 style="text-align:center; margin-top:1vh; font-weight: 400; font-size: 1rem; z-index: 1000; margin-top:1rem">
                 This site needs Javascript to function properly.
@@ -319,12 +318,14 @@
     </noscript>    
 
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.0.0/dist/tf.min.js"></script>
+    <script data-host="https://microanalytics.io" data-dnt="false" src="https://microanalytics.io/js/script.js" id="ZwSg9rf6GA" async defer></script>
     <script src="../anime.min.js"></script>
     <script src="../json2html.min.js"></script>
     <script src="terminal-handler.js"></script>
     <script src="events.js"></script>
     <script src="style.js"></script>
     <script src="node-templates.js"></script>
+    <script src="terminal-templates.js"></script>
     <script src="menu-templates.js"></script>
     <script src="menu-handler.js"></script>
     <script src="standards.js"></script>
