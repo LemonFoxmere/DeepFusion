@@ -2,7 +2,14 @@
 
 ---
 
-**BETA 1.0**
+> **BETA 1.2**
+1.  write a basic *README*
+2.  Slow down the home page animations
+3.  Larger node connection hitbox
+4.  Add a clear local cache button
+5.  Drag and Drop node styles
+
+> **BETA 1.1**
 1. ~~Add IO shape display~~
 2. ~~Add more features to Dense layer~~
 3. ~~Improve internal storage efficiency~~
@@ -17,4 +24,3 @@
 12. ~~Test all features~~
 13. ~~Improve home page~~
 14. ~~Add analytics~~
-15. write a basic *README*
