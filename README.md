@@ -27,7 +27,7 @@
     </section>
 </div> -->
 
-<hr style="height:0.1rem">
+<!-- <hr style="height:0.1rem"> -->
 
 <!-- table of content -->
 <details open="open" style="margin:1rem 0 0 0; width:90%; font-family: Poppins; diplay:flex; align-items:flex-start; justify-content: center; flex-direction:column;">
@@ -75,20 +75,21 @@ But after all, this project isn't perfect, and I don't see it replace writing ac
 
 This is pretty much a manual on how to use the app, and I will be going over how to train, test, and export your work.
 
-> <h3 id="navigate-df">> Navigating the Canvas</h3>
+> <h3 id="navigate-df"> Navigating the Canvas</h3>
 
 The canvas in DeepFusion is where you will be building your neural network. You can click and drag anywhere on the blank canvas to move it, and press the **`⛶`** button on the tool dock (located at the top) to recenter the canvas. There will two numbers displayed at the top right corner of the canvas, and those represent the X, Y position at which you are currently located.
 
 To zoom in DeepFusion, you can scroll on your mouse wheel to zoom in and zoom out. If you are, however, on a track pad, the zooming may be very sensitive. I reccomend you to use the **`+`** and **`-`** button on the tool dock in order to zoom in and zoom out. The number below the tool dock will tell you the amount you are zoomed into, and pressing the **`⭯`** button in the tool dock will reset the zoom back to 100%.
 
-**TLDR (Controls):**
-*  Click and drag on the canvas to move it
-*  **`⛶`** Recenters canvas
-*  **`+`** Zoom in
-*  **`-`** Zoom out
-*  **`⭯`** Reset zoom
+**TLDR:**
+| Mouse Action | Button | Action |
+|:---:|:---:|:---:|
+| N/A | **&#x26F6;** | Recenters canvas |
+| Scroll Down | **&#xFF0B;** | Zoom In |
+| Scroll Up | **&#x2013;** | Zoom Out |
+| N/A | **&#x21BA;** | Zoom Reset |
 
-> <h3 id="create-model">> Creating a Model</h3>
+> <h3 id="create-model"> Creating a Model</h3>
 
 DeepFusion uses a node graph system to make neural networks. This just means that layers will be represented as configurable boxes that can connect to other layers represented as boxes. Not only is this easy, it is also highly scalable and adaptable.
 
@@ -109,15 +110,15 @@ To edit the property of a node, click on the node that you would like to edit, a
 
 A neural network must have at least one dense (fully connected) layer, an input & output layer, and proper connections made between the layers. If you're not sure your network is correctly configured, you can press the "Check Network" button located in the lower right menu of the app.
 
-> <h3 id="upload-data">> Uploading Trainin/Testing Data</h3>
+> <h3 id="upload-data"> Uploading Trainin/Testing Data</h3>
 
 One of the greatest feature of DeepFusion is that you can train your neural network on your own data, so you can customize and train it to your need. If you do not have your own data and just want to play with neural networks, I have also provided default datasets for you to mess with.
 
-To Upload Data, click on the input or output layer, and click the `Upload` button on the node configuration menu to the right. If you do NOT have proper data to upload, click the **`⋮`** button next to the `Upload` button to load in the default dataset. You must have data in both input and output in order for training to succeed.
+To Upload Data, click on the input or output layer, and click the `Upload` button on the node configuration menu to the right. If you do NOT have proper data to upload, click the **&#x2807;** button next to the `Upload` button to load in the default dataset. You must have data in both input and output in order for training to succeed.
 
 **Important Note**: Only *CSV* formatted data are currently supported. I know this is very limiting, but there are plans to add more in future versions.
 
-> <h3 id="train-model">> Training the Model</h3>
+> <h3 id="train-model"> Training the Model</h3>
 
 Assuming that you have done everything described above correctly, you can just click the `Train Network` button in the `Training Controls` menu. However, if you wish, you can customize some of the training behaviors such as Epoch and Batch size in the `Training Parameters` menu located at the bottom left. Again, as with everything in DeepFusion so far, more controls and features will be added in the future.
 
@@ -140,16 +141,17 @@ ___________________
    |    This is the size of one data sample. 5x1 means 5 numbers.
    |    If this was something like 5x2x1, it would mean 5 arrays w/ numbers of length 2. 
    |
-   This is how many data samples are in RGB-inputs.csv. In this case there are 2K entries of trainable data samples.
+   This is how many data samples are in RGB-inputs.csv.
+   In this case there are 2K entries of trainable data samples.
 ```
 
 If the training fails for some reason, **ALWAYS** read the error output of the terminal. It will tell you everything that went wrong and what you need to do to fix it.
 
-> <h3 id="test-model">> Testing the Model</h3>
+> <h3 id="test-model"> Testing the Model</h3>
 
 After you've trained your network, you can test it with the `Test Network` button in the `Training Controls` menu. This will automatically select a piece of data which the neural network have never seen before, and run it through the trained network. After this, the selected input, prediction, and ground truth of the test will be displayed in the terminal.
 
-> <h3 id="export-model">> Exporting the Model</h3>
+> <h3 id="export-model"> Exporting the Model</h3>
 
 When the network has been trained or compiled without error, you may choose to export the network via the `Export Network` button in the `Training Controls` menu. This will export a `[Network Name].json` file for the network structure, as well as a `[Network Name].weights.bin` file for the network weights. This is a TFJS model, meaning if you want to integrate it into your code with libraries like keras, you will need to convert it. This feature will be added once DeepFusion have access to a backend, but this is what it is for now.
 
@@ -183,7 +185,7 @@ Distributed under the GPL-3.0 License. See `LICENSE` or click <a href="https://d
 
 LemonOrange - [@LemonOrangeTW](https://twitter.com/LemonOrangeTW) - lemon@thelemonorange.com
 
-<style>
+<!-- <style>
     h2{
         font-family: Poppins;
         font-weight:500;
@@ -198,4 +200,4 @@ LemonOrange - [@LemonOrangeTW](https://twitter.com/LemonOrangeTW) - lemon@thelem
     ul{
         font-size:1rem;
     }
-</style>
+</style> -->
