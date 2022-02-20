@@ -10,8 +10,6 @@
 
 </div>
 
-<hr style="height:0.1rem">
-
 <!-- praises bs -->
 <!-- <h2 align="center">Praises for DeepFusion</h2>
 <div style="display:flex; flex-direction:row; justify-content:center; align-item:center">
