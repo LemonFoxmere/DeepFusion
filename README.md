@@ -27,7 +27,7 @@
     </section>
 </div> -->
 
-<hr style="height:0.1rem">
+<!-- <hr style="height:0.1rem"> -->
 
 <!-- table of content -->
 <details open="open" style="margin:1rem 0 0 0; width:90%; font-family: Poppins; diplay:flex; align-items:flex-start; justify-content: center; flex-direction:column;">
