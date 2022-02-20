@@ -126,17 +126,18 @@ Do note, however, that your last Dense layer must have the same dimension as you
 
 Break down of what a input/output layer means:
 ```
-___________________
-|   Dense Layer   |
-|       ---       |
-| File Name:      |
-| RGB-inputs.csv <--- This is the name of the dataset
-|                 |
-| Dimensions:     |
-| 2000 X 5 X 1    |
-   ^     ^   ^
-   |     |  /
-   |     |_/
+____________________
+|    Input File    |
+|        ---       |
+| (Upload File)(:) |
+| File Name:       |
+| RGB-inputs.csv <---- This is the name of the dataset
+|                  |
+| Dimensions:      |
+| 2000 X 5 X 1     |
+|  ^     ^   ^     |
+‾‾‾|‾‾‾‾‾|‾‾‾|‾‾‾‾‾‾
+   |     |__/
    |     |
    |    This is the size of one data sample. 5x1 means 5 numbers.
    |    If this was something like 5x2x1, it would mean 5 arrays w/ numbers of length 2. 
