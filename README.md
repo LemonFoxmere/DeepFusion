@@ -1,9 +1,7 @@
 <div align="center" style="margin-top:1rem; font-family: Poppins">
-    <a href="https://deepfusion.org" style="display:flex; justify-content:center; height:fit-content; padding:0; text-decoration:none; margin:0 0 1rem 0">
-        <img src="./img/readme-icon.svg" style="height:20rem; margin:0"></img>
+    <a href="https://deepfusion.org" style="display:flex; justify-content:center; height:fit-content; padding:0; text-decoration:none; margin:0 0 0 0">
+        <img src="./img/readme-banner.svg" style="height:30rem; margin:0"></img>
     </a>
-    <h1 style="font-family: Poppins; font-weight:500; font-size:6rem; margin:0; line-height:6rem;" >DeepFusion</h1>
-    <hr style="margin:0 0 1.5rem 0; width:10rem; height:0.05rem">
     <h3 style="font-family:Montserrat; font-weight:300; font-size:1.3rem; margin:0 0 1.5rem 0">An Intuitive Graphical Neural Network Playground</h3>
 
 [![Website shields.io](https://img.shields.io/website?down_message=offline&style=for-the-badge&up_message=online&url=https%3A%2F%2Fdeepfusion.org)](https://deepfusion.org/)
@@ -15,7 +13,7 @@
 <hr style="height:0.1rem">
 
 <!-- praises bs -->
-<h2 align="center">Praises for DeepFusion</h2>
+<!-- <h2 align="center">Praises for DeepFusion</h2>
 <div style="display:flex; flex-direction:row; justify-content:center; align-item:center">
     <section style="display:flex; flex-direction:column; width:fit-content; height:fit-content; align-items:flex-start; padding:0.7rem 2rem 2rem 1.5rem; border-radius:0.8rem; border: 1px #606060 solid; margin: 0 1rem 0 1rem; min-width:16.5rem">
         <h3 style="font-size: 1.3rem; font-weight:300; line-height:0rem; margin-bottom:1rem">"google.com looks better"</h3>
@@ -29,9 +27,7 @@
         <h3 style="font-size: 1.3rem; font-weight:300; line-height:0rem; margin-bottom:1rem">"based"</h3>
         <h4 style="font-size: 1.1rem; align-self:flex-end; margin-bottom:0; line-height:0">- Anonymous Reddit User</h4>
     </section>
-</div>
-
-
+</div> -->
 
 <hr style="height:0.1rem">
 
