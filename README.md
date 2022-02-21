@@ -7,6 +7,8 @@
 [![Website shields.io](https://img.shields.io/website?down_message=offline&style=for-the-badge&up_message=online&url=https%3A%2F%2Fdeepfusion.org)](https://deepfusion.org/)
 [![Maintenance](https://img.shields.io/maintenance/yes/2021?color=blue&style=for-the-badge)](https://github.com/LemonOrangeWasTaken/DeepFusion/commits)
 [![License: MIT](https://img.shields.io/github/license/LemonOrangeWasTaken/DeepFusion?color=orange&style=for-the-badge)](https://github.com/LemonOrangeWasTaken/DeepFusion/blob/master/LICENSE)
+[![Website shields.io](https://img.shields.io/github/stars/LemonOrangeWasTaken/DeepFusion?color=gold&style=for-the-badge)](https://github.com/LemonOrangeWasTaken/DeepFusion/stargazers)
+[![Website shields.io](https://img.shields.io/github/v/release/LemonOrangeWasTaken/DeepFusion?color=lightgrey&label=Version&style=for-the-badge)](https://github.com/LemonOrangeWasTaken/DeepFusion/releases/latest)
 
 </div>
 
