@@ -447,7 +447,7 @@ function add_input_menu_events(){
         document.getElementById("input-file").click()
     })
     document.getElementById("default-input-upload").addEventListener("click", (evt) => { // upload default data
-        fetch("../x.csv").then(res => res.text()).then(rawdat => {
+        fetch("../dataset/x.csv").then(res => res.text()).then(rawdat => {
             CSVToJSON(rawdat).then(data => {
                 let dim = detectDim(data)
                 update_input_data("RGB-inputs.csv", data, dim) // update values
@@ -494,7 +494,7 @@ function add_output_menu_events(){
         document.getElementById("output-file").click()
     })
     document.getElementById("default-output-upload").addEventListener("click", (evt) => { // upload default data
-        fetch("../Y.csv").then(res => res.text()).then(rawdat => {
+        fetch("../dataset/Y.csv").then(res => res.text()).then(rawdat => {
             CSVToJSON(rawdat).then(data => {
                 let dim = detectDim(data)
                 update_output_data("prediction.csv", data, dim) // update values
