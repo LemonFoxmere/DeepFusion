@@ -41,7 +41,7 @@ if(restore_input){ // restore the input
     dflog(supportmsg, "Successfully restored input file.")
 } else {
     // store empty input and output file data
-    localStorage.setItem(INPUT_DAT_UUID, JSON.stringify(create_io_data("No Input Files", null, null)))
+    localStorage.setItem(INPUT_DAT_UUID, JSON.stringify(create_io_data("No Input File", null, null)))
     console.warn("No input data to be recovered. This message can be ignored.")
 }
 
@@ -54,7 +54,7 @@ if(restore_output){ // restore the output
     }
     dflog(supportmsg, "Successfully restored output file.")
 } else {
-    localStorage.setItem(OUTPUT_DAT_UUID, JSON.stringify(create_io_data("No Output Files", null, null)))
+    localStorage.setItem(OUTPUT_DAT_UUID, JSON.stringify(create_io_data("No Output File", null, null)))
     console.warn("No output data to be recovered. This message can be ignored.")
 }
 
@@ -194,6 +194,9 @@ function create_node(uuid, template, node_type, set_node_template=null, default_
             document.querySelectorAll(".node-drag").forEach(elmnt => {
                 elmnt.classList.add("node-edge-dragging")
             })
+            document.querySelectorAll(".node").forEach(elmnt => {
+                elmnt.classList.add("node-edge-dragging-cont")
+            })
     
             main_canvas.appendChild(createLine(
                 outnode.offsetLeft + (outnode.getBoundingClientRect().width/2)/zoom,
@@ -226,6 +229,9 @@ function create_node(uuid, template, node_type, set_node_template=null, default_
             document.querySelectorAll(".node-drag").forEach(elmnt => {
                 elmnt.classList.add("node-edge-dragging")
             })
+            document.querySelectorAll(".node").forEach(elmnt => {
+                elmnt.classList.add("node-edge-dragging-cont")
+            })
 
             main_canvas.appendChild(createLine(
                 outnode.offsetLeft + (outnode.getBoundingClientRect().width/2)/zoom,
@@ -252,6 +258,23 @@ function create_node(uuid, template, node_type, set_node_template=null, default_
             node_data.connected = false
             // write it
             localStorage.setItem(uuid, JSON.stringify(node_data))
+
+            // add a temp node to the mouse cursor
+            let relative_middle_x = edge_start_node.offsetLeft + (edge_start_node.getBoundingClientRect().width/2)/zoom
+            let relative_bottom_y = edge_start_node.offsetTop + (edge_start_node.getBoundingClientRect().height - edge_start_node_sq.getBoundingClientRect().height/2)/zoom
+            let absolute_middle_x = edge_start_node_sq.getBoundingClientRect().x + (edge_start_node_sq.getBoundingClientRect().width/2)/zoom
+            let absolute_bottom_y = edge_start_node_sq.getBoundingClientRect().y + (edge_start_node_sq.getBoundingClientRect().height/2)/zoom
+            let offset_x = -4
+            let offset_y = -7
+
+            // delete current edge and make new edge
+            main_canvas.removeChild(document.getElementById("temp_edge"))
+            main_canvas.appendChild(createLine(
+                relative_middle_x,
+                relative_bottom_y,
+                relative_middle_x - (absolute_middle_x - e.x)/zoom + offset_x,
+                relative_bottom_y - (absolute_bottom_y - e.y)/zoom + offset_y,
+                "temp_edge"));   
         })
     }
 
@@ -319,7 +342,7 @@ document.getElementById("drop_node_add").addEventListener("click", (e) => {
 
 // listen for delete command
 document.addEventListener("keydown", (evt) => {
-    if(evt.keyCode === 46){
+    if((evt.keyCode === 8 || evt.keyCode === 46 || evt.key === "d") && evt.target.id === "base-canvas"){
         delete_selected_node()
     }
 })
@@ -398,15 +421,16 @@ document.body.onmousemove = (e) => {
         let relative_bottom_y = edge_start_node.offsetTop + (edge_start_node.getBoundingClientRect().height - edge_start_node_sq.getBoundingClientRect().height/2)/zoom
         let absolute_middle_x = edge_start_node_sq.getBoundingClientRect().x + (edge_start_node_sq.getBoundingClientRect().width/2)/zoom
         let absolute_bottom_y = edge_start_node_sq.getBoundingClientRect().y + (edge_start_node_sq.getBoundingClientRect().height/2)/zoom
-        let offset_x = absolute_middle_x - relative_middle_x
+        let offset_x = -4
+        let offset_y = -7
 
         // delete current edge and make new edge
         main_canvas.removeChild(document.getElementById("temp_edge"))
         main_canvas.appendChild(createLine(
             relative_middle_x,
             relative_bottom_y,
-            relative_middle_x - (absolute_middle_x - e.x)/zoom,
-            relative_bottom_y - (absolute_bottom_y - e.y)/zoom,
+            relative_middle_x - (absolute_middle_x - e.x)/zoom + offset_x,
+            relative_bottom_y - (absolute_bottom_y - e.y)/zoom + offset_y,
             "temp_edge"));   
     }
 }
@@ -441,6 +465,9 @@ document.body.onmouseup = (e) => {
     // remove dragging style
     document.querySelectorAll(".node-drag").forEach(elmnt => {
         elmnt.classList.remove("node-edge-dragging")
+    })
+    document.querySelectorAll(".node").forEach(elmnt => {
+        elmnt.classList.remove("node-edge-dragging-cont")
     })
 
     // see if it exists

@@ -122,6 +122,9 @@ function update_node_data(uuid, info_name, new_value, appearance_value, name="Va
     let new_data = JSON.parse(localStorage.getItem(data_uuid))
     new_data[info_name] = new_value
     localStorage.setItem(data_uuid, JSON.stringify(new_data))
+
+    // update edges to match new width
+    update_non_temp_edges()
 }
 function set_node_enable_appearance(uuid, enabled){
     // update the appearance value
@@ -138,17 +141,19 @@ function set_input_menu(uuid, data){ // when a node is clicked, this runs
     let htmlObject = create_menu_container()
     let name = data.name
     let dim = data.dimension
+    let samples = "N/A" // this variable is for display only!
     let displaydim = "N/A  "
 
     if(dim !== null){ // if there exist a value, make displaydim not broken
         // style and display dimension
         displaydim = ""
         dim.forEach(e => {
-            displaydim += e + " × "
+            if(samples === "N/A") samples = e
+            else displaydim += e + " × "
         })
     }
 
-    htmlObject.innerHTML = json2html.render([{"file_name" : name, "dimension": displaydim.substring(0,displaydim.length-2)}], INPUT_NODE_MENU);
+    htmlObject.innerHTML = json2html.render([{"file_name" : name, "samples" : samples, "dimension": displaydim.substring(0,displaydim.length-2)}], INPUT_NODE_MENU);
 
     set_menu(htmlObject)
     add_input_menu_events()
@@ -158,11 +163,19 @@ function update_input_data(name, value, dim){ // this runs when the input data i
     document.getElementById("inputmenuname").innerHTML = `${name}`
     // style and display dimension
     let displaydim = ""
-    dim.forEach(e => {
-        displaydim += e + " × "
-    })
+    let samples = "N/A" // this variable is for display only!
+    try{
+        dim.forEach(e => {
+            if(samples === "N/A") samples = e
+            else displaydim += e + " × "
+        })
+    } catch (e){
+        displaydim = "N/A**" // the ** is for formatting and not get the message cut off at the end
+        samples = "N/A" // the ** is for formatting and not get the message cut off at the end
+    }
     // update the menu items
     document.getElementById("inputmenudim").innerHTML=displaydim.substring(0,displaydim.length-2)
+    document.getElementById("inputmenusamples").innerHTML=samples
 
     let new_data = JSON.parse(localStorage.getItem(INPUT_DAT_UUID))
     new_data.name = name // store name in local storage
@@ -170,6 +183,9 @@ function update_input_data(name, value, dim){ // this runs when the input data i
     new_data.dimension = dim // store dimension in local storage
     
     localStorage.setItem(INPUT_DAT_UUID, JSON.stringify(new_data))
+
+    // update edges to match new width
+    update_non_temp_edges()
 }
 
 
@@ -177,17 +193,19 @@ function set_output_menu(uuid, data){
     let htmlObject = create_menu_container()
     let name = data.name
     let dim = data.dimension
+    let samples = "N/A" // this variable is for display only!
     let displaydim = "N/A  "
 
     if(dim !== null){ // if there exist a value, make displaydim not broken
         // style and display dimension
         displaydim = ""
         dim.forEach(e => {
-            displaydim += e + " × "
+            if(samples === "N/A") samples = e
+            else displaydim += e + " × "
         })
     }
 
-    htmlObject.innerHTML = json2html.render([{"file_name" : name, "dimension": displaydim.substring(0,displaydim.length-2)}], OUTPUT_NODE_MENU);
+    htmlObject.innerHTML = json2html.render([{"file_name" : name, "samples" : samples, "dimension": displaydim.substring(0,displaydim.length-2)}], OUTPUT_NODE_MENU);
 
     set_menu(htmlObject)
     add_output_menu_events()
@@ -197,11 +215,19 @@ function update_output_data(name, value, dim){
     document.getElementById("outputmenuname").innerHTML = `${name}`
     // style and display dimension
     let displaydim = ""
-    dim.forEach(e => {
-        displaydim += e + " × "
-    })
+    let samples = "N/A" // this variable is for display only!
+    try{
+        dim.forEach(e => {
+            if(samples === "N/A") samples = e
+            else displaydim += e + " × "
+        })
+    } catch (e){
+        displaydim = "N/A**" // the ** is for formatting and not get the message cut off at the end
+        samples = "N/A" // the ** is for formatting and not get the message cut off at the end
+    }
     // update the menu items
     document.getElementById("outputmenudim").innerHTML=displaydim.substring(0,displaydim.length-2)
+    document.getElementById("outputmenusamples").innerHTML=samples
 
     let new_data = JSON.parse(localStorage.getItem(OUTPUT_DAT_UUID))
     new_data.name = name // store name in local storage
@@ -209,8 +235,10 @@ function update_output_data(name, value, dim){
     new_data.dimension = dim // store dimension in local storage
 
     localStorage.setItem(OUTPUT_DAT_UUID, JSON.stringify(new_data))
+    
+        // update edges to match new width
+        update_non_temp_edges()
 }
-
 
 
 function set_dense_menu(uuid, data){

@@ -4,6 +4,15 @@
   box-sizing: border-box;
 }
 
+:root{
+    --p-size: 0.85rem;
+    --h1-size: 3rem;
+    --h2-size: 2rem;
+    --h3-size: 1.5rem;
+    --h4-size: 1.25rem;
+    --h5-size: 1rem;
+}
+
 .logo{
     color:rgb(119, 119, 119);
     transition: color 10ms cubic-bezier(0.260, 0.050, 0.250, 1.000), color 330ms cubic-bezier(0.260, 0.050, 0.250, 1.000); /* custom */
@@ -120,6 +129,18 @@ button:disabled:hover{
     color:red;
 }
 
+p > button{
+    --internal-font-size: calc(var(--p-size) - 0.2rem);
+
+    width:fit-content;
+    height:fit-content;
+    font-size: var(--internal-font-size);
+    line-height: calc(var(--internal-font-size) / 2);
+    padding:calc(var(--internal-font-size) / 1.5);
+    margin-left:0.5rem;
+    filter:brightness(0.6)
+}
+
 .terminal-btn{
     width:1.5rem;
     height:1.5rem;
@@ -142,7 +163,6 @@ button:disabled:hover{
     width:2.25rem;
     height:2.25rem;
     transition: all 400ms cubic-bezier(0.665, 0.005, 0.080, 1.000); /* custom */
-    transition-delay: 125ms;
     display: flex;
     flex-direction: row;
     text-align: center;
@@ -153,6 +173,11 @@ button:disabled:hover{
 }
 .default-upload:hover{
     width:27rem;
+    transition-delay: 200ms;
+}
+.default-upload-300:hover{
+    width:9rem;
+    transition-delay: 200ms;
 }
 
 .default-upload-decor{
@@ -160,7 +185,7 @@ button:disabled:hover{
     font-weight: 700;
 
     transform: rotate(90deg) translate(0rem, 0.0775rem) !important;
-    -moz-transform:rotate(90deg) translate(0rem, -0.03875rem) !important;
+    -moz-transform:rotate(90deg) translate(0, 0) !important;
     
     min-width:2.25rem;
     width:2.25rem;
@@ -201,9 +226,9 @@ button:disabled:hover{
     margin:0px 0.1rem 0px 0.1rem;
     background-color: transparent;
     padding:0;
-    border-radius: 0.6rem;
-    width: 2.5rem;
-    height: 2.5rem;
+    border-radius: 0.4rem;
+    width: 2.4rem;
+    height: 2.4rem;
     transition: background-color 200ms cubic-bezier(0.260, 0.050, 0.250, 1.000); /* custom */
     z-index: 10;
 }
@@ -219,72 +244,56 @@ button:disabled:hover{
 /* TEXT STYLE STUFF */
 
 p{
-    cursor: default;
+    cursor: text;
     font-weight: 400;
-    font-size: 0.85rem;
+    font-size: var(--p-size);
     margin:0;
     z-index: 10;
 }
-.legal p{
-    font-size: 0.85rem;
-}
 
 h1{
-    cursor: default;
+    cursor: text;
     font-weight: 300;
-    font-size: 3rem;
+    font-size: var(--h1-size);
     letter-spacing: 5px;
     margin:0;
     z-index: 10;
 }
-.legal h1{
-    font-size: 2.5rem;
-}
 
 h2{
-    cursor: default;
+    cursor: text;
     font-weight: 300;
-    font-size: 2rem;
+    font-size: var(--h2-size);
     font-family: Montserrat;
     letter-spacing: 5px;
     margin:0;
     z-index: 10;
     transition: color 10ms cubic-bezier(0.260, 0.050, 0.250, 1.000), color 330ms cubic-bezier(0.260, 0.050, 0.250, 1.000); /* custom */
 }
-.legal h2{
-    font-size: 2rem;
-}
 
 h3{
-    font-size: 1.5rem;
+    font-size: var(--h3-size);
     font-weight: 400;
     margin:0;
     z-index: 10;
 }
-.legal h3{
-    font-size: 1.5rem;
-}
 
 h4{
-    font-size: 1.25rem;
+    font-size: var(--h4-size);
     font-weight: 500;
     margin:0;
     z-index: 10;
     opacity: 1;
 }
-.legal h4{
-    font-size: 1.2rem;
-}
 
 h5{
+    font-size: var(--h5-size);
     z-index: 10;
-}
-.legal h5{
-    font-size: 1rem;
 }
 
 
 a{
+    cursor:pointer;
     color: rgb(69, 165, 255);
     text-decoration: none;
 }
@@ -553,7 +562,7 @@ hr{
     box-shadow: -0.1rem 0.1rem 20px 5px rgba(0, 0, 0, 0.576), 0rem 0rem 10px 2px rgba(0, 0, 0, 0.151);
     border: 1.5px solid;
     border-color: #424242;
-    transition: opacity 300ms cubic-bezier(0.355, 0.010, 0.200, 1.010); /* custom */
+    transition: all 300ms cubic-bezier(0.355, 0.010, 0.200, 1.010); /* custom */
 }
 
 .node-dragging{
@@ -582,11 +591,19 @@ hr{
 .node-out{
     cursor: grab;
     background-color: rgb(255, 208, 0);
-    width:8px;
-    height:8px;
+    width:10px;
+    height:10px;
     margin-top:5px;
-    border-radius: 1.5px;
+    border-radius: 2px;
     z-index: 3;
+    transition: all 300ms cubic-bezier(0.355, 0.010, 0.200, 1.010); /* custom */
+    transition-delay: 0.25s;
+}
+.node-out:hover, .node:hover .node-out{
+    transition-delay: 0s;
+    width:15px;
+    height:15px;
+    border-radius: 3px;
 }
 
 .node-in{
@@ -596,8 +613,14 @@ hr{
     border-left: 5px solid transparent;
     border-right: 5px solid transparent;
     border-top: 8px solid rgb(19, 224, 0);
+    transition: all 300ms cubic-bezier(0.355, 0.010, 0.200, 1.010); /* custom */
     margin-bottom:5px;
     cursor: grab;
+}
+.node-edge-dragging-cont > .node-in:hover, .node-edge-dragging-cont:hover > .node-in{
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 12px solid rgb(127, 255, 116);
 }
 
 .node-title{

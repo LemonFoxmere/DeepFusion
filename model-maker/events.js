@@ -122,7 +122,7 @@ function dragCanvas(canvas, elmnts) {
         document.querySelector("#main-canvas").style.backgroundPositionX = document.querySelector(".crosshair").offsetLeft
          - background_grid_size_x/2 + "px";
         
-        canvas_position_x -= pos1/zoom; //it"s the opposite way around
+        canvas_position_x += pos1/zoom; //it"s the opposite way around
         canvas_position_y -= pos2/zoom; //it"s the opposite way around
         // get string and apply
         document.querySelector("#position_debug").innerHTML = Math.floor(canvas_position_x) + "," + Math.floor(canvas_position_y)
@@ -255,84 +255,9 @@ window.addEventListener("resize", e => {
     prev_window_width = window.innerWidth
 })
 
-// reset canvas position
-document.getElementById("reset-canvas").addEventListener("click", async (e) => {
-    document.querySelectorAll(".node").forEach((e) => {
-        e.classList.remove("notransition")
-    })
-    document.querySelectorAll(".crosshair").forEach((e) => {
-        e.classList.remove("notransition")
-    })
-    document.querySelectorAll("#main-canvas").forEach((e) => {
-        e.classList.remove("notransition")
-    })
+document.getElementById("main-canvas").addEventListener("wheel", e => { 
+    e.preventDefault()
 
-    document.querySelectorAll(".node").forEach((e) => {
-        e.style.top = (e.offsetTop - canvas_position_y) + "px";
-        e.style.left = (e.offsetLeft - canvas_position_x) + "px";
-    })
-
-    document.querySelectorAll(".crosshair").forEach((e) => {
-        e.style.top = (e.offsetTop - canvas_position_y) + "px";
-        e.style.left = (e.offsetLeft - canvas_position_x) + "px";
-    })
-
-    // move the background along
-    document.querySelector("#main-canvas").style.backgroundPositionY = (document.querySelector("#functional-crosshair").offsetTop)
-    - background_grid_size_y/2 + "px";
-    document.querySelector("#main-canvas").style.backgroundPositionX = (document.querySelector("#functional-crosshair").offsetLeft)
-    - background_grid_size_x/2 + "px";
-    
-    canvas_position_y = 0
-    canvas_position_x = 0
-    document.querySelector("#position_debug").innerHTML = canvas_position_x + "," + canvas_position_y
-})
-
-// add zoom functionality
-document.getElementById("zoom-in").addEventListener("click", (e) => {
-    document.querySelectorAll(".node").forEach((e) => {
-        e.classList.remove("notransition")
-    })
-    document.querySelectorAll(".crosshair").forEach((e) => {
-        e.classList.remove("notransition")
-    })
-    document.querySelectorAll("#main-canvas").forEach((e) => {
-        e.classList.remove("notransition")
-    })
-
-    zoom += CLICK_ZOOM_SPEED
-    if(zoom > 3){
-        zoom = 3        
-    }
-    canvas.style.transform = `scale(${zoom})`;  
-    update_zoom_text()
-})
-
-document.getElementById("zoom-out").addEventListener("click", (e) => {
-    document.querySelectorAll(".node").forEach((e) => {
-        e.classList.remove("notransition")
-    })
-    document.querySelectorAll(".crosshair").forEach((e) => {
-        e.classList.remove("notransition")
-    })
-    document.querySelectorAll("#main-canvas").forEach((e) => {
-        e.classList.remove("notransition")
-    })
-
-    zoom -= CLICK_ZOOM_SPEED
-    if(zoom < 0.2){
-        zoom = 0.2        
-    }
-    canvas.style.transform = `scale(${zoom})`;  
-    update_zoom_text()
-})
-
-document.getElementById("zoom-res").addEventListener("click", (e) => {
-    canvas.style.transform = `scale(${zoom = 1})`;  
-    update_zoom_text()
-})
-
-document.addEventListener("wheel", function(e) { 
     // check if not in menus
     let x = false
     document.querySelectorAll(".menu-container").forEach(elmnt => {
@@ -345,29 +270,63 @@ document.addEventListener("wheel", function(e) {
     if(x) return
 
     document.querySelectorAll(".node").forEach((e) => {
-        e.classList.remove("notransition")
+        e.classList.add("notransition")
     })
     document.querySelectorAll(".crosshair").forEach((e) => {
-        e.classList.remove("notransition")
+        e.classList.add("notransition")
     })
     document.querySelectorAll("#main-canvas").forEach((e) => {
-        e.classList.remove("notransition")
+        e.classList.add("notransition")
+    })
+    
+    
+    if (e.ctrlKey) {
+        
+        if(e.deltaY > 0){ 
+            if(zoom > 0.25){  // zoom out
+                canvas.style.transform = `scale(${zoom -= e.deltaY * 0.013})`;                    
+            }   
+        }else{
+            if(zoom < 4){ // zoom in
+                canvas.style.transform = `scale(${zoom -= e.deltaY * 0.013})`;  
+            }
+        }
+        return
+    }
+    // move with trackpad
+    let offset_y = 2*(window.innerHeight-prev_window_height)
+    let offset_x = 2*(window.innerWidth-prev_window_width)
+
+    let deltaX = e.deltaX / zoom
+    let deltaY = e.deltaY / zoom
+    
+    document.querySelectorAll(".crosshair").forEach((elmnt) => {
+        elmnt.style.top = (elmnt.offsetTop - deltaY) + "px";
+        elmnt.style.left = (elmnt.offsetLeft - deltaX) + "px";
     })
 
-    if(e.deltaY > 0){ 
-        if(zoom < 3){ 
-            canvas.style.transform = `scale(${zoom += WHEEL_ZOOM_SPEED})`;  
-        }   
-    }else{
-        if(zoom > 0.25){ 
-            canvas.style.transform = `scale(${zoom -= WHEEL_ZOOM_SPEED})`;  }
-        }
-    update_zoom_text()
-});
+    // move background
+    document.querySelector("#main-canvas").style.backgroundPositionY = document.querySelector(".crosshair").offsetTop // setup background grid positions
+    - background_grid_size_y/2 - deltaY + "px";
+    document.querySelector("#main-canvas").style.backgroundPositionX = document.querySelector(".crosshair").offsetLeft
+    - background_grid_size_x/2 - deltaX + "px";
 
-function update_zoom_text(){
-    document.getElementById("zoom-scale").innerHTML = Math.floor(zoom*100) + "%"
-}
+    // move nodes
+    document.querySelectorAll(".node").forEach(elmnt => {
+        elmnt.style.top = (elmnt.offsetTop - deltaY) + "px";
+        elmnt.style.left = (elmnt.offsetLeft - deltaX) + "px";
+    });
+
+    // update canvas postitions
+    canvas_position_y -= deltaY
+    canvas_position_x += deltaX
+    document.querySelector("#position_debug").innerHTML = Math.round(canvas_position_x) + "," + Math.round(canvas_position_y)
+
+}, {passive:false});
+
+// function update_zoom_text(){
+//     document.getElementById("zoom-scale").innerHTML = Math.floor(zoom*100) + "%"
+// }
 
 // field input related
 document.querySelectorAll(".slider").forEach((e) => { // add all slider events
@@ -443,6 +402,11 @@ function add_input_menu_events(){
 
     }
 
+    // clear file button
+    document.getElementById("clear-input").addEventListener("click", (evt) => {
+        update_input_data("No Input File", null, null)
+    })
+
     document.getElementById("input-upload").addEventListener("click", (evt) => {
         document.getElementById("input-file").click()
     })
@@ -490,6 +454,11 @@ function add_output_menu_events(){
         }
     }
 
+    // clear file button
+    document.getElementById("clear-output").addEventListener("click", (evt) => {
+        update_output_data("No Output File", null, null)
+    })
+    
     document.getElementById("output-upload").addEventListener("click", (evt) => { // user selects their own data
         document.getElementById("output-file").click()
     })

@@ -106,7 +106,7 @@ const OUTPUT_NODE = [
                 "<>" : "h3",
                 "class" : "unselectable node-title",
                 "style" : "cursor:move",
-                "text" : "Output"
+                "text" : "Ground Truth"
             }, { // horizontal line
                 "<>" : "hr"
             }, { // status
@@ -126,7 +126,7 @@ const OUTPUT_NODE = [
                 "<>" : "p",
                 "class" : "unselectable node-text",
                 "style" : "cursor:move",
-                "html" : "Training Output"
+                "html" : "Training GT"
             }]
     }
 ]

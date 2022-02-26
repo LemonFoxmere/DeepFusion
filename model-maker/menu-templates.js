@@ -5,7 +5,7 @@ const INPUT_NODE_MENU = [ // file_name
     {
         "<>" : "h3",
         "style" : "margin-bottom:1%",
-        "html" : "Input File"
+        "html" : "Input"
     },{
         "<>" : "hr",
         "style" : "width: 30%; opacity:0.2; color: white",
@@ -20,7 +20,7 @@ const INPUT_NODE_MENU = [ // file_name
         "html" : [
             {
                 "<>" : "section",
-                "style" : "width:100%; height:fit-content; display:flex; flex-direction:row;",
+                "style" : "width:100%; height:fit-content; display:flex; flex-direction:row; margin-bottom: 0.2rem",
                 "html": [{
                     "<>" : "button",
                     "id" : "input-upload",
@@ -32,17 +32,12 @@ const INPUT_NODE_MENU = [ // file_name
                 },{
                     "<>" : "button",
                     "id" : "default-input-upload",
-                    "class" : "default-upload",
+                    "style" : "width:fit-content",
                     "html":[{
                         "<>":"p",
-                        "id":"",
-                        "class":"default-upload-decor",
-                        "text":"···"
-                    },{
-                        "<>":"p",
                         "id":"default-upload-text",
-                        "style":"margin-left:0.1rem",
-                        "text":"use default"
+                        "style" : "margin:0 2rem 0 2rem",
+                        "text":"Default"
                     }]
                 }],
             },
@@ -50,8 +45,13 @@ const INPUT_NODE_MENU = [ // file_name
             // name
             {
                 "<>" : "p",
-                "style" : "font-weight:300; width:100%",
+                "style" : "font-weight:300; display:flex; align-items:center",
                 "text" : "File Name:",
+                "html" : [{
+                    "<>" : "button",
+                    "id" : "clear-input",
+                    "text" : "Clear"
+                }]
             }, {
                 "<>" : "p",
                 "id" : "inputmenuname",
@@ -62,14 +62,30 @@ const INPUT_NODE_MENU = [ // file_name
             {
                 "<>" : "p",
                 "style" : "font-weight:300; margin-top:3%",
-                "text" : "Dimension:",
+                "text" : "# of Samples:",
+            }, {
+                "<>" : "p",
+                "id" : "inputmenusamples",
+                "style" : "font-weight:500; opacity:0.6",
+                "text" : "${samples}",
+            },
+            // real dimension
+            {
+                "<>" : "p",
+                "style" : "font-weight:300; margin-top:3%",
+                "text" : "Sample Dimension:",
             }, {
                 "<>" : "p",
                 "id" : "inputmenudim",
                 "style" : "font-weight:500; opacity:0.6",
                 "text" : "${dimension}",
+            },
+            // bottom padding
+            {
+                "<>" : "section",
+                "style" : "width:100%; height:1.5rem;"
             }
-        ],
+        ]
     }
 ]
 
@@ -77,7 +93,7 @@ const OUTPUT_NODE_MENU = [ // file_name
     {
         "<>" : "h3",
         "style" : "margin-bottom:1%",
-        "html" : "Output File"
+        "html" : "Ground Truth"
     },{
         "<>" : "hr",
         "style" : "width: 30%; opacity:0.2; color: white",
@@ -92,7 +108,7 @@ const OUTPUT_NODE_MENU = [ // file_name
         "html" : [
             {
                 "<>" : "section",
-                "style" : "width:100%; height:fit-content; display:flex; flex-direction:row",
+                "style" : "width:100%; height:fit-content; display:flex; flex-direction:row; margin-bottom: 0.2rem",
                 "html": [{
                     "<>" : "button",
                     "id" : "output-upload",
@@ -104,17 +120,12 @@ const OUTPUT_NODE_MENU = [ // file_name
                 },{
                     "<>" : "button",
                     "id" : "default-output-upload",
-                    "class" : "default-upload",
+                    "style" : "width:fit-content",
                     "html":[{
                         "<>":"p",
-                        "id":"",
-                        "class":"default-upload-decor",
-                        "text":"···"
-                    },{
-                        "<>":"p",
                         "id":"default-upload-text",
-                        "style":"margin-left:0.1rem",
-                        "text":"use default"
+                        "style" : "margin:0 2rem 0 2rem",
+                        "text":"Default"
                     }]
                 }],
             },
@@ -122,27 +133,48 @@ const OUTPUT_NODE_MENU = [ // file_name
             // name
             {
                 "<>" : "p",
-                "style" : "font-weight:300",
-                "text" : "Current File:",
+                "style" : "font-weight:300; display:flex; align-items:center",
+                "text" : "File Name:",
+                "html" : [{
+                    "<>" : "button",
+                    "id" : "clear-output",
+                    "text" : "Clear"
+                }]
             }, {
                 "<>" : "p",
                 "id" : "outputmenuname",
                 "style" : "font-weight:500; opacity:0.6",
                 "text" : "${file_name}",
             },
-            // dimension
+            // samples
             {
                 "<>" : "p",
                 "style" : "font-weight:300; margin-top:3%",
-                "text" : "Dimension:",
+                "text" : "# of samples:",
+            }, {
+                "<>" : "p",
+                "id" : "outputmenusamples",
+                "style" : "font-weight:500; opacity:0.6",
+                "text" : "${samples}",
+            },
+            // real dimension
+            {
+                "<>" : "p",
+                "style" : "font-weight:300; margin-top:3%",
+                "text" : "Sample Dimension:",
             }, {
                 "<>" : "p",
                 "id" : "outputmenudim",
                 "style" : "font-weight:500; opacity:0.6",
                 "text" : "${dimension}",
+            },
+            // bottom padding
+            {
+                "<>" : "section",
+                "style" : "width:100%; height:1.5rem;"
             }
         ],
-    }
+    },
 ]
 
 const DENSE_NODE_MENU = [ // uuid, neuronct
@@ -477,6 +509,11 @@ const ACT_NODE_MENU = [ // uuid, value
                         "text" : "Elu", 
                     },
                 ],
+            },
+            // bottom padding
+            {
+                "<>" : "section",
+                "style" : "width:100%; height:1.5rem;"
             }
         ],
     },
@@ -517,14 +554,39 @@ const DROP_NODE_MENU = [ // uuid, neuronct
                         "id" : "${uuid}prob",
                     }
                 ],
+            },
+            // bottom padding
+            {
+                "<>" : "section",
+                "style" : "width:100%; height:1.5rem;"
             }
         ],
     },
 ]
 
-// place holder
+// MENU TEMPLATE
+const DEFAULT_NODE_MENU = [
+    {
+        "<>" : "h3",
+        "style" : "margin-bottom:1%",
+        "html" : "Sample Menu"
+    },{
+        "<>" : "hr",
+        "style" : "width: 30%; opacity:0.1; color: white",
+    },{
+        "<>" : "section",
+        "class" : "input-parent-container",
+        "html" : [
+            
+            /*
+             * All the content goes inside here
+             */
 
-const DEFAULT_NODE_MENU = [{
-    "<>" : "p",
-    "html" : "Click on a node to edit it"
-}]
+            // bottom padding
+            {
+                "<>" : "section",
+                "style" : "width:100%; height:1.5rem;"
+            }
+        ],
+    },
+]

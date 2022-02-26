@@ -1,15 +1,15 @@
 // show warning message before unloading
-window.onbeforeunload = function (e) {
-    e = e || window.event;
+// window.onbeforeunload = function (e) {
+//     e = e || window.event;
 
-    // For IE and Firefox prior to version 4
-    if (e) {
-        e.returnValue = "Leaving this site WILL result in your work permanatly erased. But your IO data will be kept. Are you sure?";
-    }
+//     // For IE and Firefox prior to version 4
+//     if (e) {
+//         e.returnValue = "Leaving this site WILL result in your work permanatly erased. But your IO data will be kept. Are you sure?";
+//     }
 
-    // For Safari
-    return "Leaving this site WILL result in your work permanatly erased. But your IO data will be kept. Are you sure?";
-};
+//     // For Safari
+//     return "Leaving this site WILL result in your work permanatly erased. But your IO data will be kept. Are you sure?";
+// };
 
 let font_size = 0.75 // This is for the terminal. unit: rem
 
@@ -54,3 +54,102 @@ function update_terminal_font(){
         e.style.lineHeight = (font_size+0.25) + "rem";
     })
 }
+
+// contorl dock buttons
+// reset canvas position
+document.getElementById("reset-canvas").addEventListener("click", async (e) => {
+    document.querySelectorAll(".node").forEach((e) => {
+        e.classList.remove("notransition")
+    })
+    document.querySelectorAll(".crosshair").forEach((e) => {
+        e.classList.remove("notransition")
+    })
+    document.querySelectorAll("#main-canvas").forEach((e) => {
+        e.classList.remove("notransition")
+    })
+
+    document.querySelectorAll(".node").forEach((e) => {
+        e.style.top = (e.offsetTop - canvas_position_y) + "px";
+        e.style.left = (e.offsetLeft + canvas_position_x) + "px";
+    })
+
+    document.querySelectorAll(".crosshair").forEach((e) => {
+        e.style.top = (e.offsetTop - canvas_position_y) + "px";
+        e.style.left = (e.offsetLeft + canvas_position_x) + "px";
+    })
+
+    // move the background along
+    let bgposY = document.querySelector("#main-canvas").style.backgroundPositionY
+    let bgposX = document.querySelector("#main-canvas").style.backgroundPositionX
+
+    document.querySelector("#main-canvas").style.backgroundPositionX = Number(bgposX.substring(0,bgposX.length-2))
+    + canvas_position_x + "px";
+    document.querySelector("#main-canvas").style.backgroundPositionY = Number(bgposY.substring(0,bgposY.length-2))
+    - canvas_position_y + "px";
+    
+    canvas_position_y = 0
+    canvas_position_x = 0
+    document.querySelector("#position_debug").innerHTML = canvas_position_x + "," + canvas_position_y
+})
+
+document.getElementById("reset-coord").addEventListener("click", async (e) => {
+    canvas_position_x = 0
+    canvas_position_y = 0
+    document.querySelector("#position_debug").innerHTML = Math.round(canvas_position_x) + "," + Math.round(canvas_position_y)
+
+
+})
+
+// add zoom functionality
+document.getElementById("zoom-in").addEventListener("click", (e) => {
+    document.querySelectorAll(".node").forEach((e) => {
+        e.classList.remove("notransition")
+    })
+    document.querySelectorAll(".crosshair").forEach((e) => {
+        e.classList.remove("notransition")
+    })
+    document.querySelectorAll("#main-canvas").forEach((e) => {
+        e.classList.remove("notransition")
+    })
+
+    zoom += CLICK_ZOOM_SPEED
+    if(zoom > 4){
+        zoom = 4        
+    }
+    canvas.style.transform = `scale(${zoom})`;  
+    // update_zoom_text()
+})
+
+document.getElementById("zoom-out").addEventListener("click", (e) => {
+    document.querySelectorAll(".node").forEach((e) => {
+        e.classList.remove("notransition")
+    })
+    document.querySelectorAll(".crosshair").forEach((e) => {
+        e.classList.remove("notransition")
+    })
+    document.querySelectorAll("#main-canvas").forEach((e) => {
+        e.classList.remove("notransition")
+    })
+
+    zoom -= CLICK_ZOOM_SPEED
+    if(zoom < 0.2){
+        zoom = 0.2        
+    }
+    canvas.style.transform = `scale(${zoom})`;  
+    // update_zoom_text()
+})
+
+document.getElementById("zoom-res").addEventListener("click", (e) => {
+    document.querySelectorAll(".node").forEach((e) => {
+        e.classList.remove("notransition")
+    })
+    document.querySelectorAll(".crosshair").forEach((e) => {
+        e.classList.remove("notransition")
+    })
+    document.querySelectorAll("#main-canvas").forEach((e) => {
+        e.classList.remove("notransition")
+    })
+    
+    canvas.style.transform = `scale(${zoom = 1})`;  
+    // update_zoom_text()
+})
