@@ -255,7 +255,7 @@ window.addEventListener("resize", e => {
     prev_window_width = window.innerWidth
 })
 
-document.getElementById("main-canvas").addEventListener("wheel", e => { 
+document.getElementById("canvas-drag").addEventListener("wheel", e => { 
     e.preventDefault()
 
     // check if not in menus
@@ -281,14 +281,22 @@ document.getElementById("main-canvas").addEventListener("wheel", e => {
     
     
     if (e.ctrlKey) {
-        
+        let sensitivity = (20<Math.abs(e.deltaY)?20:Math.abs(e.deltaY))
         if(e.deltaY > 0){ 
-            if(zoom > 0.25){  // zoom out
-                canvas.style.transform = `scale(${zoom -= e.deltaY * 0.013})`;                    
-            }   
+            if(zoom > 0.3162){  // zoom out
+                canvas.style.transform = `scale(${(zoom -= sensitivity * 0.013/2)*zoom})`;                    
+                if(zoom < 0.3162){ // set zoom to sqrt(0.1)
+                    zoom = 0.3162
+                    canvas.style.transform = `scale(0.1)`;    
+                }
+            }
         }else{
             if(zoom < 4){ // zoom in
-                canvas.style.transform = `scale(${zoom -= e.deltaY * 0.013})`;  
+                canvas.style.transform = `scale(${(zoom -= -sensitivity * 0.013/2)*zoom})`;
+                if(zoom > 4){ // set zoom to 4
+                    zoom = 4
+                    canvas.style.transform = `scale(16)`;    
+                }
             }
         }
         return
