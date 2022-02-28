@@ -240,11 +240,15 @@ function update_output_data(name, value, dim){
         update_non_temp_edges()
 }
 
+function set_reshape_menu(uuid, data){
+    let htmlObject = create_menu_container()
+    htmlObject.innerHTML = json2html.render([{"uuid" : uuid}], RESHAPE_NODE_MENU);
+    set_menu(htmlObject)
+}
 
 function set_dense_menu(uuid, data){
     let htmlObject = create_menu_container()
-    let neuron_ct = data.neuron_ct
-    htmlObject.innerHTML = json2html.render([{"uuid" : uuid, "neuronct" : neuron_ct}], DENSE_NODE_MENU);
+    htmlObject.innerHTML = json2html.render([{"uuid" : uuid}], DENSE_NODE_MENU);
     set_menu(htmlObject)
   
     // add event listeners for all the sliders and controls

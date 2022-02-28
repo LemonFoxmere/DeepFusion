@@ -25,7 +25,7 @@ el = elu
 
 const supported_file_types=[]
 
-const recognized_node_code = ["in", "ou", "de", "ac", "do"]
+const recognized_node_code = ["in", "ou", "de", "ac", "do", "re"]
 
 const activation_name_std = {
     li : "Linear",

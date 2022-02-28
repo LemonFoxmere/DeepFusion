@@ -42,18 +42,23 @@
 
         <!-- bottom menu -->
         <div class="menu-container" style="
-            width:calc(100vw - 17rem * 2); padding-bottom: 1.25rem; height:7.5rem; bottom:0; right:17rem;
-            display:flex; align-items: center; justify-content: center; flex-direction: column;" id="node-menu">
-                <section style="margin-top:1.2rem; z-index: 2; white-space: nowrap;">
-                    <h4 style="margin:0">Add Layers:</h4>
+            width:calc(100vw - 17rem * 2); padding-bottom: 0.25rem; height:7rem; bottom:0; right:17rem;
+            display:flex; align-items: center; justify-content: center; flex-direction: column; justify-content: center;" id="node-menu">
+                <section style="z-index: 2; white-space: nowrap;">
+                    <h4 style="margin:1rem 0 0.5rem 0">Add Layers:</h4>
                 </section>
 
-                <section style="margin-top:0.7rem; margin-bottom:0.5rem; display:flex; flex-direction: row; align-items: center;">
-                    <button class="absolute-btn node-selection" id="input_node_add">
+                <section style="min-height:calc(var(--default-button-height) + 0.1rem); padding-bottom: 1rem; display:flex; flex-direction: row; align-items: center;
+                width:100%; max-width:fit-content; overflow-x: auto; position:relative; overflow-y: hidden;">
+                    <button class="absolute-btn node-selection" style="margin-left:0.5rem" id="input_node_add"> <!--This will have the graident paddings-->
                         <p>Input</p>
                     </button>
                     <button class="absolute-btn node-selection" id="output_node_add">
                         <p>Output</p>
+                    </button>
+                    <div class="vr" style="height:70%"></div>
+                    <button class="absolute-btn node-selection" id="reshape_node_add">
+                        <p>Reshape</p>
                     </button>
                     <div class="vr" style="height:70%"></div>
                     <button class="absolute-btn node-selection" id="dense_node_add">
@@ -67,7 +72,7 @@
                         <p>Dropout</p>
                     </button>
                     <div class="vr" style="height:70%"></div>
-                    <a class="buttonlike node-selection default-upload default-upload-300" id="drop_node_add" href="https://github.com/LemonOrangeWasTaken/DeepFusion/discussions/categories/feature-requests" target="_blank">
+                    <a class="buttonlike node-selection default-upload default-upload-300" style="margin-right:0.75rem" id="drop_node_add" href="https://github.com/LemonOrangeWasTaken/DeepFusion/discussions/categories/feature-requests" target="_blank">
                         <p class="default-upload-decor" style="cursor: pointer;">···</p>
                         <p style="cursor: pointer;">Suggestions?</p>
                     </a>
@@ -216,13 +221,13 @@
         </button> -->
 
         <!-- zoom control -->
-        <section id="canvas-ctrl" style="position:absolute; top:1rem; display:flex; justify-content: center; align-items:center; flex-direction: column; z-index: 10;">
+        <section id="canvas-ctrl" style="position:absolute; top:1rem; display:flex; justify-content: center; align-items:center; flex-direction: column; z-index: 3;">
             <section style="
                 display:flex; flex-direction: row; justify-content: center; align-items: center; background: #181a1bd3;
                 border-radius: 0.7rem;
                 -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); 
                 box-shadow: 0px 0px 20px 5px rgba(0, 0, 0, 0.507); border: 1px solid #373c3c;
-                padding:0.2rem 0.4rem 0.2rem 0.4rem">
+                padding:0.2rem 0.4rem 0.2rem 0.4rem;">
 
                 <button id="reset-canvas" class="subtle-btn" title="Recenter Canvas">
                     <!-- recenter -->
@@ -280,7 +285,7 @@
         </section>
 
         <!-- version watermark -->
-        <p style="position: absolute; bottom:8rem; font-size: 0.9rem; font-family: Montserrat; opacity: 0.4;">Public beta 1.2</p>
+        <p style="position: absolute; bottom:7.5rem; font-size: 0.9rem; font-family: Montserrat; opacity: 0.4; z-index: 1;">Public beta 1.2</p>
         
         <!-- canvas area -->
         <section id="canvas-drag" style="position:absolute; display:flex; justify-content: center; align-items:center;
@@ -336,6 +341,7 @@
     <script src="events.js"></script>
     <script src="style.js"></script>
     <script src="node-templates.js"></script>
+    <script src="node-handler.js"></script>
     <script src="terminal-templates.js"></script>
     <script src="menu-templates.js"></script>
     <script src="menu-handler.js"></script>

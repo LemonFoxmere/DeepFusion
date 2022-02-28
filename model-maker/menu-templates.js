@@ -1,6 +1,7 @@
 // ===================== NODES MENUS =====================
 // <input id="training-input" type="file" name="name" style="display: none;" />
 // onclick="document.querySelector('#training-input').click();
+
 const INPUT_NODE_MENU = [ // file_name
     {
         "<>" : "h3",
@@ -36,7 +37,7 @@ const INPUT_NODE_MENU = [ // file_name
                     "html":[{
                         "<>":"p",
                         "id":"default-upload-text",
-                        "style" : "margin:0 2rem 0 2rem",
+                        "style" : "margin:0 0.1rem 0 0.1rem",
                         "text":"Default"
                     }]
                 }],
@@ -112,7 +113,7 @@ const OUTPUT_NODE_MENU = [ // file_name
                 "html": [{
                     "<>" : "button",
                     "id" : "output-upload",
-                    "style" : "width:100%",
+                    "style" : "width:100%;",
                     "html":[{
                         "<>":"p",
                         "text":"Upload"
@@ -124,7 +125,7 @@ const OUTPUT_NODE_MENU = [ // file_name
                     "html":[{
                         "<>":"p",
                         "id":"default-upload-text",
-                        "style" : "margin:0 2rem 0 2rem",
+                        "style" : "margin:0 0.1rem 0 0.1rem",
                         "text":"Default"
                     }]
                 }],
@@ -177,11 +178,46 @@ const OUTPUT_NODE_MENU = [ // file_name
     },
 ]
 
+const RESHAPE_NODE_MENU = [ // uuid, neuronct
+    {
+        "<>" : "h3",
+        "style" : "margin-bottom:1%",
+        "html" : "Reshape"
+    },{
+        "<>" : "hr",
+        "style" : "width: 30%; opacity:0.1; color: white",
+    },{
+        "<>" : "section",
+        "class" : "input-parent-container",
+        "html" : [
+            {
+                "<>" : "p",
+                "style" : "font-weight:300; margin-top:0.1rem; font-size: 0.9rem",
+                "text" : "Original Dimension:",
+            }, { // original dim old (for display)
+                "<>" : "p",
+                "style" : "font-weight:500; opacity:0.6; font-size: 0.9rem",
+                "id" : "${uuid}originalshape",
+                "text" : "Connect a Node to view"
+            },{
+                "<>" : "p",
+                "style" : "font-weight:300; margin-top:0.5rem; font-size: 0.9rem",
+                "text" : "Target Dimension:",
+            },
+            // bottom padding
+            {
+                "<>" : "section",
+                "style" : "width:100%; height:1.5rem;"
+            }
+        ],
+    },
+]
+
 const DENSE_NODE_MENU = [ // uuid, neuronct
     {
         "<>" : "h3",
         "style" : "margin-bottom:1%;",
-        "html" : "Dense Layer"
+        "html" : "Dense"
     },{
         "<>" : "hr",
         "style" : "width: 30%; height:1px; opacity:0.1; color: white",
@@ -523,7 +559,7 @@ const DROP_NODE_MENU = [ // uuid, neuronct
     {
         "<>" : "h3",
         "style" : "margin-bottom:1%",
-        "html" : "Dropout Layer"
+        "html" : "Dropout"
     },{
         "<>" : "hr",
         "style" : "width: 30%; opacity:0.1; color: white",
@@ -564,8 +600,16 @@ const DROP_NODE_MENU = [ // uuid, neuronct
     },
 ]
 
-// MENU TEMPLATE
+
 const DEFAULT_NODE_MENU = [
+    {
+        "<>" : "p",
+        "html" : "Click on a node to edit it"
+    }
+]
+
+// MENU TEMPLATE
+const MENU_TEMPLATE = [
     {
         "<>" : "h3",
         "style" : "margin-bottom:1%",

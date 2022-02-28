@@ -7,6 +7,12 @@ function create_io_data(name, data, dim){
     }    
 }
 
+function create_reshape_data(targetshape){
+    return {
+        "targetshape" : targetshape,
+    }    
+}
+
 function create_dense_data(neuron_ct, activation, usebias, trainable, kernelinit, biasinit){
     return {
         "neuron" : neuron_ct,
@@ -105,7 +111,7 @@ const OUTPUT_NODE = [
         "html": [{ // display node title
                 "<>" : "h3",
                 "class" : "unselectable node-title",
-                "style" : "cursor:move",
+                "style" : "cursor:move; margin-top:0.1rem",
                 "text" : "Ground Truth"
             }, { // horizontal line
                 "<>" : "hr"
@@ -177,6 +183,49 @@ const DENSE_NODE = [
                 "class" : "unselectable node-text",
                 "style" : "cursor:move; margin-top:0.2rem",
                 "text" : "Bias Init: Zeros"
+            }, { // horizontal line
+                "<>" : "hr"
+            }, { // status
+                "<>" : "p",
+                "class" : "unselectable node-text",
+                "style" : "cursor:move",
+                "html" : "Click To Modify"
+            }]
+    }, { // node out
+        "<>" : "div",
+        "class" : "node-out",
+        "id" : "${id_tag}out"
+    }
+]
+
+const RESHAPE_NODE = [
+    { // node in triangle
+        "<>" : "div",
+        "class" : "node-in",
+        "id" : "${id_tag}in"
+    }, {
+        "<>" : "div",
+        "class" : "node-drag",
+        "id" : "${id_tag}header",
+        "html": [{ // display node title
+                "<>" : "h3",
+                "class" : "unselectable node-title",
+                "style" : "cursor:move",
+                "text" : "Reshape"
+            }, { // horizontal line
+                "<>" : "hr"
+            }, { // display node display
+                "<>" : "p",
+                "id" : "${id_tag}originalshape",
+                "class" : "unselectable node-text",
+                "style" : "cursor:move",
+                "html" : "Original: Unknown"
+            }, { // display node display
+                "<>" : "p",
+                "id" : "${id_tag}originalshape",
+                "class" : "unselectable node-text",
+                "style" : "cursor:move; margin-top:0.2rem",
+                "html" : "Target: 64×64"
             }, { // horizontal line
                 "<>" : "hr"
             }, { // status
