@@ -33,28 +33,26 @@ try{
 if(restore_input){ // restore the input
     localStorage.setItem(INPUT_DAT_UUID, previous_input)
 
-    create_node(INPUT_UUID, INPUT_NODE, "in", set_input_menu, null)
+    new input_node(INPUT_UUID, INPUT_DAT_UUID, false)
     document.getElementById("input_node_add").classList.add("disable")
     if(restore_output){ // shift it to the left a bit if the output also exist
         document.getElementById(INPUT_UUID).style.left = `${document.getElementById(INPUT_UUID).offsetLeft-100}px`
     }
     dflog(supportmsg, "Successfully restored input file.")
 } else {
-    // store empty input and output file data
-    localStorage.setItem(INPUT_DAT_UUID, JSON.stringify(create_io_data("No Input File", null, null)))
     console.warn("No input data to be recovered. This message can be ignored.")
 }
 
 if(restore_output){ // restore the output
     localStorage.setItem(OUTPUT_DAT_UUID, previous_output)
-    create_node(OUTPUT_UUID, OUTPUT_NODE, "ou", set_output_menu, null)
+    new output_node(OUTPUT_UUID, OUTPUT_DAT_UUID, false)
+
     document.getElementById("output_node_add").classList.add("disable")
     if(restore_input){ // shift it to the left a bit if the output also exist
         document.getElementById(OUTPUT_UUID).style.left = `${document.getElementById(OUTPUT_UUID).offsetLeft+100}px`
     }
     dflog(supportmsg, "Successfully restored output file.")
 } else {
-    localStorage.setItem(OUTPUT_DAT_UUID, JSON.stringify(create_io_data("No Output File", null, null)))
     console.warn("No output data to be recovered. This message can be ignored.")
 }
 
@@ -272,26 +270,3 @@ function uuidv4() {
         (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
     );
 }
-
-function createNodeElement() {
-    let node = document.createElement("div");
-    // create unique uuid
-    let uuid = uuidv4()
-    node.id = uuid
-
-    return node;
-}
-
-// add selection highlight
-document.querySelectorAll(".node-drag").forEach((elm) => {
-    elm.addEventListener("mousedown", (e) => {
-        document.querySelectorAll(".node-drag").forEach((elm2) => {
-            elm2.classList.remove("selected-node")
-        })
-        if(elm.classList.contains("selected-node")){
-            elm.classList.remove("selected-node")
-            return
-        }
-        elm.classList.add("selected-node")
-    })
-})

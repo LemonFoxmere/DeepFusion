@@ -1,9 +1,44 @@
-// create nodes
-function create_node(uuid, template, node_type, set_node_template=null, default_data){
+// ===================== NODE ABSTRACT OBJECTS =====================
+
+function create_edge_data(input, dest){
+    return {
+        "input" : input,
+        "dest" : dest
+    }
+}
+
+// define node jsons
+function create_node_data(from, dest, is_edge, is_start, data, type){
+    return {
+        "from" : from,
+        "dest" : dest,
+        "is_edge" : is_edge,
+        "is_start" : is_start,
+        "connected" : false,
+        "data" : data,
+        "type" : type,
+        "edge" : null
+    }
+}
+
+// ===================== NODE DOM & DATA OBJECTS =====================
+
+function create_node(uuid, data_uuid, template, node_type, self){ // this function should create a node, its event listeners, and data.
     // check node type validness
     if(recognized_node_code.indexOf(node_type) === -1) throw `invalid node code "${node_type}"`
 
-    // create html element
+    // make the abstract data structure of the node first:
+    let node_dat = create_node_data(null, null, false, false, data_uuid, node_type) // create matching node data
+    if(node_type === "in"){ // different options for identifying input and output nodes
+        node_dat = create_node_data(null, null, true, true, data_uuid, node_type)
+    } else if(node_type === "ou"){ // different options for identifying input and output nodes
+        node_dat = create_node_data(null, null, true, false, data_uuid, node_type)
+    }
+    // write the node to local storage
+    localStorage.setItem(uuid,JSON.stringify(node_dat))
+
+    
+    // create html container
     let html = create_node_element(template, uuid)
     main_canvas.appendChild(html)
 
@@ -13,55 +48,46 @@ function create_node(uuid, template, node_type, set_node_template=null, default_
 
     dragElement(document.getElementById(uuid)); // add element drag
 
-    // add file name updating
-    if(node_type === "in"){
-        document.getElementById(`inputinfo`).innerHTML = `File: ${JSON.parse(localStorage.getItem(INPUT_DAT_UUID)).name}`
-    } if(node_type === "ou"){
-        document.getElementById(`outputinfo`).innerHTML = `File: ${JSON.parse(localStorage.getItem(OUTPUT_DAT_UUID)).name}`
-    }
-
-    // add highlighting
-    document.getElementById(`${uuid}header`).addEventListener("mousedown", (e) => {
+    // add highlighting (visual)
+    document.getElementById(`${uuid}header`).addEventListener("mousedown", (e) => { // event for when the node is selected
         document.querySelectorAll(".node-drag").forEach((elm) => { // reset allcurrent selected node"s selected-node class
             elm.classList.remove("selected-node")
         })
 
-        document.getElementById(`${uuid}header`).classList.add("selected-node")
+        document.getElementById(`${uuid}header`).classList.add("selected-node") // select this node
         document.getElementById("del-selected").disabled = false // enable option for delete
 
-        // set the menu
-        if(set_node_template !== null){
-            let data = JSON.parse(localStorage.getItem( JSON.parse(localStorage.getItem(uuid)).data )) // get the data
-            set_node_template(uuid, data)
-        }
+        // populate the menu
+        let data = JSON.parse(localStorage.getItem( JSON.parse(localStorage.getItem(uuid)).data )) // get the data
+        self.populate_menu(data)
     })
 
-    // EDGE CREATION START
-    document.getElementById(uuid).addEventListener("mouseover", (e) => {
-        hovering_uuid = uuid
+    // Add event to watch for edge creation
+    document.getElementById(uuid).addEventListener("mouseover", (e) => { // when the yellow node out square is hovered over
+        hovering_uuid = uuid // update the current hovering uuid
     })
 
-    document.getElementById(uuid).addEventListener("mouseout", (e) => {
+    document.getElementById(uuid).addEventListener("mouseout", (e) => { // reset the hovering uuis when hover out
         hovering_uuid = null
     })
 
-    // add node out drag function
-    if(node_type !== "ou"){
-        document.getElementById(`${uuid}out`).addEventListener("mousedown", (e) => {
-            document.body.style.cursor = "grabbing"
+    // add edge out drag function
+    if(document.getElementById(`${uuid}out`) !== null){ // if the node out square is enabled for the node
+        document.getElementById(`${uuid}out`).addEventListener("mousedown", (e) => { // watch for when the square is pressed down
+            document.body.style.cursor = "grabbing" // set cursor styles
             document.getElementById(`${uuid}out`).style.cursor = "grabbing"
     
             let outnode = document.getElementById(`${uuid}`)
             let outnodesq = document.getElementById(`${uuid}out`)
 
-            document.querySelectorAll(".node-drag").forEach(elmnt => {
+            document.querySelectorAll(".node-drag").forEach(elmnt => { // styling for node hover
                 elmnt.classList.add("node-edge-dragging")
             })
-            document.querySelectorAll(".node").forEach(elmnt => {
+            document.querySelectorAll(".node").forEach(elmnt => { // more styling
                 elmnt.classList.add("node-edge-dragging-cont")
             })
     
-            main_canvas.appendChild(createLine(
+            main_canvas.appendChild(createLine( // create a temporary edge connecting to the cursor
                 outnode.offsetLeft + (outnode.getBoundingClientRect().width/2)/zoom,
                 outnode.offsetTop + (outnode.getBoundingClientRect().height-outnodesq.getBoundingClientRect().height/2)/zoom,
                 outnode.offsetLeft + (outnode.getBoundingClientRect().width/2)/zoom,
@@ -71,13 +97,12 @@ function create_node(uuid, template, node_type, set_node_template=null, default_
             edge_start_node = outnode
             edge_start_node_sq = outnodesq
     
-            // set draggin UUID to outnode"s uuid
-            selected_uuid = uuid
+            selected_uuid = uuid // set draggin UUID to outnode's uuid
         })
     }
 
-    // add node deletion function
-    if(node_type !== "in"){
+    // add edge deletion function
+    if(document.getElementById(`${uuid}in`) !== null){ // if the node in triangle is enabled for the node
         document.getElementById(`${uuid}in`).addEventListener("mousedown", (e) => {
             // check if there is a from node. Continue only if there is
             if(JSON.parse(localStorage.getItem(uuid)).from === null) return
@@ -89,6 +114,7 @@ function create_node(uuid, template, node_type, set_node_template=null, default_
             let outnode = document.getElementById(`${node_data.from}`)
             let outnodesq = document.getElementById(`${node_data.from}out`)
     
+            // styling
             document.querySelectorAll(".node-drag").forEach(elmnt => {
                 elmnt.classList.add("node-edge-dragging")
             })
@@ -96,6 +122,7 @@ function create_node(uuid, template, node_type, set_node_template=null, default_
                 elmnt.classList.add("node-edge-dragging-cont")
             })
 
+            // create temp edge
             main_canvas.appendChild(createLine(
                 outnode.offsetLeft + (outnode.getBoundingClientRect().width/2)/zoom,
                 outnode.offsetTop + (outnode.getBoundingClientRect().height-outnodesq.getBoundingClientRect().height/2)/zoom,
@@ -106,10 +133,10 @@ function create_node(uuid, template, node_type, set_node_template=null, default_
             edge_start_node = outnode
             edge_start_node_sq = outnodesq
     
-            // set draggin UUID to outnode"s uuid
+            // set draggin UUID to outnode's uuid
             selected_uuid = node_data.from
     
-            // delete front node"s dest and edge
+            // delete front node's dest and edge
             let from_node_data = JSON.parse(localStorage.getItem(node_data.from))
             from_node_data.dest = null
             // remove graphical line
@@ -119,7 +146,7 @@ function create_node(uuid, template, node_type, set_node_template=null, default_
             // delete this node"s from
             node_data.from = null
             node_data.connected = false
-            // write it
+            // write it to local storage
             localStorage.setItem(uuid, JSON.stringify(node_data))
 
             // add a temp node to the mouse cursor
@@ -140,27 +167,6 @@ function create_node(uuid, template, node_type, set_node_template=null, default_
                 "temp_edge"));   
         })
     }
-
-    // EDGE CREATION END
-
-    // create data based on type (only if it is not an input or output)
-    
-    let data_uuid = "02"+uuidv4()
-    if(default_data !== null){
-        let data_string = JSON.stringify(default_data)
-        localStorage.setItem(data_uuid, default_data)
-    }
-
-    // create matching node data
-    let node_dat = create_node_data(null, null, false, false, data_uuid, node_type)
-    if(node_type === "in"){
-        node_dat = create_node_data(null, null, true, true, INPUT_DAT_UUID, node_type)
-    } else if(node_type === "ou"){
-        node_dat = create_node_data(null, null, true, false, OUTPUT_DAT_UUID, node_type)
-    }
-
-    // create a node value in local storage
-    localStorage.setItem(uuid,JSON.stringify(node_dat))
 }
 
 // deleting nodes
@@ -172,8 +178,8 @@ function delete_selected_node(){
     let del_node_uuid = htmlObject.id.substring(0, htmlObject.id.length-6)
     let del_node_data = JSON.parse(localStorage.getItem(del_node_uuid)) // get the node being deleted"s data
     
-    if(del_node_data.from !== null){ // check if input node exists
-        // if input node exist, wipe it"s dest node and edge attribute
+    if(del_node_data.from !== null){ // check if in node exists
+        // if in node exist, wipe it"s dest node and edge attribute
         let from_node_data = JSON.parse(localStorage.getItem(del_node_data.from))
         from_node_data.dest = null
         
@@ -185,7 +191,7 @@ function delete_selected_node(){
         from_node_data.edge = null // remove the edge pointer on the other side too
         localStorage.setItem(del_node_data.from, JSON.stringify(from_node_data))
     } if(del_node_data.dest !== null){ // check if dest node exists
-        // if input node exist, wipe it"s dest node and edge attribute
+        // if dest node exist, wipe it's dest node and edge attribute
         let to_node_data = JSON.parse(localStorage.getItem(del_node_data.dest))
         to_node_data.from = null
         to_node_data.connected = false
@@ -211,55 +217,9 @@ function delete_selected_node(){
     localStorage.removeItem(del_node_uuid)
     main_canvas.removeChild(document.getElementById(del_node_uuid))
 
-    hovering_uuid = null // the node"s own listener will stop functioning, so we"ll have to reset it
+    hovering_uuid = null // the node's own listener will stop functioning, so we'll have to reset it
     reset_editor_menu() // reset the editor menu
 
     // set delete selected to disabled
     document.getElementById("del-selected").disabled = true
 }
-
-// create input node
-document.getElementById("input_node_add").addEventListener("click", (e) => {
-    if(localStorage.getItem(INPUT_UUID)) return // check if it already exists
-
-    create_node(INPUT_UUID, INPUT_NODE, "in", set_input_menu, null)
-
-    // disable the input button
-    document.getElementById("input_node_add").classList.add("disable")
-})
-
-// create output node
-document.getElementById("output_node_add").addEventListener("click", (e) => {
-    if(localStorage.getItem(OUTPUT_UUID)) return // check if it already exists
-    
-    create_node(OUTPUT_UUID, OUTPUT_NODE, "ou", set_output_menu, null)
-
-    // disable the input button
-    document.getElementById("output_node_add").classList.add("disable")
-})
-
-// create reshape node
-document.getElementById("reshape_node_add").addEventListener("click", (e) => {
-    let uuid = "00"+uuidv4()
-    create_node(uuid, RESHAPE_NODE, "re", set_reshape_menu, JSON.stringify(create_reshape_data([64,64])))
-})
-
-// create dense node
-document.getElementById("dense_node_add").addEventListener("click", (e) => {
-    let uuid = "00"+uuidv4()
-    create_node(uuid, DENSE_NODE, "de", set_dense_menu, JSON.stringify(create_dense_data(10, "li", true, true, "gln", "zer")))
-})
-
-// create activation node
-// TODO: come back and add this later
-// document.getElementById("act_node_add").addEventListener("click", (e) => {
-//     let uuid = "00"+uuidv4()
-//     create_node(uuid, ACT_NODE, "ac", set_act_menu, JSON.stringify(create_act_data("li")))
-
-// })
-
-// create activation node
-document.getElementById("drop_node_add").addEventListener("click", (e) => {
-    let uuid = "00"+uuidv4()
-    create_node(uuid, DROP_NODE, "do", set_drop_menu, JSON.stringify(create_drop_data(0)))
-})

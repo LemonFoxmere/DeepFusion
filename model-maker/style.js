@@ -153,3 +153,17 @@ document.getElementById("zoom-res").addEventListener("click", (e) => {
     canvas.style.transform = `scale(${zoom = 1})`;  
     // update_zoom_text()
 })
+
+// add selection highlight
+document.querySelectorAll(".node-drag").forEach((elm) => {
+    elm.addEventListener("mousedown", (e) => {
+        document.querySelectorAll(".node-drag").forEach((elm2) => {
+            elm2.classList.remove("selected-node")
+        })
+        if(elm.classList.contains("selected-node")){
+            elm.classList.remove("selected-node")
+            return
+        }
+        elm.classList.add("selected-node")
+    })
+})

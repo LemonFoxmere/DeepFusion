@@ -36,106 +36,8 @@ function create_drop_data(perc){
     }    
 }
 
-// ===================== NODE OBJECT DATA =====================
-
-function create_edge_data(input, dest){
-    return {
-        "input" : input,
-        "dest" : dest
-    }
-}
-
-// define node jsons
-function create_node_data(from, dest, is_edge, is_start, data, type){
-    return {
-        "from" : from,
-        "dest" : dest,
-        "is_edge" : is_edge,
-        "is_start" : is_start,
-        "connected" : false,
-        "data" : data,
-        "type" : type,
-        "edge" : null
-    }
-}
-
 
 // ===================== NODES =====================
-const INPUT_NODE = [
-    {
-        "<>" : "div",
-        "class" : "node-drag",
-        "id" : "${id_tag}header",
-        "html": [{ // display node title
-                "<>" : "h3",
-                "class" : "unselectable node-title",
-                "style" : "cursor:move",
-                "text" : "Input"
-            }, { // horizontal line
-                "<>" : "hr"
-            }, { // status
-                "<>" : "p",
-                "id" : "inputinfo",
-                "class" : "unselectable node-text",
-                "style" : "cursor:move",
-                "html" : "No File Added"
-            }, { // horizontal line
-                "<>" : "hr"
-            }, { // display node display
-                "<>" : "p",
-                "class" : "unselectable node-text",
-                "style" : "cursor:move",
-                "html" : "Click To Add/Modify"
-            }, { // more display 
-                "<>" : "p",
-                "class" : "unselectable node-text",
-                "style" : "cursor:move",
-                "html" : "Training Input"
-            }]
-    }, { // node out
-        "<>" : "div",
-        "class" : "node-out",
-        "id" : "${id_tag}out"
-    }
-]
-
-const OUTPUT_NODE = [
-    { // node in triangle
-        "<>" : "div",
-        "class" : "node-in",
-        "id" : "${id_tag}in"
-    }, {
-        "<>" : "div",
-        "class" : "node-drag",
-        "id" : "${id_tag}header",
-        "html": [{ // display node title
-                "<>" : "h3",
-                "class" : "unselectable node-title",
-                "style" : "cursor:move; margin-top:0.1rem",
-                "text" : "Ground Truth"
-            }, { // horizontal line
-                "<>" : "hr"
-            }, { // status
-                "<>" : "p",
-                "id" : "outputinfo",
-                "class" : "unselectable node-text",
-                "style" : "cursor:move",
-                "html" : " No File Added"
-            }, { // horizontal line
-                "<>" : "hr"
-            }, { // display node display
-                "<>" : "p",
-                "class" : "unselectable node-text",
-                "style" : "cursor:move",
-                "html" : "Click To Add/Modify"
-            }, { // more display 
-                "<>" : "p",
-                "class" : "unselectable node-text",
-                "style" : "cursor:move",
-                "html" : "Training GT"
-            }]
-    }
-]
 
 const DENSE_NODE = [
     { // node in triangle
@@ -216,53 +118,16 @@ const RESHAPE_NODE = [
                 "<>" : "hr"
             }, { // display node display
                 "<>" : "p",
-                "id" : "${id_tag}originalshape",
+                "id" : "${id_tag}info-originalshape",
                 "class" : "unselectable node-text",
                 "style" : "cursor:move",
                 "html" : "Original: Unknown"
             }, { // display node display
                 "<>" : "p",
-                "id" : "${id_tag}originalshape",
+                "id" : "${id_tag}info-targetshape",
                 "class" : "unselectable node-text",
                 "style" : "cursor:move; margin-top:0.2rem",
                 "html" : "Target: 64×64"
-            }, { // horizontal line
-                "<>" : "hr"
-            }, { // status
-                "<>" : "p",
-                "class" : "unselectable node-text",
-                "style" : "cursor:move",
-                "html" : "Click To Modify"
-            }]
-    }, { // node out
-        "<>" : "div",
-        "class" : "node-out",
-        "id" : "${id_tag}out"
-    }
-]
-
-const ACT_NODE = [
-    { // node in triangle
-        "<>" : "div",
-        "class" : "node-in",
-        "id" : "${id_tag}in"
-    }, {
-        "<>" : "div",
-        "class" : "node-drag",
-        "id" : "${id_tag}header",
-        "html": [{ // display node title
-                "<>" : "h3",
-                "class" : "unselectable node-title",
-                "style" : "cursor:move",
-                "text" : "Activation"
-            }, { // horizontal line
-                "<>" : "hr"
-            }, { // display node display
-                "<>" : "p",
-                "id" : "${id_tag}info-activation",
-                "class" : "unselectable node-text",
-                "style" : "cursor:move",
-                "html" : "Type: Linear"
             }, { // horizontal line
                 "<>" : "hr"
             }, { // status
@@ -300,6 +165,43 @@ const DROP_NODE = [
                 "class" : "unselectable node-text",
                 "style" : "cursor:move",
                 "html" : "Probability: 0%"
+            }, { // horizontal line
+                "<>" : "hr"
+            }, { // status
+                "<>" : "p",
+                "class" : "unselectable node-text",
+                "style" : "cursor:move",
+                "html" : "Click To Modify"
+            }]
+    }, { // node out
+        "<>" : "div",
+        "class" : "node-out",
+        "id" : "${id_tag}out"
+    }
+]
+
+const ACT_NODE = [
+    { // node in triangle
+        "<>" : "div",
+        "class" : "node-in",
+        "id" : "${id_tag}in"
+    }, {
+        "<>" : "div",
+        "class" : "node-drag",
+        "id" : "${id_tag}header",
+        "html": [{ // display node title
+                "<>" : "h3",
+                "class" : "unselectable node-title",
+                "style" : "cursor:move",
+                "text" : "Activation"
+            }, { // horizontal line
+                "<>" : "hr"
+            }, { // display node display
+                "<>" : "p",
+                "id" : "${id_tag}info-activation",
+                "class" : "unselectable node-text",
+                "style" : "cursor:move",
+                "html" : "Type: Linear"
             }, { // horizontal line
                 "<>" : "hr"
             }, { // status

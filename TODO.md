@@ -10,17 +10,18 @@
 4.  ~~Add a clear cache button next to files~~
 5.  ~~Add option to recenter the crosshair~~
 6.  ~~Change how the data is displayed (datasamples, shape)~~
-7.  Add a Reshape node
+7.  Organize node strucutre
+8.  Add a Reshape node
     1.  ~~Create node, nodedat, and menu~~
     2.  Figure out how to do the input
     3.  Update live on both node and menu end
     4.  Create checks for dimension correctness
     5.  Intergrate into model parser
-8.  Add a Conv2D, pooling, and flatten node for basic image processing
-9.  Add input for custom testing data
-10. Try to use TQDM instead of displaying everything out while training
-11. Add a tutorial thing at the very beginning
-12. Drag and Drop node styles
+9.  Add a Conv2D, pooling, and flatten node for basic image processing
+10. Add input for custom testing data
+11. Try to use TQDM instead of displaying everything out while training
+12. Add a tutorial thing at the very beginning
+13. Drag and Drop node styles
 
 > **BETA 1.1**
 1. ~~Add IO shape display~~

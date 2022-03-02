@@ -380,58 +380,6 @@ document.querySelectorAll(".number-box").forEach((e) => { // add all input field
     }
 })
 
-function add_input_menu_events(){
-    // add input field listender
-    let e = document.getElementById("input-upload")
-    if(e === null) return
-        
-    document.querySelector("#input-file").onchange = () => {
-        let file = document.querySelector("#input-file").files[0], read = new FileReader()
-        let file_name = file.name
-
-        // check file type
-        if(file.type !== "text/csv"){
-            dflog(errormsg, "Upload failed: Only CSV files are supported for now!")
-            dflog(blankmsg, "Or if you don't have a CSV file, you can click the <strong>⋮</strong> next to the upload button for a sample dataset.")
-            return;
-        }
-
-        read.readAsBinaryString(file); // convert to String
-        read.onloadend = function(){
-            // when uploading, lag stems from here. This needs to be shifted to a backend server for processing in the future.
-            // let data = CSVToJSON(read.result)
-            CSVToJSON(read.result).then(data => {
-                let dim = detectDim(data)
-                update_input_data(file_name, data, dim) // update values
-            }) .catch(err => {
-                return -1
-            })
-        }
-
-    }
-
-    // clear file button
-    document.getElementById("clear-input").addEventListener("click", (evt) => {
-        update_input_data("No Input File", null, null)
-    })
-
-    document.getElementById("input-upload").addEventListener("click", (evt) => {
-        document.getElementById("input-file").click()
-    })
-    document.getElementById("default-input-upload").addEventListener("click", (evt) => { // upload default data
-        fetch("../dataset/x.csv").then(res => res.text()).then(rawdat => {
-            CSVToJSON(rawdat).then(data => {
-                let dim = detectDim(data)
-                update_input_data("RGB-inputs.csv", data, dim) // update values
-            }) .catch(err => {
-                return -1
-            })
-        }).catch(err => {
-            dflog(errormsg, "An internal error has occured, and the default input dataset cannot be loaded. Please submit a bug report here.")
-        })
-    })
-}
-
 function add_output_menu_events(){
     // add output field listender
     let e = document.getElementById("output-upload")

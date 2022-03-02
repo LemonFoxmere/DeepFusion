@@ -34,7 +34,7 @@ function update_menu_slider(uuid, data_name, display_name, data_affix=""){
                     e.value = min_val;
                 }
                 slider.value = e.value
-                update_node_data(e.id.substring(0,e.id.length-data_name.length), data_name, e.value, e.value, name=display_name, affix=data_affix, true)
+                update_node_data(e.id.substring(0,e.id.length-data_name.length), data_name, e.value, e.value, name=display_name, affix=data_affix, "", true)
             }
         })
     
@@ -49,7 +49,7 @@ function update_menu_slider(uuid, data_name, display_name, data_affix=""){
                 if(document.getElementById(e.id.substring(0,e.id.length-7))){
                     document.getElementById(e.id.substring(0,e.id.length-7)).value = slider_value;
                 }
-                update_node_data(e.id.substring(0,e.id.length-data_name.length-7), data_name, e.value, e.value, name=display_name, affix=data_affix, true)
+                update_node_data(e.id.substring(0,e.id.length-data_name.length-7), data_name, e.value, e.value, name=display_name, affix=data_affix, "", true)
             }
         }
         e.onmouseup = (evt) => {
@@ -71,7 +71,7 @@ function update_menu_dropdown(uuid, data_name, display_name, name_standard){
 
     e.onchange = (evt) => { // add the event listener
         update_node_data(e.id.substring(0,e.id.length-data_name.length), data_name, e.value, name_standard[e.value],
-            name=display_name, affix="", true)
+            name=display_name, affix="", "", true)
     }
 }
 
@@ -88,7 +88,7 @@ function update_menu_toggle(uuid, data_name, display_name, toggle_functionality)
 
     e.onchange = (evt) => { // add the event listener
         update_node_data(e.id.substring(0,e.id.length-data_name.length), data_name, e.checked, e.checked?"Yes":"No",
-            name=display_name, affix="", !toggle_functionality)
+            name=display_name, affix="", "", !toggle_functionality)
         if(toggle_functionality){
             set_node_enable_appearance(e.id.substring(0,e.id.length-data_name.length), e.checked)
         }
@@ -96,44 +96,7 @@ function update_menu_toggle(uuid, data_name, display_name, toggle_functionality)
 }
 
 // ===================== SET NODES MENUS =====================
-function create_menu_container(){
-    // create the menu html
-    let htmlObject = document.createElement("div");
-    htmlObject.classList.add("node-menu-container");
-    return htmlObject
-}
 
-function set_menu(htmlObject){
-    // console.log(htmlObject.innerHTML)
-    // remove previous menu containers
-    node_menu.removeChild(document.querySelector(".node-menu-container"));
-    // add new html
-    node_menu.appendChild(htmlObject)
-}
-
-// ===================== DYNAMIC UPDATE NODE APPEARANCE INFO =====================
-function update_node_data(uuid, info_name, new_value, appearance_value, name="Value", affix="", disp_info){
-    // update the appearance value if requested
-    if(disp_info){
-        document.getElementById(uuid+"info-"+info_name).innerHTML = `${name}: ${appearance_value}${affix}` // get the element and set info text
-    }
-
-    let data_uuid = JSON.parse(localStorage.getItem(uuid)).data //get local storage 
-    let new_data = JSON.parse(localStorage.getItem(data_uuid))
-    new_data[info_name] = new_value
-    localStorage.setItem(data_uuid, JSON.stringify(new_data))
-
-    // update edges to match new width
-    update_non_temp_edges()
-}
-function set_node_enable_appearance(uuid, enabled){
-    // update the appearance value
-    if(enabled){
-        document.getElementById(uuid+"header").style.filter = "brightness(1)";
-    } else {
-        document.getElementById(uuid+"header").style.filter = "brightness(0.5)";
-    }
-}
 
 // ===================== UPDATE NODES MENUS =====================
 
@@ -210,6 +173,7 @@ function set_output_menu(uuid, data){
     set_menu(htmlObject)
     add_output_menu_events()
 }
+
 function update_output_data(name, value, dim){
     document.getElementById("outputinfo").innerHTML = `File: ${name}`
     document.getElementById("outputmenuname").innerHTML = `${name}`

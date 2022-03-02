@@ -522,14 +522,14 @@ p.section-text{
 }
 
 hr{
-    opacity: 0.3;
-    
+    border-color: white;
+    opacity: 0.15;
+    border-width: 0.8px;
 }
 
 .hr{
     position: absolute;
     width:100vw;
-    height:2px;
     background-color: rgba(255, 255, 255, 0.062);
 }
 
