@@ -167,3 +167,37 @@ document.querySelectorAll(".node-drag").forEach((elm) => {
         elm.classList.add("selected-node")
     })
 })
+
+// number field inputs
+document.querySelectorAll(".number-box").forEach((e) => { // add all input field events
+    e.addEventListener("keypress", function (evt) {
+        if (evt.which < 48 || evt.which > 57){
+            evt.preventDefault();
+        }
+
+        if (evt.which === 13){
+            e.blur()
+        }
+    }); // prevent unorthodox number entering
+    
+    e.addEventListener("focusout", (evt) => {
+        if(document.getElementById(e.id + "-slider")){
+            let slider = document.getElementById(e.id + "-slider")
+            // --- THIS CODE BLOCK WILL DISABLE INPUTTING NUMBERS BIGGER THAN SLIDER RANGE ---
+            if(e.id === "val-part" || e.id === "test-part" || e.id === "batch-part"){
+                let max_val = slider.max
+                let min_val = slider.min
+                if (Number(e.value) > max_val){
+                    e.value = max_val;
+                } else if (Number(e.value) < min_val){
+                    e.value = min_val;
+                }
+            }
+            slider.value = e.value
+        }
+    })
+
+    if(document.getElementById(e.id + "-slider")){
+        e.value = document.getElementById(e.id + "-slider").value;
+    }
+})

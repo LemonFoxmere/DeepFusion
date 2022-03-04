@@ -125,7 +125,10 @@ function reset_editor_menu(){
     let htmlObject = document.createElement("div");
     htmlObject.classList.add("node-menu-container");
     htmlObject.id = "default-node-menu"
-    htmlObject.innerHTML = json2html.render([{}], DEFAULT_NODE_MENU);
+    htmlObject.innerHTML = json2html.render([{}], {
+        "<>" : "p",
+        "html" : "Click on a node to edit it"
+    });
 
     // remove previous menu containers
     node_menu.removeChild(document.querySelector(".node-menu-container"));
@@ -136,7 +139,7 @@ function reset_editor_menu(){
 
 // listen for delete command
 document.addEventListener("keydown", (evt) => {
-    if((evt.keyCode === 8 || evt.keyCode === 46 || evt.key === "d") && evt.target.id === "base-canvas"){
+    if((evt.keyCode === 8 || evt.keyCode === 46 || evt.key === "d") && evt.target.tagName !== "INPUT"){
         delete_selected_node()
     }
 })

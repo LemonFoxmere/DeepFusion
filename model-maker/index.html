@@ -48,9 +48,15 @@
                     <h4 style="margin:1rem 0 0.5rem 0">Add Layers:</h4>
                 </section>
 
+                <div style="position:absolute; left:0; height:100%; width:1rem; background: rgb(24,26,27);
+                background: linear-gradient(90deg, rgba(24,26,27,1) 30%, rgba(24,26,27,0) 100%); z-index:99;"></div>
+                <div style="position:absolute; right:0; height:100%; width:1rem;
+                background: linear-gradient(270deg, rgb(24,26,27) 30%, rgba(24,26,27,0) 100%); z-index: 99;"></div>
+                
                 <section style="min-height:calc(var(--default-button-height) + 0.1rem); padding-bottom: 1rem; display:flex; flex-direction: row; align-items: center;
-                width:100%; max-width:fit-content; overflow-x: auto; position:relative; overflow-y: hidden;">
-                    <button class="absolute-btn node-selection" style="margin-left:0.5rem" id="input_node_add"> <!--This will have the graident paddings-->
+                width:100%; max-width:fit-content; overflow-x: auto; position:relative; overflow-y: hidden;" class="no-scroll-bar">
+
+                    <button class="absolute-btn node-selection" style="margin-left:1rem" id="input_node_add"> <!--This will have the graident paddings-->
                         <p>Input</p>
                     </button>
                     <button class="absolute-btn node-selection" id="output_node_add">
@@ -72,7 +78,7 @@
                         <p>Dropout</p>
                     </button>
                     <div class="vr" style="height:70%"></div>
-                    <a class="buttonlike node-selection default-upload default-upload-300" style="margin-right:0.75rem" id="drop_node_add" href="https://github.com/LemonOrangeWasTaken/DeepFusion/discussions/categories/feature-requests" target="_blank">
+                    <a class="buttonlike node-selection default-upload default-upload-300" style="margin-right:1rem" id="drop_node_add" href="https://github.com/LemonOrangeWasTaken/DeepFusion/discussions/categories/feature-requests" target="_blank">
                         <p class="default-upload-decor" style="cursor: pointer;">···</p>
                         <p style="cursor: pointer;">Suggestions?</p>
                     </a>

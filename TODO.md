@@ -3,25 +3,25 @@
 ---
 
 > **BETA 1.2**
-0.  ~~**Update analytics program**~~
-1.  ~~write a basic *README*~~
-2.  ~~Slow down the home page animations~~
-3.  ~~Hide suggestion node~~
-4.  ~~Add a clear cache button next to files~~
-5.  ~~Add option to recenter the crosshair~~
-6.  ~~Change how the data is displayed (datasamples, shape)~~
-7.  Organize node strucutre
-8.  Add a Reshape node
+1.  ~~**Update analytics program**~~
+2.  ~~write a basic *README*~~
+3.  ~~Slow down the home page animations~~
+4.  ~~Hide suggestion node~~
+5.  ~~Add a clear cache button next to files~~
+6.  ~~Add option to recenter the crosshair~~
+7.  ~~Change how the data is displayed (datasamples, shape)~~
+8.  Organize node strucutre
+9.  Add a Reshape node
     1.  ~~Create node, nodedat, and menu~~
     2.  Figure out how to do the input
     3.  Update live on both node and menu end
     4.  Create checks for dimension correctness
     5.  Intergrate into model parser
-9.  Add a Conv2D, pooling, and flatten node for basic image processing
-10. Add input for custom testing data
-11. Try to use TQDM instead of displaying everything out while training
-12. Add a tutorial thing at the very beginning
-13. Drag and Drop node styles
+10. Add a Conv2D, pooling, and flatten node for basic image processing
+11. Add input for custom testing data
+12. Try to use TQDM instead of displaying everything out while training
+13. Add a tutorial thing at the very beginning
+14. Drag and Drop node styles
 
 > **BETA 1.1**
 1. ~~Add IO shape display~~

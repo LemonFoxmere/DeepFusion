@@ -133,7 +133,10 @@ class output_node{
         let empty_node_data = { // set data field
             "name" : "No Data",
             "data" : null,
-            "dimension" : null,
+            "samples" : null,
+            // outdim is requrired by ALL nodes that produces an output. It must be an array, with integers inside.
+            "outdim":null,
+            "indim":null
         }
         
         create_node(this.uuid, this.data_uuid, this.node_template, "ou", this) // create a visual node after both promise are fulfilled 
@@ -142,29 +145,20 @@ class output_node{
         this.populate_menu = data => { // populate menu with data
             let menu_container = create_menu_container()
             let name = data.name
-            let dim = data.dimension
-            let samples = "N/A" // this variable is for display only!
-            let displaydim = "N/A  "
-
-            if(dim !== null){ // if there exist a value, make displaydim not broken
-                // style and display dimension
-                displaydim = ""
-                dim.forEach(e => {
-                    if(samples === "N/A") samples = e
-                    else displaydim += e + " × "
-                })
-            }
+            let samples = data.samples || "N/A"
+            let dim = String(data.indim || "N/A").replace(",","×")
         
-            menu_container.innerHTML = json2html.render([{"file_name" : name, "samples" : samples, "dimension": displaydim.substring(0,displaydim.length-2)}], this.menu_template);
+            menu_container.innerHTML = json2html.render([{"file_name" : name, "samples" : samples, "dimension": dim}], this.menu_template);
         
             render_menu(menu_container)
             this.add_menu_events()
         }
-        this.update_data = (name, value, dim) => { // this runs when the input data is changed
+        this.update_data = (name, value, dim) => { // this runs when the output data is changed
             let new_data = JSON.parse(localStorage.getItem(this.data_uuid))
             new_data.name = name // store name in local storage
             new_data.data = value // store value in local storage
-            new_data.dimension = dim // store dimension in local storage
+            new_data.samples = dim===null?null:dim[0] // store dimension in local storage
+            new_data.indim = dim===null?null:dim.slice(1) // store indim in local storage
             localStorage.setItem(this.data_uuid, JSON.stringify(new_data)) // write to local storage
         
             document.getElementById("outputinfo").innerHTML = `File: ${name}` // change node display info
@@ -174,36 +168,24 @@ class output_node{
             if(document.getElementById("outputmenuname") !== null) document.getElementById("outputmenuname").innerHTML = `${name}`
             else return // there are no menus to update
     
-            // style and display dimension
-            let displaydim = ""
-            let samples = "N/A" // this variable is for display only!
-            try{
-                dim.forEach(e => {
-                    if(samples === "N/A") samples = e
-                    else displaydim += e + " × "
-                })
-            } catch (e){
-                displaydim = "N/A**" // the ** is for formatting and not get the message cut off at the end
-                samples = "N/A" // the ** is for formatting and not get the message cut off at the end
-            }
             // update the menu items
-            document.getElementById("outputmenudim").innerHTML=displaydim.substring(0,displaydim.length-2)
-            document.getElementById("outputmenusamples").innerHTML=samples
+            document.getElementById("outputmenudim").innerHTML = String(new_data.indim || "N/A").replace(",", "×")
+            document.getElementById("outputmenusamples").innerHTML = new_data.samples || "N/A"
         }
 
         // DATA RECOVERY
-        if(wipe_data){ // if it's brand new
+        if(wipe_data || JSON.parse(localStorage.getItem(this.data_uuid)) === null){ // if it's brand new or the data never existed
             localStorage.setItem(this.data_uuid, JSON.stringify(empty_node_data)) // write empty data to local storage
         } else { // data recovery
             let dat = JSON.parse(localStorage.getItem(this.data_uuid))
-            this.update_data(dat.name, dat.data, dat.dimension)
+            this.update_data(dat.name, dat.data, [dat.samples, dat.indim])
         }
     }
 
     // =============================== HELPER METHODS ===============================  
     
     add_menu_events(){ // NOTE: these events are specific to this node only!!
-        // add input field listender
+        // add output field listender
         let e = document.getElementById("output-upload")
         if(e === null) return
             
@@ -240,10 +222,10 @@ class output_node{
         })
     
         document.getElementById("output-upload").addEventListener("click", (evt) => {
-            document.getElementById("input-file").click()
+            document.getElementById("output-file").click()
         })
         document.getElementById("default-output-upload").addEventListener("click", (evt) => { // upload default data
-            fetch("../dataset/x.csv").then(res => res.text()).then(rawdat => {
+            fetch("../dataset/y.csv").then(res => res.text()).then(rawdat => {
                 CSVToJSON(rawdat).then(data => {
                     let dim = detectDim(data)
                     this.update_data("Predictions.csv", data, dim) // update values

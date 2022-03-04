@@ -36,7 +36,7 @@ function set_node_enable_appearance(uuid, enabled){
 document.getElementById("input_node_add").addEventListener("click", (e) => {
     if(localStorage.getItem(INPUT_UUID)) return // check if it already exists
 
-    new input_node(INPUT_UUID, INPUT_DAT_UUID)
+    new input_node(INPUT_UUID, INPUT_DAT_UUID, false)
 
     document.getElementById("input_node_add").classList.add("disable")
 })
@@ -45,7 +45,7 @@ document.getElementById("input_node_add").addEventListener("click", (e) => {
 document.getElementById("output_node_add").addEventListener("click", (e) => {
     if(localStorage.getItem(OUTPUT_UUID)) return // check if it already exists
     
-    new output_node(OUTPUT_UUID, OUTPUT_DAT_UUID)
+    new output_node(OUTPUT_UUID, OUTPUT_DAT_UUID, false)
 
     // disable the input button
     document.getElementById("output_node_add").classList.add("disable")
@@ -53,17 +53,20 @@ document.getElementById("output_node_add").addEventListener("click", (e) => {
 
 // create reshape node
 document.getElementById("reshape_node_add").addEventListener("click", (e) => {
-    let uuid = "00"+uuidv4()
+    let uuid = "00"+uuidv4() // generate a uuid
+    let data_uuid = "02"+uuidv4() // generate a uuid
     create_node(uuid, RESHAPE_NODE, "re", set_reshape_menu, JSON.stringify(create_reshape_data([64,64])))
+    new input_node(uuid, INPUT_DAT_UUID)
 })
 
 // create dense node
 document.getElementById("dense_node_add").addEventListener("click", (e) => {
-    let uuid = "00"+uuidv4()
-    create_node(uuid, DENSE_NODE, "de", set_dense_menu, JSON.stringify(create_dense_data(10, "li", true, true, "gln", "zer")))
+    let uuid = "00"+uuidv4() // generate a uuid
+    new dense_node("00"+uuidv4(), "02"+uuidv4())
 })
 
 {
+
 // TODO: come back and add this later
 // document.getElementById("act_node_add").addEventListener("click", (e) => {
 //     let uuid = "00"+uuidv4()
@@ -74,6 +77,6 @@ document.getElementById("dense_node_add").addEventListener("click", (e) => {
 
 // create activation node
 document.getElementById("drop_node_add").addEventListener("click", (e) => {
-    let uuid = "00"+uuidv4()
+    let uuid = "00"+uuidv4() // generate a uuid
     create_node(uuid, DROP_NODE, "do", set_drop_menu, JSON.stringify(create_drop_data(0)))
 })

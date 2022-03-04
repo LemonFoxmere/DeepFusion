@@ -265,7 +265,7 @@ function train_net(){
     dflog(successmsg, "No errors found in IO files")
     
     // start partition
-    let split_index = Math.floor(training_full.length * (document.getElementById("test-part-slider").value / 100))
+    let split_index = Math.floor(training_full.length * (document.getElementById("test-part").value / 100))
     dflog(debugmsg, `${split_index} testing data`)
     dflog(debugmsg, `${training_full.length-split_index} training data`)
     
@@ -306,8 +306,8 @@ function train_net(){
     dflog(successmsg, "Successfully built the network. If you would like to verify the strucutre, press [F12] > Console.")
 
     // compile model
-    let epoch = Number(document.querySelector("#epoch-part-slider").value)
-    let b_size = Number(document.querySelector("#batch-part-slider").value)    
+    let epoch = Number(document.querySelector("#epoch-part").value)
+    let b_size = Number(document.querySelector("#batch-part").value)    
     let opt = tf.train.adam(learningRate = lr, beta2 = lr/epoch)
 
     let config = { // add to training parameters later
@@ -318,7 +318,7 @@ function train_net(){
     }
     model.compile(config)
     dflog(successmsg, "Network compiled without error. Starting Training process:")
-    train(model, epoch, b_size, X, y, document.getElementById("test-part-slider").value / 100).then(() => dflog(successmsg, "Model Trained Successfully")) // start async function of training network
+    train(model, epoch, b_size, X, y, document.getElementById("test-part").value / 100).then(() => dflog(successmsg, "Model Trained Successfully")) // start async function of training network
 }
 
 document.getElementById("export-net").addEventListener("click", (evt) => {
