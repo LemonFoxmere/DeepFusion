@@ -767,6 +767,37 @@ hr{
     border-color: #be1a00;
 } */
 
+/* I don't even fucking know anymore */
+.multi-input-container{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+.multi-input-input{
+    width:fit-content;
+    display: flex;
+    align-items: center;
+}
+.multi-input-nb{
+    margin: 0.2rem 0.1rem 0.2rem 0.1rem;
+    border: 1px solid #ffffffba;
+    opacity:0.5;
+}
+.multi-input-nb:not(:placeholder-shown){   
+    opacity:1;
+}
+.multi-input-sep::before{
+    content: "×";
+    font-size: 1.25rem;
+    font-weight: 300;
+    opacity: 0.5;
+    user-select: none;
+    width: fit-content;
+    height: fit-content;
+    margin: 0 0.1rem 0 0.1rem
+}
+
 #networkname{
     background-color: transparent;
     z-index:100;

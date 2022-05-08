@@ -142,6 +142,9 @@ document.addEventListener("keydown", (evt) => {
     if((evt.keyCode === 8 || evt.keyCode === 46 || evt.key === "d") && evt.target.tagName !== "INPUT"){
         delete_selected_node()
     }
+    
+    // update the multi-in-handler
+    update_multi_ins(evt);
 })
 
 function remove_edge(uuid){
@@ -156,13 +159,13 @@ function remove_edge(uuid){
 const crosshair = document.querySelector(".crosshair")
 
 // update cursor edge position
-document.body.onmousemove = (e) => {
+document.body.onmousemove = e => {
     // upadte edge offset based on crosshair position
     if(document.getElementById("temp_edge") !== null){
-        let relative_middle_x = edge_start_node.offsetLeft + (edge_start_node.getBoundingClientRect().width/2)/zoom
-        let relative_bottom_y = edge_start_node.offsetTop + (edge_start_node.getBoundingClientRect().height - edge_start_node_sq.getBoundingClientRect().height/2)/zoom
-        let absolute_middle_x = edge_start_node_sq.getBoundingClientRect().x + (edge_start_node_sq.getBoundingClientRect().width/2)/zoom
-        let absolute_bottom_y = edge_start_node_sq.getBoundingClientRect().y + (edge_start_node_sq.getBoundingClientRect().height/2)/zoom
+        let relative_middle_x = edge_start_node.offsetLeft + (edge_start_node.getBoundingClientRect().width/2)/(Math.pow(zoom,2))
+        let relative_bottom_y = edge_start_node.offsetTop + (edge_start_node.getBoundingClientRect().height - edge_start_node_sq.getBoundingClientRect().height/2)/(Math.pow(zoom,2))
+        let absolute_middle_x = edge_start_node_sq.getBoundingClientRect().x + (edge_start_node_sq.getBoundingClientRect().width/2)/(Math.pow(zoom,2))
+        let absolute_bottom_y = edge_start_node_sq.getBoundingClientRect().y + (edge_start_node_sq.getBoundingClientRect().height/2)/(Math.pow(zoom,2))
         let offset_x = -4
         let offset_y = -7
 
@@ -171,8 +174,8 @@ document.body.onmousemove = (e) => {
         main_canvas.appendChild(createLine(
             relative_middle_x,
             relative_bottom_y,
-            relative_middle_x - (absolute_middle_x - e.x)/zoom + offset_x,
-            relative_bottom_y - (absolute_bottom_y - e.y)/zoom + offset_y,
+            relative_middle_x - (absolute_middle_x - e.x)/(Math.pow(zoom,2)) + offset_x,
+            relative_bottom_y - (absolute_bottom_y - e.y)/(Math.pow(zoom,2)) + offset_y,
             "temp_edge"));   
     }
 }
@@ -193,79 +196,16 @@ function update_non_temp_edges(){
 
             main_canvas.removeChild(document.getElementById(edge_uuid))
             main_canvas.appendChild(createLine(
-                outnode.offsetLeft + (outnode.getBoundingClientRect().width/2)/zoom,
-                outnode.offsetTop + (outnode.getBoundingClientRect().height-outnodesq.getBoundingClientRect().height/2)/zoom,
-                innode.offsetLeft + (innode.getBoundingClientRect().width/2)/zoom,
-                innode.offsetTop + 5/zoom,
+                outnode.offsetLeft + (outnode.getBoundingClientRect().width/2)/(Math.pow(zoom,2)),
+                outnode.offsetTop + (outnode.getBoundingClientRect().height-outnodesq.getBoundingClientRect().height/2)/Math.pow(zoom,2),
+                innode.offsetLeft + (innode.getBoundingClientRect().width/2)/Math.pow(zoom,2),
+                innode.offsetTop + 5/Math.pow(zoom,1),
                 edge_uuid));
         }
     }
 }
 
 // delete cursor edge and create connection if cursor release/drop detected
-document.body.onmouseup = (e) => {
-    // remove dragging style
-    document.querySelectorAll(".node-drag").forEach(elmnt => {
-        elmnt.classList.remove("node-edge-dragging")
-    })
-    document.querySelectorAll(".node").forEach(elmnt => {
-        elmnt.classList.remove("node-edge-dragging-cont")
-    })
-
-    // see if it exists
-    if(document.getElementById("temp_edge") !== null){
-        // if it exist remove all traces of it
-        main_canvas.removeChild(document.getElementById("temp_edge"))
-        
-        // check if there are any nodes that are being hovered
-        // // and if it is the same as the starting node or input node
-        // console.log(JSON.parse(localStorage.getItem(selected_uuid)).edge === null)
-        if(hovering_uuid !== selected_uuid && hovering_uuid !== INPUT_UUID && hovering_uuid !== null &&
-            JSON.parse(localStorage.getItem(selected_uuid)).edge === null &&
-            !JSON.parse(localStorage.getItem(hovering_uuid)).connected){
-            // if not, proceed with creating a visual line
-            let outnode = document.getElementById(`${selected_uuid}`)
-
-            let outnodesq = document.getElementById(`${selected_uuid}out`)
-            
-            let innode = document.getElementById(`${hovering_uuid}`)
-            
-            let edge_uuid = "01"+uuidv4()
-            
-            main_canvas.appendChild(createLine(
-                outnode.offsetLeft + (outnode.getBoundingClientRect().width/2)/zoom,
-                outnode.offsetTop + (outnode.getBoundingClientRect().height-outnodesq.getBoundingClientRect().height/2)/zoom,
-                innode.offsetLeft + (innode.getBoundingClientRect().width/2)/zoom,
-                innode.offsetTop + 5/zoom,
-                edge_uuid));
-
-            // add edge entry to local storage
-            let edge_data = create_edge_data(selected_uuid, hovering_uuid)
-            localStorage.setItem(edge_uuid,JSON.stringify(edge_data))
-
-            // update the node"s edge, from and dest node
-            let selected_node_data = JSON.parse(localStorage.getItem(selected_uuid))
-            let hovering_node_data = JSON.parse(localStorage.getItem(hovering_uuid))
-
-            //store dest and from node information
-            selected_node_data.dest = hovering_uuid
-            hovering_node_data.from = selected_uuid
-            
-            hovering_node_data.connected = true
-
-            // store edge information
-            selected_node_data.edge = edge_uuid
-        
-            // store them back
-            localStorage.setItem(selected_uuid, JSON.stringify(selected_node_data))
-            localStorage.setItem(hovering_uuid, JSON.stringify(hovering_node_data))
-        }
-    }
-
-    // clear selected node
-    selected_uuid = null
-}
-
 //-----------------------------
 
 function uuidv4() {

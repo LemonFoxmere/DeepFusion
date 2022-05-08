@@ -211,6 +211,8 @@ function dragElement(elmnt) {
         });
 
         document.getElementById(elmnt.id + "header").classList.remove("node-dragging")
+
+        update_non_temp_edges() // update the edges just in case if node dimension changed
     }
 }
 
@@ -253,6 +255,8 @@ window.addEventListener("resize", e => {
     // update the previous window sizes
     prev_window_height = window.innerHeight
     prev_window_width = window.innerWidth
+
+    update_non_temp_edges() // update the edges just in case if node dimension changed
 })
 
 document.getElementById("canvas-drag").addEventListener("wheel", e => { 
@@ -299,6 +303,7 @@ document.getElementById("canvas-drag").addEventListener("wheel", e => {
                 }
             }
         }
+        update_non_temp_edges()
         return
     }
     // move with trackpad
@@ -349,58 +354,6 @@ document.querySelectorAll(".slider").forEach((e) => { // add all slider events
         e.onmousemove = null
     }
 })
-
-function add_output_menu_events(){
-    // add output field listender
-    let e = document.getElementById("output-upload")
-    if(e === null) return
-        
-    document.querySelector("#output-file").onchange = () => {
-        // read csv file from the upload button
-        let file = document.querySelector("#output-file").files[0], read = new FileReader()
-        let file_name = file.name
-        
-        // check file type
-        if(file.type !== "text/csv"){
-            dflog(errormsg, "Upload failed: Only CSV files are supported for now!")
-            dflog(blankmsg, "Or if you don't have a CSV file, you can click the <strong>⋮</strong> next to the upload button for a sample dataset.")
-            return;
-        }
-
-        read.readAsBinaryString(file); // convert to String
-        read.onloadend = function(){
-            // when uploading, lag stems from here. This needs to be shifted to a backend server for processing in the future.
-            // let data = CSVToJSON(read.result)
-            CSVToJSON(read.result).then(data => {
-                let dim = detectDim(data)
-                update_output_data(file_name, data, dim) // update values
-            }) .catch(err => {
-                return -1
-            })
-        }
-    }
-
-    // clear file button
-    document.getElementById("clear-output").addEventListener("click", (evt) => {
-        update_output_data("No Output File", null, null)
-    })
-    
-    document.getElementById("output-upload").addEventListener("click", (evt) => { // user selects their own data
-        document.getElementById("output-file").click()
-    })
-    document.getElementById("default-output-upload").addEventListener("click", (evt) => { // upload default data
-        fetch("../dataset/Y.csv").then(res => res.text()).then(rawdat => {
-            CSVToJSON(rawdat).then(data => {
-                let dim = detectDim(data)
-                update_output_data("prediction.csv", data, dim) // update values
-            }) .catch(err => {
-                return -1
-            })
-        }).catch(err => {
-            dflog(errormsg, "An internal error has occured, and the default output dataset cannot be loaded. Please submit a bug report here.")
-        })
-    })
-}
 
 function add_drop_menu_events(uuid){
     update_menu_slider(uuid, "prob", "Chance", data_affix="%")

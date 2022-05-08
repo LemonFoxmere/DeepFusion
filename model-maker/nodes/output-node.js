@@ -63,7 +63,7 @@ class output_node{
                     {
                         "<>" : "p",
                         "style" : "font-weight:300; margin-top:3%",
-                        "text" : "# of samples:",
+                        "text" : "# of Samples:",
                     }, {
                         "<>" : "p",
                         "id" : "outputmenusamples",
@@ -139,8 +139,8 @@ class output_node{
             "indim":null
         }
         
-        create_node(this.uuid, this.data_uuid, this.node_template, "ou", this) // create a visual node after both promise are fulfilled 
-        
+        create_node(this, "ou") // create a visual node after both promise are fulfilled 
+
         // CALLBACK DEFINITIONS
         this.populate_menu = data => { // populate menu with data
             let menu_container = create_menu_container()
@@ -152,6 +152,7 @@ class output_node{
         
             render_menu(menu_container)
             this.add_menu_events()
+            sync_data_all() // DO NOT DELETE THIS LINE
         }
         this.update_data = (name, value, dim) => { // this runs when the output data is changed
             let new_data = JSON.parse(localStorage.getItem(this.data_uuid))
@@ -171,6 +172,11 @@ class output_node{
             // update the menu items
             document.getElementById("outputmenudim").innerHTML = String(new_data.indim || "N/A").replace(",", "×")
             document.getElementById("outputmenusamples").innerHTML = new_data.samples || "N/A"
+
+            sync_data_all() // DO NOT DELETE THIS LINE
+        }
+        this.sync_data = () => {
+            return // add more code in the future if needed to sync / update data
         }
 
         // DATA RECOVERY
@@ -213,7 +219,6 @@ class output_node{
                     return -1
                 })
             }
-
         }
     
         // clear file button

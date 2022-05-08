@@ -24,16 +24,3 @@ function set_act_menu(uuid, data){
     // add event listeners for all the sliders and controls
     update_menu_dropdown(uuid, "activation", "Activation") // the main activation selection
 }
-
-
-
-function set_drop_menu(uuid, data){
-    let htmlObject = create_menu_container()
-    let chance = data.chance
-    htmlObject.innerHTML = json2html.render([{"uuid" : uuid, "chance" : chance}], DROP_NODE_MENU);
-    set_menu(htmlObject)
-    document.getElementById(`${uuid}prob-slider`).value = chance // update value
-    
-    // add event listeners for all the sliders and controls
-    update_menu_slider(uuid, "prob", "Probability", "%") // the probability slider
-}

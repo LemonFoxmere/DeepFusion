@@ -100,52 +100,6 @@ const ACT_NODE_MENU = [ // uuid, value
     },
 ]
 
-const DROP_NODE_MENU = [ // uuid, neuronct
-    {
-        "<>" : "h3",
-        "style" : "margin-bottom:1%",
-        "html" : "Dropout"
-    },{
-        "<>" : "hr",
-        "style" : "width: 30%; opacity:0.1; color: white",
-    },{
-        "<>" : "section",
-        "class" : "input-parent-container",
-        "html" : [
-            {
-                "<>" : "p",
-                "class" : "unselectable section-text",
-                "text" : "Probability (%):",
-            },{ // slider 1
-                "<>" : "section",
-                "class" : "slider-container",
-                "html" : [
-                    {
-                        "<>" : "input",
-                        "type" : "range",
-                        "min" : "0",
-                        "max" : "90",
-                        "value" : "${chance}",
-                        "class" : "slider",
-                        "id" : "${uuid}prob-slider",
-                    }, {
-                        "<>" : "input",
-                        "type" : "number",
-                        "class" : "number-box",
-                        "id" : "${uuid}prob",
-                    }
-                ],
-            },
-            // bottom padding
-            {
-                "<>" : "section",
-                "style" : "width:100%; height:1.5rem;"
-            }
-        ],
-    },
-]
-
-
 const DEFAULT_NODE_MENU = [
     {
         "<>" : "p",
@@ -166,11 +120,6 @@ const MENU_TEMPLATE = [
         "<>" : "section",
         "class" : "input-parent-container",
         "html" : [
-            
-            /*
-             * All the content goes inside here
-             */
-
             // bottom padding
             {
                 "<>" : "section",

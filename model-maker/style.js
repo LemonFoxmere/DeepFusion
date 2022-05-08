@@ -103,55 +103,60 @@ document.getElementById("reset-coord").addEventListener("click", async (e) => {
 // add zoom functionality
 document.getElementById("zoom-in").addEventListener("click", (e) => {
     document.querySelectorAll(".node").forEach((e) => {
-        e.classList.remove("notransition")
+        e.classList.add("notransition")
     })
     document.querySelectorAll(".crosshair").forEach((e) => {
-        e.classList.remove("notransition")
+        e.classList.add("notransition")
     })
     document.querySelectorAll("#main-canvas").forEach((e) => {
-        e.classList.remove("notransition")
+        e.classList.add("notransition")
     })
 
-    zoom += CLICK_ZOOM_SPEED
-    if(zoom > 4){
-        zoom = 4        
+    if(zoom < 4){ // zoom in
+        canvas.style.transform = `scale(${(zoom += CLICK_ZOOM_SPEED)*zoom})`;
+        if(zoom > 4){ // set zoom to 4
+            zoom = 4
+            canvas.style.transform = `scale(16)`;    
+        }
     }
-    canvas.style.transform = `scale(${zoom})`;  
     // update_zoom_text()
 })
 
 document.getElementById("zoom-out").addEventListener("click", (e) => {
     document.querySelectorAll(".node").forEach((e) => {
-        e.classList.remove("notransition")
+        e.classList.add("notransition")
     })
     document.querySelectorAll(".crosshair").forEach((e) => {
-        e.classList.remove("notransition")
+        e.classList.add("notransition")
     })
     document.querySelectorAll("#main-canvas").forEach((e) => {
-        e.classList.remove("notransition")
+        e.classList.add("notransition")
     })
 
-    zoom -= CLICK_ZOOM_SPEED
-    if(zoom < 0.2){
-        zoom = 0.2        
+    if(zoom > 0.3162){ // zoom in
+        canvas.style.transform = `scale(${(zoom -= CLICK_ZOOM_SPEED)*zoom})`;
+        if(zoom < 0.3162){ // set zoom to 4
+            zoom = 0.3162
+            canvas.style.transform = `scale(0.1)`;    
+        }
     }
-    canvas.style.transform = `scale(${zoom})`;  
     // update_zoom_text()
 })
 
 document.getElementById("zoom-res").addEventListener("click", (e) => {
     document.querySelectorAll(".node").forEach((e) => {
-        e.classList.remove("notransition")
+        e.classList.add("notransition")
     })
     document.querySelectorAll(".crosshair").forEach((e) => {
-        e.classList.remove("notransition")
+        e.classList.add("notransition")
     })
     document.querySelectorAll("#main-canvas").forEach((e) => {
-        e.classList.remove("notransition")
+        e.classList.add("notransition")
     })
     
     canvas.style.transform = `scale(${zoom = 1})`;  
     // update_zoom_text()
+    update_non_temp_edges()
 })
 
 // add selection highlight
@@ -193,6 +198,7 @@ document.querySelectorAll(".number-box").forEach((e) => { // add all input field
                     e.value = min_val;
                 }
             }
+            e.value = e.value || slider.min
             slider.value = e.value
         }
     })

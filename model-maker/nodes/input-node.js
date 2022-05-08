@@ -134,7 +134,7 @@ class input_node{
             "indim":null
         }
         
-        create_node(this.uuid, this.data_uuid, this.node_template, "in", this) // create a visual node after both promise are fulfilled 
+        create_node(this, "in") // create a visual node after both promise are fulfilled 
         
         // CALLBACK DEFINITIONS
         this.populate_menu = data => { // populate menu with data
@@ -147,6 +147,7 @@ class input_node{
         
             render_menu(menu_container)
             this.add_menu_events()
+            sync_data_all() // DO NOT DELETE THIS LINE
         }
         this.update_data = (name, value, dim) => { // this runs when the input data is changed | (name of file, content of file, full dimension of file)
             let new_data = JSON.parse(localStorage.getItem(this.data_uuid))
@@ -166,6 +167,11 @@ class input_node{
             // update the menu items
             document.getElementById("inputmenudim").innerHTML = String(new_data.outdim || "N/A").replace(",", "×")
             document.getElementById("inputmenusamples").innerHTML = new_data.samples || "N/A"
+
+            sync_data_all() // DO NOT DELETE THIS LINE
+        }
+        this.sync_data = () => {
+            return // add more code in the future if needed to sync / update data
         }
 
         // DATA RECOVERY

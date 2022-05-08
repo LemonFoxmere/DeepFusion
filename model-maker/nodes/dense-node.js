@@ -175,7 +175,7 @@ class dense_node{
                                 "text" : "Ones", 
                             },{
                                 "<>" : "option",
-                                "value" : "zer",
+                                "value" : "glu",
                                 "text" : "Glorot Uniform", 
                             },{
                                 "<>" : "option",
@@ -351,12 +351,15 @@ class dense_node{
             "usebias" :true,
             "trainable":true,
             "kernelinit":"gln",
-            "biasinit":"zer"
+            "biasinit":"zer",
+            // outdim is requrired by ALL nodes that produces an output. It must be an array, with integers inside.
+            "outdim":[30,1], // shape=(30,1)
+            "indim":[null, 1] // shape = (any,1)
         } 
         localStorage.setItem(this.data_uuid, JSON.stringify(empty_node_data)) // write empty data to local storage
         
-        create_node(this.uuid, this.data_uuid, this.node_template, "de", this) // create a visual node 
-        
+        create_node(this, "ou") // create a visual node after both promise are fulfilled 
+
         // CALLBACK DEFINITIONS
         this.populate_menu = data => { // populate menu with data
             let menu_container = create_menu_container() // create the container
@@ -364,12 +367,20 @@ class dense_node{
             render_menu(menu_container)
           
             // add event listeners for all the sliders and controls
-            update_menu_slider(this.uuid, "neuron", "Neurons") // the neuron slider
-            update_menu_dropdown(this.uuid, "activation", "Activation", activation_name_std) // the activation selection
-            update_menu_dropdown(this.uuid, "kernelinit", "Kernel Init", kernel_bias_init_name_std) // the activation selection
-            update_menu_dropdown(this.uuid, "biasinit", "Bias Init", kernel_bias_init_name_std) // the activation selection
-            update_menu_toggle(this.uuid, "usebias", "Using Bias", false) // the toggle switch
-            update_menu_toggle(this.uuid, "trainable", "", true) // the toggle switch
+            update_menu_slider(this, "neuron", "Neurons") // the neuron slider
+            update_menu_dropdown(this, "activation", "Activation", activation_name_std) // the activation selection
+            update_menu_dropdown(this, "kernelinit", "Kernel Init", kernel_bias_init_name_std) // the activation selection
+            update_menu_dropdown(this, "biasinit", "Bias Init", kernel_bias_init_name_std) // the activation selection
+            update_menu_toggle(this, "usebias", "Using Bias", false) // the toggle switch
+            update_menu_toggle(this, "trainable", "", true) // the toggle switch
+
+            sync_data_all() // DO NOT DELETE THIS LINE
+        }
+
+        this.sync_data = () => {
+            let new_data = JSON.parse(localStorage.getItem(this.data_uuid))
+            new_data.outdim = [new_data.neuron, 1]
+            localStorage.setItem(this.data_uuid, JSON.stringify(new_data))
         }
     }
 }
